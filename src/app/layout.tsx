@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import ClickParticles from '@/components/ClickParticles';
+import Navbar from '@/components/Navbar';
 
 export const metadata: Metadata = {
   title: 'Dhvanit Monpara | Backend Engineer',
@@ -18,7 +19,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <ClickParticles particleColors={["#D5674F", "#e8896e", "#c04535"]} particleCount={10} velocityMax={2} />
-        {children}
+        <div className="site-wrap">
+          <Navbar />
+          {children}
+        </div>
       </body>
     </html>
   );

@@ -4,10 +4,10 @@ import Image from 'next/image';
 import { useState } from 'react';
 
 const projects = [
-  { title: 'Flick', description: 'Anonymous campus community platform for verified college students to post, discuss, and interact within their college network.', image: '/projects/flick.svg', href: '#' },
-  { title: 'Initex', description: 'CLI for bootstrapping structured, production-ready backend services through opinionated architecture and preset-driven infrastructure configuration.', image: '/projects/initex.svg', href: '#' },
-  { title: 'Nestly', description: 'A real-time chat application with features like DMs, Server/Channel-based messaging, voice and video chats, screen-sharing etc.', image: '/projects/nestly.svg', href: '#' },
-  { title: 'OS-Themed Portfolio', description: 'My personal portfolio but Operating System themed.', image: '/projects/os.svg', href: '#' },
+  { title: 'Flick', description: 'Anonymous campus community for verified college students.', image: '/projects/flick.svg', href: '#' },
+  { title: 'Initex', description: 'CLI for bootstrapping production-ready backend services.', image: '/projects/initex.svg', href: '#' },
+  { title: 'Nestly', description: 'Real-time chat with DMs, channels, and voice/video calls.', image: '/projects/nestly.svg', href: '#' },
+  { title: 'OS-Themed Portfolio', description: 'My personal portfolio, Operating System themed.', image: '/projects/os.svg', href: '#' },
 ];
 
 const topics = [
@@ -98,85 +98,52 @@ function ChevronDown({ size = 12 }: { size?: number }) {
 }
 
 function ExperienceItem({ exp }: { exp: typeof experience[number] }) {
-  const [open, setOpen] = useState(exp.company === 'TechySquad');
+  const [open, setOpen] = useState(false);
   const hasDetails = exp.bullets.length > 0;
 
   return (
-    <div className="exp-item">
-      <div className="exp-logo" aria-hidden="true">
-        <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
-          <rect width="36" height="36" rx="8" fill="rgba(255,255,255,0.06)" />
-          <text x="50%" y="55%" dominantBaseline="middle" textAnchor="middle" fontSize="13" fill="#888">{exp.company[0]}</text>
-        </svg>
-      </div>
-      <div className="exp-info">
-        <div className="exp-company-row">
-          <span className={`exp-company${exp.company === 'TechySquad' ? ' exp-company--accent' : ''}`}>{exp.company}</span>
+    <div className={`exp-item${open ? ' exp-item--open' : ''}`}>
+      <div className="exp-header" onClick={() => hasDetails && setOpen(!open)} style={{ cursor: hasDetails ? 'pointer' : 'default' }}>
+        <div className="exp-header-main">
+          <span className="exp-company">{exp.company}</span>
+          <span className="exp-role-inline">{exp.role}</span>
+        </div>
+        <div className="exp-header-right">
+          <span className="exp-period">{exp.period}</span>
           {hasDetails && (
-            <button className="exp-toggle" onClick={() => setOpen(!open)} aria-label="toggle details">
+            <span className="exp-toggle" aria-label="toggle details">
               <span style={{ display: 'inline-flex', transform: open ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 200ms' }}>
                 <ChevronDown size={12} />
               </span>
-            </button>
+            </span>
           )}
         </div>
-        <div className="exp-role">{exp.role}</div>
-        {open && hasDetails && (
-          <div className="exp-details">
-            <ul className="exp-bullets">
-              {exp.bullets.map((b, i) => <li key={i}>{b}</li>)}
-            </ul>
-            {exp.tags.length > 0 && (
-              <div className="exp-tags">
-                {exp.tags.map((t) => <span key={t} className="exp-tag">{t}</span>)}
-              </div>
-            )}
-            {(exp.website || exp.linkedin) && (
-              <div className="exp-links">
-                {exp.website && <a href={exp.website} className="exp-link"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> Website</a>}
-                {exp.linkedin && <a href={exp.linkedin} className="exp-link"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> LinkedIn</a>}
-              </div>
-            )}
-          </div>
-        )}
       </div>
-      <div className="exp-meta">
-        <div className="exp-location">{exp.location}</div>
-        <div className="exp-period">{exp.period}</div>
-      </div>
+      {open && hasDetails && (
+        <div className="exp-details">
+          <ul className="exp-bullets">
+            {exp.bullets.map((b, i) => <li key={i}>{b}</li>)}
+          </ul>
+          {exp.tags.length > 0 && (
+            <div className="exp-tags">
+              {exp.tags.map((t) => <span key={t} className="exp-tag">{t}</span>)}
+            </div>
+          )}
+          {(exp.website || exp.linkedin) && (
+            <div className="exp-links">
+              {exp.website && <a href={exp.website} className="exp-link"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> Website</a>}
+              {exp.linkedin && <a href={exp.linkedin} className="exp-link"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> LinkedIn</a>}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
 
 export default function HomePage() {
   return (
-    <div className="site-wrap">
-      <header className="site-nav">
-        <nav aria-label="Primary navigation">
-          <a href="/" className="nav-item">home</a>
-          <a href="#" className="nav-item">imprint</a>
-          <a href="#" className="nav-item">dhvanit://ai</a>
-        </nav>
-        <div className="nav-icons">
-          <a href="#" target="_blank" rel="noreferrer" aria-label="Resume" className="nav-icon-link">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="17" x2="12" y2="17"/></svg>
-          </a>
-          <a href="https://github.com/dhvanitmonpara" target="_blank" rel="noreferrer" aria-label="GitHub" className="nav-icon-link">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.021c0 4.428 2.865 8.184 6.839 9.504.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.026 2.747-1.026.546 1.378.203 2.397.1 2.65.64.7 1.028 1.595 1.028 2.688 0 3.848-2.338 4.695-4.566 4.944.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.2 22 16.447 22 12.021 22 6.484 17.523 2 12 2z"/></svg>
-          </a>
-          <a href="https://x.com/dhvanitdev" target="_blank" rel="noreferrer" aria-label="Twitter" className="nav-icon-link">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-          </a>
-          <a href="https://www.linkedin.com/in/dhvanitmonpara/" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="nav-icon-link">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-          </a>
-          <a href="mailto:hi@dhvanitmonpara.in" aria-label="Mail" className="nav-icon-link">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
-          </a>
-        </div>
-      </header>
-
-      <main className="main-content">
+    <main className="main-content">
         {/* Hero */}
         <section className="hero">
           <h1 className="hero-name">Dhvanit Monpara</h1>
@@ -209,16 +176,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Experience */}
-        <section className="section">
-          <h2 className="section-title">Experience</h2>
-          <div className="exp-list">
-            {experience.map((exp) => (
-              <ExperienceItem key={exp.company} exp={exp} />
-            ))}
-          </div>
-        </section>
-
         {/* Projects */}
         <section className="section">
           <h2 className="section-title">Projects</h2>
@@ -243,24 +200,16 @@ export default function HomePage() {
           </p>
         </section>
 
-        {/* Topics */}
+        {/* Experience */}
         <section className="section">
-          <h2 className="section-title">Topics</h2>
-          <div className="topic-list">
-            {topics.map((t) => (
-              <div key={t.title} className="topic-item">
-                <div className="topic-header">
-                  <a href={t.href} className="topic-title">
-                    {t.title}
-                    <span className="link-arrow"><ArrowUpRight size={12} /></span>
-                  </a>
-                  <span className="topic-tag">({t.tag})</span>
-                </div>
-                <p className="topic-desc">{t.description}</p>
-              </div>
+          <h2 className="section-title">Experience</h2>
+          <div className="exp-list">
+            {experience.map((exp) => (
+              <ExperienceItem key={exp.company} exp={exp} />
             ))}
           </div>
         </section>
+
 
         {/* Blogs */}
         <section className="section">
@@ -302,17 +251,11 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Resume CTA */}
-        <section className="resume-cta">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          <span>Feel free to checkout my <a href="#" target="_blank" rel="noreferrer" className="resume-link">resume</a>.</span>
-        </section>
-      </main>
 
-      <footer className="site-footer">
-        <span>2026 - Nothin&apos; reserved</span>
-        <span>Ahmedabad, 6:19 AM</span>
-      </footer>
-    </div>
+        <footer className="site-footer">
+          <span>2026 - Nothin&apos; reserved</span>
+          <span>Ahmedabad, 6:19 AM</span>
+        </footer>
+      </main>
   );
 }
