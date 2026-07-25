@@ -244,6 +244,7 @@ class Media {
     img.onload = () => {
       texture.image = img;
       this.program.uniforms.uImageSizes.value = [img.naturalWidth, img.naturalHeight];
+      window.dispatchEvent(new CustomEvent('gallery-image-loaded'));
     };
   }
 
@@ -292,12 +293,13 @@ class Media {
     if (viewport) this.viewport = viewport;
     this.scale = this.screen.height / 1500;
     this.plane.scale.y = (this.viewport.height * (900 * this.scale)) / this.screen.height;
-    this.plane.scale.x = (this.viewport.width * (700 * this.scale)) / this.screen.width;
+    
+    let aspect = 700 / 900;
+    if (this.program.uniforms.uImageSizes.value[0] > 0 && this.program.uniforms.uImageSizes.value[1] > 0) {
+      aspect = this.program.uniforms.uImageSizes.value[0] / this.program.uniforms.uImageSizes.value[1];
+    }
+    this.plane.scale.x = this.plane.scale.y * aspect;
     this.program.uniforms.uPlaneSizes.value = [(this.plane.scale as unknown as { x: number }).x, (this.plane.scale as unknown as { y: number }).y];
-    this.padding = 2;
-    this.width = (this.plane.scale as unknown as { x: number }).x + this.padding;
-    this.widthTotal = this.width * this.length;
-    this.x = this.width * this.index;
   }
 }
 
@@ -334,6 +336,7 @@ class App {
   boundOnTouchMove!: (e: MouseEvent | TouchEvent) => void;
   boundOnTouchUp!: () => void;
   boundOnKeyDown!: (e: KeyboardEvent) => void;
+  boundOnImageLoad!: () => void;
 
   constructor(container: HTMLElement, { items, bend, textColor = '#ffffff', borderRadius = 0, font = 'bold 30px Figtree', scrollSpeed = 2, scrollEase = 0.05 }: AppOptions) {
     this.container = container;
@@ -413,11 +416,32 @@ class App {
   }
 
   onCheck() {
-    if (!this.medias?.[0]) return;
-    const width = this.medias[0].width;
-    const itemIndex = Math.round(Math.abs(this.scroll.target) / width);
-    const item = width * itemIndex;
-    this.scroll.target = this.scroll.target < 0 ? -item : item;
+    if (!this.medias || !this.medias.length) return;
+    let closestMedia = this.medias[0];
+    let minDistance = Infinity;
+    this.medias.forEach(m => {
+      const dist = Math.abs(m.plane.position.x);
+      if (dist < minDistance) {
+        minDistance = dist;
+        closestMedia = m;
+      }
+    });
+    this.scroll.target = closestMedia.x - closestMedia.extra;
+  }
+
+  updateLayout() {
+    if (!this.medias) return;
+    let currentX = 0;
+    this.medias.forEach(m => {
+      m.padding = 2;
+      m.width = (m.plane.scale as unknown as { x: number }).x + m.padding;
+      m.x = currentX;
+      currentX += m.width;
+    });
+    const totalWidth = currentX;
+    this.medias.forEach(m => {
+      m.widthTotal = totalWidth;
+    });
   }
 
   onResize() {
@@ -429,6 +453,7 @@ class App {
     const width = height * this.camera.aspect;
     this.viewport = { width, height };
     this.medias?.forEach(m => m.onResize({ screen: this.screen, viewport: this.viewport }));
+    this.updateLayout();
   }
 
   update() {
@@ -447,6 +472,7 @@ class App {
     this.boundOnTouchMove = this.onTouchMove.bind(this);
     this.boundOnTouchUp = this.onTouchUp.bind(this);
     this.boundOnKeyDown = this.onKeyDown.bind(this);
+    this.boundOnImageLoad = this.onResize.bind(this);
     window.addEventListener('resize', this.boundOnResize);
     window.addEventListener('wheel', this.boundOnWheel);
     window.addEventListener('mousedown', this.boundOnTouchDown as EventListener);
@@ -455,6 +481,7 @@ class App {
     window.addEventListener('touchstart', this.boundOnTouchDown as EventListener);
     window.addEventListener('touchmove', this.boundOnTouchMove as EventListener);
     window.addEventListener('touchend', this.boundOnTouchUp);
+    window.addEventListener('gallery-image-loaded', this.boundOnImageLoad);
     this.container.addEventListener('keydown', this.boundOnKeyDown);
   }
 
@@ -468,6 +495,7 @@ class App {
     window.removeEventListener('touchstart', this.boundOnTouchDown as EventListener);
     window.removeEventListener('touchmove', this.boundOnTouchMove as EventListener);
     window.removeEventListener('touchend', this.boundOnTouchUp);
+    window.removeEventListener('gallery-image-loaded', this.boundOnImageLoad);
     if (this.renderer?.gl?.canvas?.parentNode) {
       this.renderer.gl.canvas.parentNode.removeChild(this.renderer.gl.canvas);
     }

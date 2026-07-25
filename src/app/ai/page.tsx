@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import { FiSend } from 'react-icons/fi';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -8,33 +9,19 @@ interface Message {
 }
 
 const SUGGESTIONS = [
-  'Are you available to hire?',
-  'What technologies do you work with?',
+  'What are you working on?',
+  'What tech do you use?',
   'Tell me about your projects.',
   'How do I get in touch?',
 ];
 
-const SYSTEM_CONTEXT = `You are Dhvanit's AI persona. Answer questions about Dhvanit Monpara as if you are representing him. Here are the facts:
-- Backend engineer based in Ahmedabad, India
-- Works with PERN stack, Go, and GenAI
-- Currently a Software Engineer Intern (Apr 2026 - Present, company undisclosed)
-- Previously Full Stack Developer Intern at TechySquad (Aug 2025 - Jan 2026)
-- Built real-time chat apps with WebSockets and LiveKit (sub-200ms latency)
-- Built multi-layer content moderation pipelines
-- Skilled in TypeScript, Node.js, Express, PostgreSQL, Redis, Docker, LangChain, LangGraph
-- Writes technical blogs about backend engineering
-- Open to interesting backend/GenAI opportunities
-- Contact: hi@dhvanitmonpara.in
-Keep answers concise and friendly. If asked something you don't know, say so honestly.`;
-
 export default function AiPage() {
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'assistant', content: "Hi! I'm Dhvanit's AI persona. Ask me anything about him or his work. I'll be happy to assist you." },
+    { role: 'assistant', content: "hi! i'm cleo's AI. ask me anything about her work, projects, or how to reach her." },
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -46,14 +33,11 @@ export default function AiPage() {
     setMessages(prev => [...prev, userMsg]);
     setInput('');
     setLoading(true);
-
     try {
-      // Build a simple prompt for a free API — using Gemini via fetch
-      // Since no API key is wired up yet, we simulate a smart response
-      const reply = await simulateReply(text.trim(), messages);
+      const reply = await simulateReply(text.trim());
       setMessages(prev => [...prev, { role: 'assistant', content: reply }]);
     } catch {
-      setMessages(prev => [...prev, { role: 'assistant', content: "Sorry, I couldn't process that right now. Try again in a moment." }]);
+      setMessages(prev => [...prev, { role: 'assistant', content: "sorry, couldn't process that. try again in a sec." }]);
     } finally {
       setLoading(false);
     }
@@ -69,11 +53,10 @@ export default function AiPage() {
   return (
     <main className="ai-page">
       <section className="ai-hero">
-        <h1 className="hero-name">dhvanit://ai</h1>
-        <p className="hero-sub">Have a chat with my AI to know more about me.</p>
+        <h1 className="hero-name">cleo://ai</h1>
+        <p className="hero-sub">chat with cleo&apos;s AI to learn more about her.</p>
       </section>
 
-      {/* Chat window */}
       <div className="ai-chat-window">
         <div className="ai-messages">
           {messages.map((m, i) => (
@@ -90,7 +73,6 @@ export default function AiPage() {
         </div>
       </div>
 
-      {/* Suggestion chips */}
       <div className="ai-suggestions">
         {SUGGESTIONS.map((s) => (
           <button key={s} className="ai-chip" onClick={() => send(s)} disabled={loading}>
@@ -99,10 +81,8 @@ export default function AiPage() {
         ))}
       </div>
 
-      {/* Input */}
       <div className="ai-input-row">
         <textarea
-          ref={inputRef}
           className="ai-input"
           placeholder="Type a message..."
           value={input}
@@ -117,48 +97,44 @@ export default function AiPage() {
           disabled={loading || !input.trim()}
           aria-label="Send"
         >
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <line x1="12" y1="19" x2="12" y2="5" />
-            <polyline points="5 12 12 5 19 12" />
-          </svg>
+          <FiSend size={15} />
         </button>
       </div>
 
       <p className="ai-disclaimer">
-        Everyone makes mistakes, including this AI. Make sure to double-check important information.
+        AI can make mistakes. Double-check anything important.
       </p>
 
       <footer className="site-footer" style={{ marginTop: 32 }}>
-        <span>2026 - Nothin&apos; reserved</span>
-        <span>Ahmedabad, 6:19 AM</span>
+        <span>cleof.us · Cleo Balaranjith</span>
+        <span>Sammamish, WA · GMT-7</span>
       </footer>
     </main>
   );
 }
 
-// Lightweight rule-based fallback (replace with real Gemini call once API key is added)
-async function simulateReply(text: string, _history: Message[]): Promise<string> {
+async function simulateReply(text: string): Promise<string> {
   const q = text.toLowerCase();
-  await new Promise(r => setTimeout(r, 600)); // simulate latency
+  await new Promise(r => setTimeout(r, 600));
 
   if (q.includes('hire') || q.includes('available') || q.includes('job') || q.includes('work'))
-    return "Dhvanit is currently interning but is open to hearing about interesting backend or GenAI opportunities. Best way to reach him is hi@dhvanitmonpara.in.";
+    return "cleo is a high school junior actively building and open to interesting opportunities. best way to reach her is cbalaranjith@gmail.com.";
   if (q.includes('tech') || q.includes('stack') || q.includes('language') || q.includes('tool'))
-    return "He primarily works with TypeScript, Node.js, Express, PostgreSQL, Redis, and Docker on the backend. For AI he uses LangChain, LangGraph, and Python. Go is his go-to when performance really matters.";
+    return "she works with VS Code, GitHub, Supabase, React, TypeScript, Python, and Vercel. her fav stack rn.";
   if (q.includes('project'))
-    return "Some of his notable projects: Flick (anonymous campus community), Initex (CLI for production-ready backend scaffolding), Nestly (real-time chat with WebRTC/LiveKit), and an OS-themed portfolio.";
-  if (q.includes('blog') || q.includes('write') || q.includes('article'))
-    return "He writes about backend engineering — topics like cache invalidation, content moderation pipelines, and real-time systems. You can find his articles on his site.";
+    return "some highlights: Price it Right (market sim), Fault Lines & Front Lines (GIS + seismic mapping), AzotoColumn (bioretention eco-engineering), and this portfolio.";
   if (q.includes('contact') || q.includes('reach') || q.includes('email'))
-    return "You can reach Dhvanit at hi@dhvanitmonpara.in. He's also on GitHub (dhvanitmonpara) and LinkedIn.";
+    return "reach cleo at cbalaranjith@gmail.com — or on instagram @cle0b, github @CleeYOpro, or linkedin @cleofus.";
   if (q.includes('experience') || q.includes('work history') || q.includes('internship'))
-    return "Currently interning as a Software Engineer (Apr 2026 - Present). Previously at TechySquad as a Full Stack Developer Intern (Aug 2025 - Jan 2026), where he built real-time communication platforms and production backends.";
-  if (q.includes('location') || q.includes('where') || q.includes('india'))
-    return "Dhvanit is based in Ahmedabad, India.";
+    return "she's interned at Rove (YC W24) on airport search autocomplete, did business strategy at Seattle Sports & Regenerative Medicine, and observed ops at CMC Vellore — top 5 hospital in asia.";
+  if (q.includes('school') || q.includes('education') || q.includes('college'))
+    return "she's doing Running Start at Bellevue College while attending Eastlake High School. also got into MIT Beaver Works Summer Institute (~6% acceptance) for remote sensing.";
+  if (q.includes('tsa') || q.includes('competition') || q.includes('award'))
+    return "2× TSA nationals, 2nd place at nationals in technology problem solving, 1st in state for geospatial technology, ACSL International Silver, and a bunch more.";
   if (q.includes('hello') || q.includes('hi') || q.includes('hey'))
-    return "Hey! Ask me anything about Dhvanit — his work, projects, tech stack, or how to get in touch.";
+    return "hey! ask me about cleo's work, projects, tech stack, or how to get in touch.";
+  if (q.includes('location') || q.includes('where'))
+    return "sammamish, wa — pacific time (gmt-7).";
 
-  return `That's a great question. Dhvanit is a backend engineer focused on building reliable, scalable systems. For specifics, the best source is always him directly — hi@dhvanitmonpara.in.`;
-
-  void SYSTEM_CONTEXT; // referenced for future real API integration
+  return "great question. cleo is a high school junior building practical stuff across software, GIS, and engineering. for specifics, reach her directly at cbalaranjith@gmail.com.";
 }

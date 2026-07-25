@@ -3,6 +3,8 @@
   height: 100%;
   overflow: hidden;
   cursor: grab;
+  mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
 }
 
 .circular-gallery:active {

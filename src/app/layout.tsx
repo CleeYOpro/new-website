@@ -4,8 +4,8 @@ import ClickParticles from '@/components/ClickParticles';
 import Navbar from '@/components/Navbar';
 
 export const metadata: Metadata = {
-  title: 'Dhvanit Monpara | Backend Engineer',
-  description: 'Portfolio of Dhvanit Monpara, a backend engineer building systems, projects, and technical write-ups.',
+  title: "Cleo Balaranjith's Website",
+  description: 'Portfolio of Cleo Balaranjith, a high school junior building practical projects and messing around with tech.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -18,6 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
       </head>
       <body>
+        <noscript>You need to enable JavaScript to run this app.</noscript>
         <ClickParticles particleColors={["#D5674F", "#e8896e", "#c04535"]} particleCount={10} velocityMax={2} />
         <div className="site-wrap">
           <Navbar />

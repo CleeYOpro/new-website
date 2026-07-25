@@ -1,54 +1,5 @@
 import CircularGallery from '@/components/CircularGallery';
-
-const techStack = [
-  {
-    category: 'Backend',
-    items: [
-      { name: 'TypeScript', icon: '🟦' },
-      { name: 'Node.js', icon: '🟩' },
-      { name: 'Express', icon: '⚡' },
-      { name: 'Go', icon: '🐹' },
-      { name: 'Socket.io', icon: '🔌' },
-      { name: 'Redis', icon: '🔴' },
-    ],
-  },
-  {
-    category: 'Database',
-    items: [
-      { name: 'PostgreSQL', icon: '🐘' },
-      { name: 'MySQL', icon: '🐬' },
-      { name: 'MongoDB', icon: '🍃' },
-      { name: 'Qdrant', icon: '🔍' },
-      { name: 'Pinecone', icon: '🌲' },
-    ],
-  },
-  {
-    category: 'GenAI',
-    items: [
-      { name: 'LangChain', icon: '🔗' },
-      { name: 'LangGraph', icon: '🕸️' },
-      { name: 'Python', icon: '🐍' },
-      { name: 'Agentic AI', icon: '🤖' },
-    ],
-  },
-  {
-    category: 'Frontend',
-    items: [
-      { name: 'React', icon: '⚛️' },
-      { name: 'Next.js', icon: '▲' },
-      { name: 'WebRTC', icon: '📡' },
-    ],
-  },
-  {
-    category: 'Tools',
-    items: [
-      { name: 'Docker', icon: '🐳' },
-      { name: 'Git', icon: '🌿' },
-      { name: 'Linux', icon: '🐧' },
-      { name: 'Postman', icon: '📮' },
-    ],
-  },
-];
+import KeyboardDemo from '@/components/KeyboardDemo';
 
 const photos = [
   { image: 'https://picsum.photos/seed/dhv1/800/600', text: 'At the office' },
@@ -66,53 +17,44 @@ export default function AboutPage() {
     <>
       <main className="main-content">
         {/* Bio */}
-        <section className="about-hero">
-          <h1 className="hero-name">About me</h1>
-          <div className="about-body">
-            <p>
-              I&apos;m Dhvanit — a backend engineer based in Ahmedabad, India. I spend most of my time
-              thinking about how systems should be designed, and then building them. I care deeply about
-              reliability, performance, and writing code that&apos;s easy to reason about six months later.
-            </p>
-            <p>
-              My work spans event-driven architectures, real-time systems, GenAI pipelines, and CLI tooling.
-              I&apos;ve shipped production backends with WebSockets and LiveKit for sub-200ms messaging,
-              built multi-layer content moderation systems, and scaffolded HRMS platforms from scratch.
-            </p>
-            <p>
-              Outside of work I read about distributed systems, tinker with side projects, and occasionally
-              write about the hard lessons backends teach you — usually involving cache invalidation.
-            </p>
-            <p>
-              Currently interning as a Software Engineer. Previously at TechySquad as a Full Stack Developer.
-              Always building something.
-            </p>
-          </div>
-        </section>
+       <section className="about-hero">
+  <h1 className="hero-name">About me</h1>
 
+  <div className="about-body">
+    <p>
+      I&apos;m Cleo — a high school senior from Seattle building software,
+      exploring maps, and trying to solve problems that actually matter.
+    </p>
+
+    <p>
+      Growing up between India and the United States shaped how I think about
+      technology. I&apos;ve seen how simple tools can make a difference in places
+      where resources, connectivity, and access are limited.
+    </p>
+
+    <p>
+      Most of my work sits somewhere between software engineering, healthcare,
+      education, and geospatial technology. I&apos;ve built offline tools for
+      schools, websites for healthcare organizations, and used satellite data
+      to study disasters.
+    </p>
+
+    <p>
+      Currently exploring computer vision, remote sensing, AI, and full-stack
+      development while balancing Running Start at Bellevue College,
+      leadership, and way too many side projects.
+    </p>
+  </div>
+</section>
         {/* Tech Stack */}
         <section className="section">
           <h2 className="section-title">Tech Stack</h2>
-          <div className="stack-grid">
-            {techStack.map((group) => (
-              <div key={group.category} className="stack-group">
-                <p className="stack-category">{group.category}</p>
-                <div className="stack-items">
-                  {group.items.map((item) => (
-                    <div key={item.name} className="stack-item">
-                      <span className="stack-icon" aria-hidden="true">{item.icon}</span>
-                      <span className="stack-name">{item.name}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
+          <KeyboardDemo />
         </section>
 
         {/* Photo Gallery */}
         <section className="section about-gallery-section">
-          <h2 className="section-title">Photos</h2>
+          <h2 className="section-title">Moments</h2>
           <p className="section-more" style={{ marginTop: 0, marginBottom: 16 }}>
             Scroll or drag to explore.
           </p>

@@ -2,52 +2,128 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
-
-const projects = [
-  { title: 'Flick', description: 'Anonymous campus community for verified college students.', image: '/projects/flick.svg', href: '#' },
-  { title: 'Initex', description: 'CLI for bootstrapping production-ready backend services.', image: '/projects/initex.svg', href: '#' },
-  { title: 'Nestly', description: 'Real-time chat with DMs, channels, and voice/video calls.', image: '/projects/nestly.svg', href: '#' },
-  { title: 'OS-Themed Portfolio', description: 'My personal portfolio, Operating System themed.', image: '/projects/os.svg', href: '#' },
-];
-
-const topics = [
-  { title: 'System Design', tag: 'Hub', description: 'architecture notes, tradeoffs, and backend decisions', href: '#' },
-  { title: 'Distributed Systems', tag: 'Hub', description: 'streams, queues, event flow, and scaling patterns', href: '#' },
-  { title: 'GenAI', tag: 'Hub', description: 'AI-assisted products, workflows, and experiments', href: '#' },
-];
+import { FiArrowUpRight, FiChevronDown, FiGlobe, FiLinkedin, FiCode } from 'react-icons/fi';
+import CardSwap from '@/components/CardSwap';
+import { NotificationCard } from '@/components/NotificationCard';
+import { majorProjects } from '@/lib/projects';
 
 const blogs = [
   { title: "Caching Isn't Hard. Knowing When to Invalidate Is.", date: '2026-07-05', description: "Learned the hard way that Redis isn't the hard part—cache invalidation is. Lessons from building a real-world backend.", href: '#' },
   { title: 'Building a Multi-Layer Content Moderation Pipeline for an Anonymous Platform', date: '2026-06-15', description: 'Building a multi-layer moderation pipeline for an anonymous platform using rules, ML models, caching, and enforcement workflows.', href: '#' },
   { title: 'Designing Real-Time Text Moderation Without Freezing the Browser', date: '2026-05-20', description: 'How I built real-time text moderation for an anonymous platform without freezing the browser or trusting the client.', href: '#' },
 ];
-
 const experience = [
   {
-    company: "Won't tell you :)",
-    location: 'Ahmedabad, India',
-    role: 'Software Engineer Intern',
-    period: 'Apr 2026 - Present',
-    bullets: [],
-    tags: [],
+    company: 'MIT Beaver Works Summer Institute',
+    location: 'Remote',
+    role: 'Remote Sensing for Disaster Response',
+    period: 'Jul 2026 - Present',
+    bullets: [
+      <>Selected for <strong>MIT BWSI Remote Sensing for Disaster Response</strong>, a selective program focused on satellite imagery, GIS, SAR analysis, and disaster response.</>,
+      <>Built hands-on projects using <strong>Google Earth Engine, Sentinel-1 SAR data, and remote sensing workflows</strong> to analyze environmental disasters.</>,
+      <>Learned from MIT instructors and geospatial researchers through technical lectures, projects, and presentations.</>,
+    ],
+    tags: ['Remote Sensing', 'GIS', 'Google Earth Engine', 'SAR', 'Satellite Imagery'],
     website: null,
     linkedin: null,
   },
   {
-    company: 'TechySquad',
-    location: 'Ahmedabad, India',
-    role: 'Full Stack Developer Intern',
-    period: 'Aug 2025 - Jan 2026',
+    company: 'Rove Miles (Y Combinator W24)',
+    location: 'Remote',
+    role: 'Back-End Development Intern',
+    period: 'Oct 2024 - Dec 2024',
     bullets: [
-      <>Built a real-time, event-driven communication platform supporting <strong>direct messaging, channels, presence, typing indicators, and voice/video calls with screen sharing</strong>.</>,
-      <>Implemented <strong>WebSockets and integrated LiveKit</strong> to deliver <strong>sub-200ms latency</strong> for real-time messaging and media streaming.</>,
-      <>Designed and enforced <strong>JWT-based authentication and role-based access control (RBAC)</strong> for a multi-server architecture.</>,
-      <><strong>Dockerized a production application</strong> for a client, enabling reproducible builds and consistent deployment across environments.</>,
-      <>Developed an <strong>internal HRMS</strong> including attendance tracking, shift scheduling, ticketing workflows, audit logs, and RBAC.</>,
+      <>Built a <strong>Python autocomplete system</strong> for over <strong>9,000 airports and cities</strong> used in flight search workflows.</>,
+      <>Optimized large CSV datasets and improved search speed and relevance through backend data processing.</>,
+      <>Collaborated on testing and production deployment for a travel technology platform.</>,
     ],
-    tags: ['Node.js', 'TypeScript', 'PostgreSQL', 'WebSockets', 'LiveKit', 'Express.js', 'Docker'],
-    website: '#',
-    linkedin: '#',
+    tags: ['Python', 'Backend', 'Data Processing', 'Search Systems'],
+    website: null,
+    linkedin: null,
+  },
+  {
+    company: 'Christian Medical College Vellore',
+    location: 'Vellore, Tamil Nadu, India',
+    role: 'Operations Observer',
+    period: 'Aug 2023',
+    bullets: [
+      <>Observed operations at <strong>CMC Vellore, one of Asia's leading hospitals</strong>, working alongside administrative teams.</>,
+      <>Supported front desk operations while communicating across <strong>4+ languages</strong>.</>,
+      <>Visited CHIPS, the hospital's software division responsible for developing and maintaining healthcare systems.</>,
+    ],
+    tags: ['Healthcare', 'Operations', 'Technology'],
+    website: null,
+    linkedin: null,
+  },
+  {
+    company: 'American Rocketry Challenge',
+    location: 'United States',
+    role: 'Rocket Engineer',
+    period: 'Sep 2023 - Mar 2025',
+    bullets: [
+      <>Designed, built, and tested model rockets carrying egg payloads for national competition.</>,
+      <>Qualified for <strong>national finals</strong> with flights reaching 800+ ft while achieving safe payload recovery.</>,
+      <>Used CAD, 3D printing, aerodynamic testing, and recovery system design to improve flight performance.</>,
+    ],
+    tags: ['CAD', '3D Printing', 'Engineering', 'Aerospace'],
+    website: null,
+    linkedin: null,
+  },
+  {
+    company: 'Seattle Sports & Regenerative Medicine',
+    location: 'Seattle, WA',
+    role: 'Business Strategy Analyst',
+    period: 'Oct 2024',
+    bullets: [
+      <>Conducted a <strong>SWOT analysis</strong> of clinic operations and identified growth opportunities.</>,
+      <>Researched healthcare regulations, marketing strategy, SEO, and online presence improvements.</>,
+      <>Presented recommendations directly to clinic leadership.</>,
+    ],
+    tags: ['Strategy', 'Healthcare', 'SEO', 'Business Analysis'],
+    website: null,
+    linkedin: null,
+  },
+];
+
+const education = [
+  {
+    institution: 'Bellevue College',
+    location: 'Bellevue, WA',
+    degree: 'Running Start',
+    period: 'Sep 2025 - Jun 2027',
+    bullets: [
+      <>Completing college-level coursework in <strong>computer science, mathematics, science, and humanities</strong> while earning an associate degree.</>,
+      <>Relevant coursework: <strong>Data Structures, Statistics, Engineering Physics, Geography, and Political Science</strong>.</>,
+    ],
+    tags: ['Computer Science', 'Data Structures', 'Physics', 'GIS'],
+    website: null,
+    linkedin: null,
+  },
+  {
+    institution: 'Eastlake High School',
+    location: 'Sammamish, WA',
+    degree: 'High School Diploma',
+    period: 'Sep 2025 - Jun 2027',
+    bullets: [
+      <>Relevant coursework: <strong>AP Calculus BC, AP Computer Science A, AP Statistics, AP Human Geography, AP Macroeconomics</strong>.</>,
+      <>Activities: <strong>Computer Science Honor Society, Technology Student Association</strong>.</>,
+    ],
+    tags: ['Computer Science', 'Mathematics', 'Engineering'],
+    website: null,
+    linkedin: null,
+  },
+  {
+    institution: 'University of Michigan',
+    location: 'Ann Arbor, MI',
+    degree: 'Joy of Coding Summer Program',
+    period: 'Jun 2024 - Aug 2024',
+    bullets: [
+      <>Developed AI-powered face filters using <strong>Python, OpenCV, and CNNs</strong> for real-time facial landmark detection.</>,
+      <>Built neural networks for image classification and studied model architecture under <strong>Prof. Raj Rao Nadakuditi</strong>.</>,
+    ],
+    tags: ['Python', 'OpenCV', 'Computer Vision', 'Machine Learning'],
+    website: null,
+    linkedin: null,
   },
 ];
 
@@ -80,22 +156,7 @@ function GithubGrid() {
   );
 }
 
-function ArrowUpRight({ size = 13 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <line x1="7" y1="17" x2="17" y2="7" />
-      <polyline points="7 7 17 7 17 17" />
-    </svg>
-  );
-}
 
-function ChevronDown({ size = 12 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <polyline points="6 9 12 15 18 9" />
-    </svg>
-  );
-}
 
 function ExperienceItem({ exp }: { exp: typeof experience[number] }) {
   const [open, setOpen] = useState(false);
@@ -113,7 +174,7 @@ function ExperienceItem({ exp }: { exp: typeof experience[number] }) {
           {hasDetails && (
             <span className="exp-toggle" aria-label="toggle details">
               <span style={{ display: 'inline-flex', transform: open ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 200ms' }}>
-                <ChevronDown size={12} />
+                <FiChevronDown size={12} />
               </span>
             </span>
           )}
@@ -131,8 +192,52 @@ function ExperienceItem({ exp }: { exp: typeof experience[number] }) {
           )}
           {(exp.website || exp.linkedin) && (
             <div className="exp-links">
-              {exp.website && <a href={exp.website} className="exp-link"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> Website</a>}
-              {exp.linkedin && <a href={exp.linkedin} className="exp-link"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> LinkedIn</a>}
+              {exp.website && <a href={exp.website} className="exp-link"><FiGlobe size={13} /> Website</a>}
+              {exp.linkedin && <a href={exp.linkedin} className="exp-link"><FiLinkedin size={13} /> LinkedIn</a>}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function EducationItem({ edu }: { edu: typeof education[number] }) {
+  const [open, setOpen] = useState(false);
+  const hasDetails = edu.bullets.length > 0;
+
+  return (
+    <div className={`exp-item${open ? ' exp-item--open' : ''}`}>
+      <div className="exp-header" onClick={() => hasDetails && setOpen(!open)} style={{ cursor: hasDetails ? 'pointer' : 'default' }}>
+        <div className="exp-header-main">
+          <span className="exp-company">{edu.institution}</span>
+          <span className="exp-role-inline">{edu.degree}</span>
+        </div>
+        <div className="exp-header-right">
+          <span className="exp-period">{edu.period}</span>
+          {hasDetails && (
+            <span className="exp-toggle" aria-label="toggle details">
+              <span style={{ display: 'inline-flex', transform: open ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 200ms' }}>
+                <FiChevronDown size={12} />
+              </span>
+            </span>
+          )}
+        </div>
+      </div>
+      {open && hasDetails && (
+        <div className="exp-details">
+          <ul className="exp-bullets">
+            {edu.bullets.map((b, i) => <li key={i}>{b}</li>)}
+          </ul>
+          {edu.tags.length > 0 && (
+            <div className="exp-tags">
+              {edu.tags.map((t) => <span key={t} className="exp-tag">{t}</span>)}
+            </div>
+          )}
+          {(edu.website || edu.linkedin) && (
+            <div className="exp-links">
+              {edu.website && <a href={edu.website} className="exp-link"><FiGlobe size={13} /> Website</a>}
+              {edu.linkedin && <a href={edu.linkedin} className="exp-link"><FiLinkedin size={13} /> LinkedIn</a>}
             </div>
           )}
         </div>
@@ -146,49 +251,115 @@ export default function HomePage() {
     <main className="main-content">
         {/* Hero */}
         <section className="hero">
-          <h1 className="hero-name">Dhvanit Monpara</h1>
-          <p className="hero-sub">engineer • developer • builder</p>
-          <p className="hero-bio">
-            Hey, I&apos;m Dhvanit — a backend engineer who loves building (and occasionally
-            breaking) things. I work with PERN, Go, and GenAI to ship systems that are fast,
-            reliable, and scalable.
-          </p>
-          <p className="hero-bio">
-            From side projects to real-world backends, I enjoy solving messy problems and
-            making products work.
-          </p>
-          <div className="hero-actions">
-            <a href="#snippets" className="hero-btn hero-btn--snippets">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-              Resume
-              <span className="btn-arrow"><ArrowUpRight size={11} /></span>
-            </a>
-            <a href="#snippets" className="hero-btn hero-btn--snippets">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-              Snippets
-              <span className="btn-arrow"><ArrowUpRight size={11} /></span>
-            </a>
-            <a href="mailto:hi@dhvanitmonpara.in" className="hero-btn hero-btn--snippets">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-              Get in touch
-              <span className="btn-arrow"><ArrowUpRight size={11} /></span>
-            </a>
-          </div>
-        </section>
+  <h1 className="hero-name">Cleo Balaranjith</h1>
+
+  <p className="hero-sub">
+    student • builder • problem solver
+  </p>
+
+  <p className="hero-bio">
+    Hey, I&apos;m Cleo — a high school senior and computer science student
+    building software that solves real-world problems across education,
+    healthcare, and geospatial technology.
+  </p>
+
+  <p className="hero-bio">
+    From offline tools for schools in rural India to satellite imagery projects
+    for disaster response, I like turning messy problems into things people can
+    actually use.
+  </p>
+
+  <div className="hero-actions">
+    <a href="/resume.pdf" className="hero-btn hero-btn--snippets">
+      <FiCode size={13} />
+      Resume
+      <span className="btn-arrow"><FiArrowUpRight size={11} /></span>
+    </a>
+
+    <a href="#projects" className="hero-btn hero-btn--snippets">
+      <FiCode size={13} />
+      Projects
+      <span className="btn-arrow"><FiArrowUpRight size={11} /></span>
+    </a>
+
+    <a href="/contact" className="hero-btn hero-btn--snippets">
+      <FiCode size={13} />
+      Get in touch
+      <span className="btn-arrow"><FiArrowUpRight size={11} /></span>
+    </a>
+  </div>
+</section>
+
+        {/* By The Numbers */}
+        <section className="section">
+  <h2 className="section-title">By the numbers</h2>
+
+  <div style={{ height: '200px', position: 'relative', width: '100%', maxWidth: '550px', margin: '0 auto', marginTop: '2rem', marginBottom: '2rem' }}>
+    <CardSwap
+      cardDistance={0}
+      verticalDistance={15}
+      delay={4000}
+      pauseOnHover={false}
+      width="100%"
+      height="auto"
+      skewAmount={0}
+    >
+      <NotificationCard 
+        appName="rolecaller"
+        title="The Malto People"
+        time="2025-2026"
+        message="2,500+ students supported through offline-first attendance software."
+        badge="2500+"
+      />
+
+      <NotificationCard 
+        appName="MIT BWSI"
+        title="Remote Sensing"
+        time="2026"
+        message="Selected for MIT Beaver Works Summer Institute (~6% acceptance rate)."
+        badge="<6%"
+      />
+
+      <NotificationCard 
+        appName="Technology Student Association"
+        title="Achievements"
+        time="2025-2026"
+        message="2× TSA Nationals | 2nd place in Technology Problem Solving"
+        badge="2x"
+      />
+      <NotificationCard
+  appName="CMC Vellore"
+  title="Healthcare Web"
+  time="2023-2024"
+  message="Built a multilingual hospital website supporting 3M+ annual visitors."
+  badge="3M+"
+/>
+
+<NotificationCard
+  appName="The American Rocketry Challenge"   
+  title=""
+  time="2025"
+  message="Designed rockets reaching 1,057 ft with successful egg payload recovery."  
+  badge="1057"
+/>
+
+    </CardSwap>
+  </div>
+</section>
 
         {/* Projects */}
         <section className="section">
           <h2 className="section-title">Projects</h2>
           <div className="project-grid">
-            {projects.map((p) => (
-              <a key={p.title} href={p.href} className="project-card">
+            {majorProjects.map((p) => (
+              <a key={p.slug} href={`/projects/${p.slug}`} className="project-card">
                 <div className="project-img">
                   <Image src={p.image} alt={p.title} width={300} height={180} className="proj-image" />
                 </div>
                 <div className="project-body">
                   <h3 className="project-title">
                     {p.title}
-                    <span className="link-arrow"><ArrowUpRight size={12} /></span>
+                    <span className="link-arrow"><FiArrowUpRight size={12} /></span>
                   </h3>
                   <p className="project-desc">{p.description}</p>
                 </div>
@@ -196,7 +367,7 @@ export default function HomePage() {
             ))}
           </div>
           <p className="section-more">
-            Want to see more? <a href="#" className="accent-link">Check them out.</a>
+            Want to see more? <a href="/projects" className="accent-link">Check them out.</a>
           </p>
         </section>
 
@@ -206,6 +377,16 @@ export default function HomePage() {
           <div className="exp-list">
             {experience.map((exp) => (
               <ExperienceItem key={exp.company} exp={exp} />
+            ))}
+          </div>
+        </section>
+
+        {/* Education */}
+        <section className="section">
+          <h2 className="section-title">Education</h2>
+          <div className="exp-list">
+            {education.map((edu) => (
+              <EducationItem key={edu.institution} edu={edu} />
             ))}
           </div>
         </section>
@@ -220,7 +401,7 @@ export default function HomePage() {
                 <div className="blog-main">
                   <a href={b.href} className="blog-title">
                     {b.title}
-                    <span className="link-arrow"><ArrowUpRight size={12} /></span>
+                    <span className="link-arrow"><FiArrowUpRight size={12} /></span>
                   </a>
                   <p className="blog-desc">{b.description}</p>
                 </div>
