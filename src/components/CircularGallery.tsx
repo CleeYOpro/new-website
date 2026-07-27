@@ -16,15 +16,6 @@ function lerp(p1: number, p2: number, t: number) {
   return p1 + (p2 - p1) * t;
 }
 
-function autoBind(instance: object) {
-  const proto = Object.getPrototypeOf(instance);
-  Object.getOwnPropertyNames(proto).forEach(key => {
-    if (key !== 'constructor' && typeof (instance as Record<string, unknown>)[key] === 'function') {
-      (instance as Record<string, unknown>)[key] = ((instance as Record<string, unknown>)[key] as (...a: unknown[]) => unknown).bind(instance);
-    }
-  });
-}
-
 const DEFAULT_FONT = 'bold 30px Figtree';
 const DEFAULT_FONT_URL = 'https://fonts.googleapis.com/css2?family=Figtree:wght@400;700&display=swap';
 
@@ -244,7 +235,6 @@ class Media {
     img.onload = () => {
       texture.image = img;
       this.program.uniforms.uImageSizes.value = [img.naturalWidth, img.naturalHeight];
-      window.dispatchEvent(new CustomEvent('gallery-image-loaded'));
     };
   }
 
@@ -292,14 +282,13 @@ class Media {
     if (screen) this.screen = screen;
     if (viewport) this.viewport = viewport;
     this.scale = this.screen.height / 1500;
-    this.plane.scale.y = (this.viewport.height * (900 * this.scale)) / this.screen.height;
-    
-    let aspect = 700 / 900;
-    if (this.program.uniforms.uImageSizes.value[0] > 0 && this.program.uniforms.uImageSizes.value[1] > 0) {
-      aspect = this.program.uniforms.uImageSizes.value[0] / this.program.uniforms.uImageSizes.value[1];
-    }
-    this.plane.scale.x = this.plane.scale.y * aspect;
+    this.plane.scale.y = (this.viewport.height * (620 * this.scale)) / this.screen.height;
+    this.plane.scale.x = (this.viewport.width * (482 * this.scale)) / this.screen.width;
     this.program.uniforms.uPlaneSizes.value = [(this.plane.scale as unknown as { x: number }).x, (this.plane.scale as unknown as { y: number }).y];
+    this.padding = 2;
+    this.width = (this.plane.scale as unknown as { x: number }).x + this.padding;
+    this.widthTotal = this.width * this.length;
+    this.x = this.width * this.index;
   }
 }
 
@@ -331,12 +320,10 @@ class App {
   isDown = false;
   start = 0;
   boundOnResize!: () => void;
-  boundOnWheel!: (e: WheelEvent) => void;
   boundOnTouchDown!: (e: MouseEvent | TouchEvent) => void;
   boundOnTouchMove!: (e: MouseEvent | TouchEvent) => void;
   boundOnTouchUp!: () => void;
   boundOnKeyDown!: (e: KeyboardEvent) => void;
-  boundOnImageLoad!: () => void;
 
   constructor(container: HTMLElement, { items, bend, textColor = '#ffffff', borderRadius = 0, font = 'bold 30px Figtree', scrollSpeed = 2, scrollEase = 0.05 }: AppOptions) {
     this.container = container;
@@ -404,12 +391,6 @@ class App {
 
   onTouchUp() { this.isDown = false; this.onCheck(); }
 
-  onWheel(e: WheelEvent) {
-    const delta = e.deltaY;
-    this.scroll.target += (delta > 0 ? this.scrollSpeed : -this.scrollSpeed) * 0.2;
-    this.onCheckDebounce();
-  }
-
   onKeyDown(e: KeyboardEvent) {
     if (e.key === 'ArrowRight') { e.preventDefault(); this.scroll.target += this.scrollSpeed * 5; this.onCheckDebounce(); }
     else if (e.key === 'ArrowLeft') { e.preventDefault(); this.scroll.target -= this.scrollSpeed * 5; this.onCheckDebounce(); }
@@ -429,21 +410,6 @@ class App {
     this.scroll.target = closestMedia.x - closestMedia.extra;
   }
 
-  updateLayout() {
-    if (!this.medias) return;
-    let currentX = 0;
-    this.medias.forEach(m => {
-      m.padding = 2;
-      m.width = (m.plane.scale as unknown as { x: number }).x + m.padding;
-      m.x = currentX;
-      currentX += m.width;
-    });
-    const totalWidth = currentX;
-    this.medias.forEach(m => {
-      m.widthTotal = totalWidth;
-    });
-  }
-
   onResize() {
     this.screen = { width: this.container.clientWidth, height: this.container.clientHeight };
     this.renderer.setSize(this.screen.width, this.screen.height);
@@ -453,7 +419,6 @@ class App {
     const width = height * this.camera.aspect;
     this.viewport = { width, height };
     this.medias?.forEach(m => m.onResize({ screen: this.screen, viewport: this.viewport }));
-    this.updateLayout();
   }
 
   update() {
@@ -467,35 +432,29 @@ class App {
 
   addEventListeners() {
     this.boundOnResize = this.onResize.bind(this);
-    this.boundOnWheel = this.onWheel.bind(this);
     this.boundOnTouchDown = this.onTouchDown.bind(this);
     this.boundOnTouchMove = this.onTouchMove.bind(this);
     this.boundOnTouchUp = this.onTouchUp.bind(this);
     this.boundOnKeyDown = this.onKeyDown.bind(this);
-    this.boundOnImageLoad = this.onResize.bind(this);
     window.addEventListener('resize', this.boundOnResize);
-    window.addEventListener('wheel', this.boundOnWheel);
     window.addEventListener('mousedown', this.boundOnTouchDown as EventListener);
     window.addEventListener('mousemove', this.boundOnTouchMove as EventListener);
     window.addEventListener('mouseup', this.boundOnTouchUp);
     window.addEventListener('touchstart', this.boundOnTouchDown as EventListener);
     window.addEventListener('touchmove', this.boundOnTouchMove as EventListener);
     window.addEventListener('touchend', this.boundOnTouchUp);
-    window.addEventListener('gallery-image-loaded', this.boundOnImageLoad);
     this.container.addEventListener('keydown', this.boundOnKeyDown);
   }
 
   destroy() {
     window.cancelAnimationFrame(this.raf);
     window.removeEventListener('resize', this.boundOnResize);
-    window.removeEventListener('wheel', this.boundOnWheel);
     window.removeEventListener('mousedown', this.boundOnTouchDown as EventListener);
     window.removeEventListener('mousemove', this.boundOnTouchMove as EventListener);
     window.removeEventListener('mouseup', this.boundOnTouchUp);
     window.removeEventListener('touchstart', this.boundOnTouchDown as EventListener);
     window.removeEventListener('touchmove', this.boundOnTouchMove as EventListener);
     window.removeEventListener('touchend', this.boundOnTouchUp);
-    window.removeEventListener('gallery-image-loaded', this.boundOnImageLoad);
     if (this.renderer?.gl?.canvas?.parentNode) {
       this.renderer.gl.canvas.parentNode.removeChild(this.renderer.gl.canvas);
     }

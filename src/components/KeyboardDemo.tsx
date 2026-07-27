@@ -1,40 +1,169 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
+import type { IconType } from 'react-icons';
+import { TbBrandAdobeIllustrator } from 'react-icons/tb';
+import { FaJava } from "react-icons/fa";
 
+import {
+  SiArduino,
+  SiGnubash,
+  SiC,
+  SiDrizzle,
+  SiEclipseide,
+  SiFigma,
+  SiGit,
+  SiHtml5,
+  SiKaggle,
+  SiCss,
+  SiMongodb,
+  SiNodedotjs,
+  SiJavascript,
+  SiPython,
+  SiTailwindcss,
+  SiReact,
+  SiSupabase,
+  SiTypescript,
+  SiShadcnui,
+  SiVercel,
+  SiExpo,
+  SiYarn,
+  SiFlask,
+  SiPrisma,
+  SiNumpy,
+  SiPandas,
+SiJupyter,
+  SiAnaconda,
+ SiNetlify,
+  SiCloudflare,
+  SiGithub,
+  SiGoogleearthengine,
+  SiArcgis,
+  SiGeopandas,
+  SiPytorch,
+  SiPostman,
+  SiGooglegemini,
+  SiGooglecloud,
+  SiClaudecode,
+  SiNextdotjs,
+} from 'react-icons/si';
+import { FaReact } from "react-icons/fa";
+import { SiSqlite } from "react-icons/si";
+import { SiNpm } from "react-icons/si";
+import { VscVscode } from "react-icons/vsc";
+import { BiLogoFirebase } from "react-icons/bi";
+import { VscMcp } from "react-icons/vsc";
+
+import { VscAzure } from "react-icons/vsc";
 interface TechItem {
   name: string;
   desc: string;
-  slug: string;
+  icon: IconType;
 }
 
 const techStack: Record<string, TechItem> = {
-  a: { name: 'Arduino', desc: 'Electronics platform', slug: 'arduino' },
-  b: { name: 'Bash', desc: 'Shell scripting', slug: 'gnubash' },
-  c: { name: 'C', desc: 'Systems language', slug: 'c' },
-  d: { name: 'Drizzle', desc: 'Type-safe ORM', slug: 'drizzle' },
-  e: { name: 'Eclipse', desc: 'Java IDE', slug: 'eclipseide' },
-  f: { name: 'Figma', desc: 'Design tool', slug: 'figma' },
-  g: { name: 'Git', desc: 'Version control', slug: 'git' },
-  h: { name: 'HTML5', desc: 'Web markup', slug: 'html5' },
-  i: { name: 'Illustrator', desc: 'Vector design', slug: 'adobeillustrator' },
-  j: { name: 'Java', desc: 'Programming language', slug: 'java' },
-  k: { name: 'Kaggle', desc: 'Data science platform', slug: 'kaggle' },
-  l: { name: 'Linux', desc: 'Operating system', slug: 'linux' },
-  m: { name: 'MongoDB', desc: 'NoSQL database', slug: 'mongodb' },
-  n: { name: 'Node.js', desc: 'JS runtime', slug: 'nodedotjs' },
-  o: { name: 'OpenAI', desc: 'AI models', slug: 'openai' },
-  p: { name: 'Python', desc: 'Programming language', slug: 'python' },
-  q: { name: 'Qdrant', desc: 'Vector database', slug: 'qdrant' },
-  r: { name: 'React', desc: 'UI library', slug: 'react' },
-  s: { name: 'Supabase', desc: 'Backend platform', slug: 'supabase' },
-  t: { name: 'TypeScript', desc: 'Typed JavaScript', slug: 'typescript' },
-  u: { name: 'Ubuntu', desc: 'Linux distro', slug: 'ubuntu' },
-  v: { name: 'Vercel', desc: 'Deployment platform', slug: 'vercel' },
-  w: { name: 'Webpack', desc: 'Module bundler', slug: 'webpack' },
-  x: { name: 'Xcode', desc: 'Apple IDE', slug: 'xcode' },
-  y: { name: 'Yarn', desc: 'Package manager', slug: 'yarn' },
-  z: { name: 'Zod', desc: 'Schema validation', slug: 'zod' },
+  a: { name: 'Arduino', desc: 'Open-source electronics platform for building embedded systems, sensors, and hardware prototypes', icon: SiArduino },
+  b: { name: 'Bash', desc: 'Command-line shell used for automation, scripting, and managing development environments', icon: SiGnubash },
+  c: { name: 'C', desc: 'Low-level programming language used for systems programming and embedded development', icon: SiC },
+  d: { name: 'Drizzle', desc: 'Type-safe SQL ORM for building efficient and maintainable database applications', icon: SiDrizzle },
+  e: { name: 'Eclipse', desc: 'Integrated development environment commonly used for Java application development', icon: SiEclipseide },
+  f: { name: 'Figma', desc: 'Collaborative UI/UX design tool for creating interfaces, prototypes, and design systems', icon: SiFigma },
+  g: { name: 'GitHub', desc: 'Web-based platform for version control and collaborative software development', icon: SiGithub },
+  h: { name: 'HTML5', desc: 'Modern markup language for structuring websites and web applications', icon: SiHtml5 },
+  i: { name: 'Adobe Illustrator', desc: 'Vector graphics design software for creating logos, illustrations, and visual assets', icon: TbBrandAdobeIllustrator },
+  j: { name: 'Java', desc: 'Object-oriented programming language used for applications, backend systems, and coursework', icon: FaJava },
+  k: { name: 'Kaggle', desc: 'Data science platform for machine learning competitions, datasets, and experimentation', icon: SiKaggle },
+  l: { name: 'CSS3', desc: 'Styling language used to create responsive layouts, animations, and modern web designs', icon: SiCss },
+  m: { name: 'MongoDB', desc: 'NoSQL database for storing flexible document-based application data', icon: SiMongodb },
+  n: { name: 'Node.js', desc: 'JavaScript runtime for building scalable backend services, APIs, and server applications', icon: SiNodedotjs },
+  o: { name: 'JavaScript', desc: 'Programming language powering interactive web applications and modern frontend development', icon: SiJavascript },
+  p: { name: 'Python', desc: 'Versatile programming language used for automation, data science, AI, and backend development', icon: SiPython },
+  q: { name: 'Tailwind CSS', desc: 'Utility-first CSS framework for rapidly building responsive and customizable interfaces', icon: SiTailwindcss },
+  r: { name: 'React', desc: 'Frontend library for building reusable components and interactive user interfaces', icon: FaReact },
+  s: { name: 'Supabase', desc: 'Open-source backend platform providing databases, authentication, storage, and APIs', icon: SiSupabase },
+  t: { name: 'TypeScript', desc: 'Strongly typed JavaScript language for building safer and more maintainable applications', icon: SiTypescript },
+  u: { name: 'shadcn/ui', desc: 'Reusable React component library for creating accessible and customizable interfaces', icon: SiShadcnui },
+  v: { name: 'Vercel', desc: 'Cloud platform for deploying, hosting, and scaling modern web applications', icon: SiVercel },
+  w: { name: 'Prisma', desc: 'Type-safe ORM for interacting with databases and managing application data models', icon: SiPrisma },
+  x: { name: 'Expo', desc: 'React Native development platform for building and deploying cross-platform mobile apps', icon: SiExpo },
+  y: { name: 'Yarn', desc: 'Package manager for installing dependencies and managing JavaScript projects', icon: SiYarn },
+  z: { name: 'Flask', desc: 'Lightweight Python web framework for building APIs and backend applications', icon: SiFlask },
+
+  0: { name: 'SQLite', desc: 'Lightweight relational database used for local storage and embedded applications', icon: SiSqlite },
+  1: { name: 'NPM', desc: 'JavaScript package manager for managing dependencies and project tooling', icon: SiNpm },
+  2: { name: 'NumPy', desc: 'Python library for numerical computing, arrays, and scientific calculations', icon: SiNumpy },
+  3: { name: 'Pandas', desc: 'Python library for data manipulation, analysis, and working with datasets', icon: SiPandas },
+  4: { name: 'Jupyter', desc: 'Interactive notebook environment for data analysis, visualization, and experimentation', icon: SiJupyter },
+  5: { name: 'Anaconda', desc: 'Python distribution platform for managing environments and data science packages', icon: SiAnaconda },
+  7: { name: 'Visual Studio Code', desc: 'Extensible code editor used for software development, debugging, and project management', icon: VscVscode },
+  8: { name: 'Netlify', desc: 'Cloud platform for deploying frontend websites and managing continuous deployments', icon: SiNetlify },
+  9: { name: 'Cloudflare', desc: 'Web infrastructure platform providing DNS, security, caching, and edge services', icon: SiCloudflare },
+  6: { name: 'Firebase', desc: 'Backend-as-a-Service platform for building mobile and web applications', icon: BiLogoFirebase },
+  '=': { 
+  name: 'Microsoft Azure', 
+  desc: 'Cloud computing platform for deploying applications, managing infrastructure, and building scalable services', 
+  icon: VscAzure 
+},
+'-': { 
+  name: 'Google Earth Engine', 
+  desc: 'Cloud-based geospatial platform for analyzing satellite imagery, remote sensing data, and large-scale environmental datasets',
+  icon: SiGoogleearthengine
+},
+
+'`': { 
+  name: 'ArcGIS', 
+  desc: 'Geographic information system for spatial analysis, mapping, visualization, and managing geospatial data',
+  icon: SiArcgis
+},
+
+',': { 
+  name: 'GeoPandas', 
+  desc: 'Python library for working with geospatial vector data using pandas-based data analysis workflows',
+  icon: SiGeopandas
+},
+
+';': { 
+  name: 'PyTorch', 
+  desc: 'Deep learning framework used for building neural networks, machine learning models, and AI research',
+  icon: SiPytorch
+},
+
+'[': { 
+  name: 'REST APIs', 
+  desc: 'Web architecture for building and connecting applications through HTTP-based data communication',
+  icon: SiPostman
+},
+
+']': { 
+  name: 'Google Gemini API', 
+  desc: 'Generative AI platform for integrating multimodal AI capabilities and intelligent features into applications',
+  icon: SiGooglegemini
+},
+
+'\\': { 
+  name: 'Google Cloud', 
+  desc: 'Cloud computing platform for deploying applications, processing data, and running scalable infrastructure',
+  icon: SiGooglecloud
+},
+
+'\'': { 
+  name: 'Claude Code', 
+  desc: 'AI-powered coding assistant for software development, debugging, and improving developer workflows',
+  icon: SiClaudecode
+},
+
+'.': { 
+  name: 'Next.js', 
+  desc: 'React framework for building full-stack web applications with server rendering and optimized performance',
+  icon: SiNextdotjs
+},
+
+'/': { 
+  name: 'MCP', 
+  desc: 'Model Context Protocol for connecting AI models with external tools, data sources, and applications',
+  icon: VscMcp
+},
+
 };
 
 const keyRows = [
@@ -150,15 +279,9 @@ function getKeyIdentifier(event: KeyboardEvent) {
   }
 }
 
-function iconUrl(slug: string) {
-  return `https://cdn.simpleicons.org/${slug}`;
-}
-
 export default function KeyboardDemo() {
   const [activeKeys, setActiveKeys] = useState<string[]>([]);
   const [displayKey, setDisplayKey] = useState<string | null>(null);
-  const [loadedIcons, setLoadedIcons] = useState<Record<string, boolean>>({});
-  const [erroredIcons, setErroredIcons] = useState<Record<string, boolean>>({});
   const clickTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -221,8 +344,7 @@ export default function KeyboardDemo() {
               const isPressed = activeKeys.includes(keyName) || (keyId && activeKeys.includes(keyId));
               const tech = techStack[keyName];
               const hasIcon = !!tech;
-              const iconLoaded = loadedIcons[keyName];
-              const iconErrored = erroredIcons[keyName];
+              const Icon = tech?.icon;
 
               return (
                 <kbd
@@ -237,21 +359,7 @@ export default function KeyboardDemo() {
                   onClick={() => handleKeyActivate(keyName)}
                   onKeyDown={(e) => handleKeyDown(e, keyName)}
                 >
-                  {hasIcon && (
-                    <>
-                      <img
-                        src={iconUrl(tech.slug)}
-                        alt={tech.name}
-                        className="key-icon"
-                        loading="lazy"
-                        onLoad={() => setLoadedIcons((prev) => ({ ...prev, [keyName]: true }))}
-                        onError={() => setErroredIcons((prev) => ({ ...prev, [keyName]: true }))}
-                      />
-                      {(!iconLoaded || iconErrored) && (
-                        <span className="key-fallback">{keyName}</span>
-                      )}
-                    </>
-                  )}
+                  {Icon && <Icon className="key-icon" aria-hidden="true" />}
                 </kbd>
               );
             })}

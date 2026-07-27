@@ -56,7 +56,7 @@ export default function AboutPage() {
         <section className="section about-gallery-section">
           <h2 className="section-title">Moments</h2>
           <p className="section-more" style={{ marginTop: 0, marginBottom: 16 }}>
-            Scroll or drag to explore.
+            Drag to explore.
           </p>
           <div className="about-gallery-wrap">
             <CircularGallery
