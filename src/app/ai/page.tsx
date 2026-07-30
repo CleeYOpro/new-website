@@ -104,11 +104,6 @@ export default function AiPage() {
       <p className="ai-disclaimer">
         AI can make mistakes. Double-check anything important.
       </p>
-
-      <footer className="site-footer" style={{ marginTop: 32 }}>
-        <span>cleof.us · Cleo Balaranjith</span>
-        <span>Sammamish, WA · GMT-7</span>
-      </footer>
     </main>
   );
 }

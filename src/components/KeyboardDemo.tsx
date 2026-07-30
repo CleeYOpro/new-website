@@ -373,7 +373,7 @@ export default function KeyboardDemo() {
             <span>{activeTech.desc}</span>
           </>
         ) : (
-          <span className="keyboard-info-hint">Press or click a key</span>
+          <span className="keyboard-info-hint">type away!</span>
         )}
       </div>
     </div>

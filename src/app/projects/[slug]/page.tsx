@@ -3,6 +3,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import { projects, getProject } from '@/lib/projects';
 import ProjectToc, { TocHeading } from '@/components/ProjectToc';
+import ProjectGallery from '@/components/ProjectGallery';
 
 export async function generateStaticParams() {
   return projects.map((p) => ({ slug: p.slug }));
@@ -92,6 +93,22 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
           <p className="project-detail-desc">{project.description}</p>
         </header>
 
+        {project.pdf && (
+          <div className="project-detail-pdf">
+            <object data={project.pdf.src} type="application/pdf" aria-label={project.pdf.title}>
+              <p>
+                <a href={project.pdf.src} target="_blank" rel="noopener noreferrer">
+                  View {project.pdf.title} (PDF)
+                </a>
+              </p>
+            </object>
+            <a href={project.pdf.src} target="_blank" rel="noopener noreferrer" className="project-detail-pdf-link">
+              <ExternalLinkIcon size={13} />
+              Open {project.pdf.title} in a new tab
+            </a>
+          </div>
+        )}
+
         <div className="project-detail-meta">
           <div className="project-detail-badges">
             {project.tags.map((tag) => (
@@ -125,6 +142,10 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
             )}
           </div>
         </div>
+
+        {project.images && project.images.length > 0 && (
+          <ProjectGallery images={project.images} title={project.title} />
+        )}
 
         <article className="project-prose">
           <section id="overview" className="project-section">

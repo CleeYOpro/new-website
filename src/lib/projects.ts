@@ -8,7 +8,9 @@ export type Project = {
   live?: string;
   label?: string;
   youtube?: string;
+  pdf?: { src: string; title: string };
   image: string;
+  images?: string[];
   overview: string;
   problem?: string;
   constraints?: string[];
@@ -20,47 +22,66 @@ export type Project = {
 export const projects: Project[] = [
   {
     slug: 'rolecaller',
-    title: 'RoleCaller',
+    title: 'rolecaller',
     section: 'major',
     description:
-      'Offline-first attendance platform built for tribal schools in rural India, helping over 2,500 students stay connected to their education.',
-    tags: ['Python', 'SQLite', 'Offline-First', 'Education', 'React'],
-    github: 'https://github.com/CleeYOpro/rolecaller',
+      'An offline-first attendance and data platform built for teachers in Malto tribal community schools in Jharkhand, India — making student attendance visible where paper records and unreliable connectivity fail.',
+    tags: ['React Native', 'Expo', 'TypeScript', 'SQLite', 'PostgreSQL', 'Drizzle ORM', 'Offline-First'],
+    github: 'https://github.com/CleeYOpro/rolecaller-app',
+    live: 'https://rolecaller.vercel.app/',
     image: '/projects/rolecaller.svg',
+    images: [
+      '/projects/images/rolecaller/rolecallermain.png',
+      '/projects/images/rolecaller/phone.png',
+      '/projects/images/rolecaller/rolecaller.png',
+    ],
     overview:
-      'RoleCaller is an offline-first attendance management system designed specifically for tribal schools in rural India where internet connectivity is unreliable or completely absent. The platform enables teachers to record attendance, generate reports, and sync data whenever connectivity is available — ensuring 2,500+ students stay connected to their educational records without interruptions.',
+      "RoleCaller is a resilient, offline-first attendance and data platform built for the Malto community's tribal schools in the remote hills of Jharkhand, India. Geography, language barriers, and thin infrastructure have historically cut these schools off from consistent educational support — internet connectivity is a luxury and electricity is sporadic, so tools built for a connected world simply don't run there.\n\nThe project started from a personal visit, not a spec sheet. After spending time with the Malto community in 2023 and seeing the gaps firsthand, I realized that remembering what I'd seen was passive — it changed nothing on its own. A conversation with my father, gently pushing on what I actually planned to do about it, turned that awareness into RoleCaller: a tool that lets teachers capture attendance data on a device that already assumes the network doesn't exist, and treats connectivity as a bonus rather than a requirement.",
     problem:
-      'Tribal schools in rural India frequently lack reliable internet connectivity. Traditional attendance systems that depend on cloud connectivity fail entirely in these environments, leaving teachers with paper-based processes that are error-prone, time-consuming, and difficult to aggregate for reporting.',
+      "Without a reliable way to record attendance, a student's absence becomes invisible. Kids in these communities often walk dangerous paths for hours to reach school, and miss days for family obligations, illness, or seasonal work — but with attendance scattered across paper registers, no one can see the pattern until a child has effectively dropped out. The instability is systemic, not a motivation problem, but there was no data trail to prove it, intervene early, or make the case for scholarships and continued schooling.\n\nCommunity leaders were also explicit about what the tool could not become: 'We do not want to become the police.' Any system that turned attendance tracking into surveillance or an imposition of outside productivity norms would undermine the trust it depended on.",
     constraints: [
-      'Must work completely offline — no network dependency for core workflows.',
-      'Low-spec hardware in schools — must be lightweight and fast.',
-      'Minimal training time for teachers — simple, intuitive UI.',
-      'Data integrity during sync — no duplicates or lost records when connectivity resumes.',
+      'Must run fully offline — teachers may go days without a signal, and the app cannot depend on a live connection for any core workflow.',
+      'Targets low-end, sub-$100 Android devices with sporadic electricity — no heavy runtime or background overhead.',
+      'Teachers may sync at most once a day — when a connection does appear, sync must be fast, safe, and never lose a day\'s work.',
+      'Must support educator judgment, not enforce compliance — visibility for teachers and coordinators, not surveillance of students or staff.',
     ],
     decisions: [
       {
-        title: 'SQLite as local storage',
-        body: 'All attendance data is stored locally in SQLite, providing a full relational database with zero external dependencies.',
-        reason: 'SQLite is zero-config, runs entirely in-process, and handles concurrent reads well on low-spec hardware.',
-        tradeoff: 'Syncing SQLite across multiple devices requires careful conflict resolution logic.',
+        title: 'Local-first SQLite with a custom "Pulse" sync engine',
+        body: "Each teacher's device treats its local Expo SQLite database as the single source of truth. A custom sync engine watches for a stable network connection, then pushes unsynced attendance records to a Node.js API backed by Postgres (Neon), and pulls fresh roster data back down. Pushed records aren't marked as synced locally until the server confirms a 200 OK, and the API upserts on conflict — so a crash mid-sync or a duplicated request never corrupts or loses data. Pulling roster updates does a 'smart wipe' that refreshes students and classes while strictly preserving any attendance a teacher hasn't synced yet.",
+        reason: 'Teachers can\'t be blocked by the network, and a rare, unreliable connection window is the only chance to sync — so every push has to be atomic and every pull has to protect work already sitting on the device.',
+        tradeoff: 'The push/pull protocol and smart-rehydration logic are more code to maintain than a naive "just sync everything" approach, but a naive approach risks silently dropping a day of attendance.',
       },
       {
-        title: 'Sync-on-connect architecture',
-        body: 'The app detects network availability and queues sync jobs that push local changes and pull remote updates when online.',
-        reason: 'Users should never be blocked by the network. All actions queue locally and sync opportunistically.',
-        tradeoff: 'Conflict resolution is complex when multiple teachers edit the same student record offline.',
+        title: 'UUID v4 identifiers across every entity',
+        body: 'Schools, classes, students, and attendance records all use UUID v4 primary keys, generated on-device at creation time rather than assigned by a central server.',
+        reason: 'A device with no connectivity still needs to create valid, permanent records for new students or classes. UUIDs let it do that without ever asking a server for the next ID, and they slot into Postgres later without collisions.',
+        tradeoff: 'UUIDs are larger and less human-readable than auto-incrementing integers, and require care in the schema and API layer to index and join efficiently.',
+      },
+      {
+        title: 'Raw Node.js HTTP API with Drizzle ORM over Neon Postgres',
+        body: 'The backend skips Express/NestJS in favor of a raw Node.js HTTP server with a shared connection pool, and uses Drizzle ORM to generate type-safe SQL with effectively zero runtime overhead.',
+        reason: 'Sync bursts from many devices reconnecting at once need to be handled quickly on modest server hardware — minimizing framework overhead and cold starts matters more here than developer convenience.',
+        tradeoff: 'Losing framework conveniences (routing, middleware, validation) means more boilerplate has to be written and maintained by hand.',
+      },
+      {
+        title: 'Offline-capable authentication',
+        body: 'Online logins authenticate against the API and cache a hashed "session snapshot" locally. If a teacher opens the app with no signal, RoleCaller falls back to verifying credentials against that cached, hashed record instead of failing closed.',
+        reason: 'A teacher who hikes to a remote school needs to log in and keep working for days without ever seeing a signal tower — an app that requires a live login check would be unusable there.',
+        tradeoff: 'Caching credentials on-device, even hashed, expands the local attack surface and requires careful handling compared to a stateless, always-online auth flow.',
       },
     ],
     results: [
-      'Deployed across tribal schools supporting 2,500+ students.',
-      'Reduced average attendance recording time by ~70% vs. paper-based methods.',
-      'Zero data loss incidents during offline-to-online sync transitions.',
-      'Adopted by school coordinators with minimal training required.',
+      'Received board approval from FMPB in January 2026 to begin deployment across Malto community schools.',
+      'Rollout is deliberately staged — starting with RCPSC and smaller schools before scaling to larger centers, to build trust before expanding.',
+      'Built a working local-first architecture (SQLite edge, Postgres core, custom sync engine) that lets a teacher record attendance for days with zero connectivity and sync losslessly on reconnect.',
+      'Designed alongside community leaders to keep the tool supportive rather than coercive, in line with explicit feedback against a "policing" framing.',
     ],
     takeaways: [
-      'Offline-first design is not just a feature — it is the foundation when connectivity cannot be assumed.',
-      'Simple UX is critical when users have limited tech familiarity.',
-      'SQLite is underrated for local-first apps — it is powerful and reliable.',
+      'Awareness by itself changes nothing — the harder, more useful step is turning what you\'ve seen into something concrete and usable.',
+      'Respecting a community\'s values (no surveillance, no imposed productivity norms) is as much a design constraint as any technical one.',
+      'Offline-first has to be a first-class assumption in every layer — IDs, auth, and sync all break if you bolt it on after the fact instead of designing for a missing network from the start.',
+      'A cautious, staged rollout (small schools first) is often the right call for tools that affect real communities, even when the temptation is to scale immediately.',
     ],
   },
   {
@@ -106,36 +127,61 @@ export const projects: Project[] = [
     title: 'Fault Lines & Front Lines',
     section: 'major',
     description:
-      'Used GIS, Python, and spatial analysis to map earthquake risk and support emergency planning across Seattle.',
+      "A TSA Geospatial Technology portfolio mapping King County's seismic risk — fault lines, liquefaction zones, unreinforced masonry buildings, and emergency infrastructure — to predict earthquake impact and guide disaster planning for Seattle. 1st Place at the WTSA State Conference; competed at TSA Nationals in Nashville.",
     tags: ['Python', 'GIS', 'ArcGIS', 'Spatial Analysis', 'Disaster Response'],
+    github: 'https://github.com/CleeYOpro/seattle_fault_project',
+    label: '1st Place — WTSA State Conference · TSA Nationals',
+    pdf: {
+      src: '/projects/images/seattle-earthquake-gis/geospatial-technology-2025-portfolio.pdf',
+      title: 'Geospatial Technology 2025 Portfolio',
+    },
     image: '/projects/gis.svg',
+    images: [
+      '/projects/images/seattle-earthquake-gis/wtsa-state-1st-place.png',
+      '/projects/images/seattle-earthquake-gis/analysis-mmi-aftershocks.png',
+      '/projects/images/seattle-earthquake-gis/analysis-aftershock-intensity.png',
+    ],
     overview:
-      "A geospatial analysis project mapping Seattle's seismic risk using GIS and Python. The project combines fault line data, soil liquefaction risk zones, infrastructure vulnerability maps, and population density to identify the highest-risk areas for earthquake impact and optimize evacuation and emergency response planning.",
+      "Fault Lines & Front Lines is a geospatial analysis portfolio built for TSA's (Technology Student Association) Geospatial Technology event, whose 2024–2025 theme asked teams to identify a disaster threat facing their community. Our team (King County, Washington) focused on seismic risk: King County sits in the Pacific Ring of Fire, within the Puget Sound region, either near or on top of several faults — the Seattle Fault, the Tacoma Fault, and the Cascadia Subduction Zone — and is flanked by active volcanoes like Mount Rainier and Mount Baker. The 2001 magnitude-6.8 Nisqually earthquake is the most recent reminder of that exposure.\n\nWe pulled fault line, liquefaction, floodplain, bridge-condition, unreinforced masonry building, and emergency-services data from sources like the USGS Earthquake Catalog, King County GIS Open Data, Seattle GeoData, and Esri's federal fault datasets, then combined and overlaid it in eight analysis maps to identify Seattle's highest-risk zones and inform evacuation and shelter-in-place guidance.",
     problem:
-      "Seattle sits on multiple active fault systems, yet much of the city's emergency planning uses coarse-grained risk assessments. This project aimed to build a granular, data-driven seismic risk model that could directly inform emergency planning decisions.",
+      "Seattle is the most populous city in Washington, and its residents face outsized risk in a major earthquake: dense downtown neighborhoods sit close to the Seattle Fault, over a thousand unreinforced masonry (URM) buildings predate 1945 and were never secured to code, and roughly 2,000 miles of underground wastewater pipeline crisscross known fault zones. Emergency planning needed a way to see where fault activity, unstable soil, vulnerable buildings, and critical infrastructure actually overlap — not just where earthquakes have historically been recorded.",
     constraints: [
-      'Data from multiple public sources with inconsistent coordinate reference systems.',
-      'Must produce actionable outputs — not just visualizations, but prioritized risk rankings.',
-      'Reproducible workflow for future updates as new seismic data becomes available.',
+      'Source data came from many different public portals (USGS, King County GIS, Seattle GeoData, FEMA, Esri) with inconsistent formats and no single unified schema.',
+      "The Seattle population density dataset alone held ~27,000 census-block records — too dense to render as a single readable map.",
+      'Findings had to be communicated to non-technical judges and the public through a written analysis and infographic, not just raw maps.',
+      'Earthquake location, timing, and magnitude are fundamentally unpredictable — any "prediction" had to be framed as a probabilistic estimate, not a forecast.',
     ],
     decisions: [
       {
-        title: 'Multi-factor risk composite score',
-        body: 'Combined fault proximity, soil type (liquefaction risk), building age, and population density into a single composite risk index.',
-        reason: 'Single-factor analysis (just fault distance) misses major risk amplifiers like soft soil and old building stock.',
-        tradeoff: 'Weighting the factors requires assumptions that can be debated by domain experts.',
+        title: 'Averaging historical epicenters to model a plausible future earthquake',
+        body: "Rather than guessing at a location, we averaged the epicenter coordinates of all 2.5M+ earthquakes recorded in the area from 1900–2025 (Figure 1's data) using NumPy to produce a probable future epicenter, then used the empirical relationship Area (km²) = 10^(0.5M − 1.8) to size a predicted M7.0 impact radius around it, and overlaid that against URM building locations.",
+        reason: 'A geographic average of real historical activity is a defensible, reproducible way to pick a hypothetical epicenter for impact modeling, instead of arbitrarily placing it downtown for dramatic effect.',
+        tradeoff: 'Averaging treats all historical earthquakes as equally informative regardless of magnitude or recency, so the resulting point is a statistical center of past activity rather than a true seismological forecast.',
+      },
+      {
+        title: 'ETAS modeling for aftershock intensity, converted to Modified Mercalli Intensity',
+        body: 'We implemented an Epidemic-Type Aftershock Sequence (ETAS) model in Python/NumPy to estimate the spatial and temporal intensity of aftershocks following a simulated M7.0 event, then converted the resulting log-scale intensity into Peak Ground Acceleration and finally into the Modified Mercalli Intensity (MMI) scale so the result would be interpretable by non-scientists.',
+        reason: "Aftershock risk is usually reported in scientific units (PGA, log-intensity) that mean little to city planners or the public; MMI is the scale used in Seattle's own hazard planning documents, so converting to it made the output directly usable.",
+        tradeoff: 'The conversion relies on an approximate PGA-to-MMI regression rather than region-specific attenuation data, so absolute MMI values are indicative rather than precise.',
+      },
+      {
+        title: 'Composite hazard-per-structure overlay instead of single-factor maps',
+        body: 'Analysis Map #2 layers liquefaction-prone areas, FEMA floodplain boundaries, and an average-hazards-per-structure grid on top of each other, rather than presenting each hazard as its own separate map.',
+        reason: 'Liquefaction, flooding, and structural risk compound each other in the same low-lying neighborhoods (e.g. South and West Seattle) — showing them separately hides that overlap, which is exactly where mitigation resources should be prioritized.',
+        tradeoff: 'Overlaying multiple choropleth layers makes the map denser and harder to read at a glance than a single-variable heatmap.',
       },
     ],
     results: [
-      'Produced neighborhood-level seismic risk maps across all of Seattle.',
-      'Identified 12 high-risk corridors overlooked by standard FEMA zone mapping.',
-      'Optimized evacuation routing using network analysis on road infrastructure.',
-      'Presented findings to GIS instructors and earned recognition for methodology.',
+      'Won 1st Place in Geospatial Technology at the Washington TSA State Conference, qualifying for TSA Nationals in Nashville, Tennessee.',
+      'Compiled and cited 8 original analysis maps spanning fault lines, bridge seismic risk, liquefaction/flood overlays, unreinforced masonry buildings, emergency services, wastewater infrastructure, and aftershock modeling.',
+      'Built Python/NumPy models (mean-epicenter estimation, ETAS aftershock intensity, PGA→MMI conversion) to move from raw historical earthquake data to an interpretable predicted-impact map.',
+      "Concluded that a magnitude 6M+ earthquake on the Seattle Fault could cause at least $50 billion in damage, given Seattle's population (~755,000) and concentration of tech-sector employment relative to the 2001 Nisqually earthquake's ~$4 billion in damage near much-smaller Olympia.",
     ],
     takeaways: [
-      'Spatial analysis can surface insights invisible to tabular data analysis.',
-      'Multi-factor risk models are more actionable than single-variable heatmaps.',
-      'Open geospatial data (USGS, census) is a powerful resource for public-good projects.',
+      "Overlaying independent hazard layers (faults, soil, buildings, infrastructure) surfaces compounding risk that no single-variable map reveals on its own — the danger is in the overlap, not any one layer.",
+      'A geospatial finding is only as useful as its translation into plain guidance — our biggest actionable conclusion was as simple as "shelter in place, don\'t evacuate over an unstable bridge."',
+      'Public GIS data (USGS, county open-data portals, FEMA) is fragmented across many sources with different formats, and reconciling it is most of the real work in a project like this.',
+      "Modeling something as unpredictable as an earthquake still has value when framed honestly as a probabilistic estimate (e.g. an averaged epicenter, an ETAS aftershock model) rather than a false forecast.",
     ],
   },
   {

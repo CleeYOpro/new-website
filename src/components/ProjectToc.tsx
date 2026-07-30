@@ -42,17 +42,10 @@ export default function ProjectToc({ headings }: { headings: TocHeading[] }) {
               key={h.id}
               href={`#${h.id}`}
               aria-current={isActive ? 'step' : undefined}
-              className={`project-toc-item${isActive ? ' project-toc-item--active' : ''}`}
-              style={{ paddingRight: `${(2 - h.depth) * 8}px` }}
+              className={`project-toc-item project-toc-item--depth-${h.depth}${isActive ? ' project-toc-item--active' : ''}`}
             >
-              <span
-                className="project-toc-bar"
-                style={{
-                  width: isActive ? '20px' : h.depth === 1 ? '12px' : '8px',
-                  opacity: isActive ? 1 : h.depth === 1 ? 0.4 : 0.25,
-                }}
-              />
-              <span className="sr-only">{h.label}</span>
+              <span className="project-toc-bar" />
+              <span className="project-toc-label">{h.label}</span>
             </a>
           );
         })}

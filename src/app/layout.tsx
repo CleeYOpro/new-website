@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import ClickParticles from '@/components/ClickParticles';
 import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
   title: "Cleo Balaranjith's Website",
@@ -23,6 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <div className="site-wrap">
           <Navbar />
           {children}
+          <Footer />
         </div>
       </body>
     </html>

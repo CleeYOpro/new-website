@@ -168,11 +168,6 @@ export default function ContactPage() {
           </form>
         </section>
       </main>
-
-      <footer className="site-footer" style={{ borderTop: 'none', paddingTop: '24px', paddingBottom: '32px' }}>
-        <span>2026 - Nothin' reserved</span>
-        <span>Ahmedabad, 9:53 AM</span>
-      </footer>
     </>
   );
 }

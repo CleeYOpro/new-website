@@ -25,11 +25,6 @@ export default function ProjectsPage() {
       <ProjectSection title="Major Projects" items={majorProjects} />
       <ProjectSection title="Other Projects" items={otherProjects} />
       <ProjectSection title="PoC" items={pocProjects} />
-
-      <footer className="site-footer">
-        <span>cleof.us · Cleo Balaranjith</span>
-        <span>Sammamish, WA · GMT-7</span>
-      </footer>
     </main>
   );
 }
