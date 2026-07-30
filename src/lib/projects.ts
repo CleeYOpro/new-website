@@ -5,7 +5,11 @@ export type Project = {
   section: 'major' | 'other' | 'poc';
   tags: string[];
   github?: string;
+  githubSecondary?: { label: string; url: string };
   live?: string;
+  figma?: string;
+  medium?: string;
+  note?: string;
   label?: string;
   youtube?: string;
   pdf?: { src: string; title: string };
@@ -29,6 +33,7 @@ export const projects: Project[] = [
     tags: ['React Native', 'Expo', 'TypeScript', 'SQLite', 'PostgreSQL', 'Drizzle ORM', 'Offline-First'],
     github: 'https://github.com/CleeYOpro/rolecaller-app',
     live: 'https://rolecaller.vercel.app/',
+    medium: 'https://medium.com/@cleobala/part-ii-when-awareness-isnt-enough-334041dedbc7',
     image: '/projects/images/rolecaller/rolecallermain.png',
     images: [
       '/projects/images/rolecaller/rolecallermain.png',
@@ -89,10 +94,19 @@ export const projects: Project[] = [
     title: 'CMC Palliative Care',
     section: 'major',
     description:
-      'Designed and developed a new website for the Department of Palliative Medicine at one of Asia\'s leading hospitals.',
+      "Designed and developed a new website for the Department of Palliative Medicine at one of Asia's leading hospitals. This development build is 100% my own work — the finalized version is now live on CMC Vellore's official website.",
     tags: ['HTML5', 'CSS3', 'JavaScript', 'Accessibility', 'Healthcare'],
-    live: 'https://cmcpalliative.in',
-    image: '/projects/cmc.svg',
+    github: 'https://github.com/CleeYOpro/CMC-project',
+    live: 'https://palliativecmc.vercel.app/',
+    figma: 'https://www.figma.com/design/sEMG9yQQuUYJWT31b7lcaS/The-WEBSITE?t=7mCi8uphmP4S75vO-1',
+    note:
+      "The live demo above is my development build — every page, section, and line of code in it is 100% my own work. The finalized version of this project has since been integrated into CMC Vellore's official hospital website, live at [cmch-vellore.edu/departments](https://www.cmch-vellore.edu/departments/).",
+    image: '/projects/images/cmc/mainpage.png',
+    images: [
+      '/projects/images/cmc/mainpage.png',
+      '/projects/images/cmc/contact.png',
+      '/projects/images/cmc/footer.png',
+    ],
     overview:
       'Designed and developed a full website for the Department of Palliative Medicine at Christian Medical College (CMC) Vellore — one of Asia\'s most respected hospitals serving over 3 million patients annually. The site communicates the department\'s services, team, and philosophy clearly to patients, families, and healthcare professionals.',
     problem:
@@ -135,7 +149,7 @@ export const projects: Project[] = [
       src: '/projects/images/seattle-earthquake-gis/geospatial-technology-2025-portfolio.pdf',
       title: 'Geospatial Technology 2025 Portfolio',
     },
-    image: '/projects/images/seattle-earthquake-gis/cover.png',
+    image: '/projects/images/seattle-earthquake-gis/analysis-mmi-aftershocks.png',
     images: [
       '/projects/images/seattle-earthquake-gis/wtsa-state-1st-place.png',
       '/projects/images/seattle-earthquake-gis/analysis-mmi-aftershocks.png',
@@ -190,26 +204,46 @@ export const projects: Project[] = [
     section: 'major',
     description:
       'AI-powered platform that helps caregivers, families, and healthcare providers stay connected. 3rd place at the Divergent Hackathon.',
-    tags: ['React', 'Python', 'AI', 'Healthcare', 'Hackathon'],
-    github: 'https://github.com/CleeYOpro/komekare',
+    tags: ['Expo', 'React Native', 'Firebase', 'Zustand', 'Gemini 1.5 Flash', 'NativeWind'],
+    github: 'https://github.com/CleeYOpro/viceversa',
+    githubSecondary: {
+      label: 'Provider Repo',
+      url: 'https://github.com/nikhilvincentv/care-sync-provider-viceversa',
+    },
     label: '3rd Place — Divergent Hackathon',
+    pdf: {
+      src: '/projects/komekare/hackathon-project.pdf',
+      title: 'Hackathon Project',
+    },
     image: '/projects/komekare.svg',
     overview:
-      'KomeKare is an AI-powered caregiving coordination platform built at the Divergent Hackathon. It connects caregivers, family members, and healthcare providers around a shared patient profile — surfacing relevant health updates, medication reminders, and care tasks through an AI assistant that synthesizes information across the care network.',
+      "KomeKare is an AI-powered family caregiver coordination app built natively with Expo and Firebase at the Divergent Hackathon, where it placed 3rd. It links caregivers, family members, and healthcare providers around a shared patient profile, using Google's Gemini 1.5 Flash model to summarize care data into insights each stakeholder can actually act on.",
     problem:
       'Caregiving is often fragmented across family members, professional caregivers, and medical providers who lack a shared view of the patient. Critical information gets lost in text threads, paper notes, and verbal handoffs — leading to missed medications, duplicated tasks, and poor outcomes.',
     decisions: [
       {
-        title: 'AI summary layer over structured data',
-        body: 'An LLM synthesizes health logs, medication schedules, and notes into natural-language summaries for each stakeholder.',
-        reason: 'Different stakeholders need different views. A caregiver needs a quick task list; a doctor needs a clinical summary.',
-        tradeoff: 'LLM responses can hallucinate — care data requires careful prompt engineering and validation.',
+        title: 'Native Expo app with Firebase as the backend',
+        body: 'Built as a native React Native app with Expo, backed entirely by Firebase — Auth for identity, Firestore and the Realtime Database for care data, and Storage for uploads.',
+        reason: 'A 48-hour hackathon timeline meant we needed a backend that required zero server setup, had generous free-tier limits, and gave us real-time data sync between caregivers, family, and providers out of the box.',
+        tradeoff: 'Firebase\'s NoSQL model and vendor lock-in trade off long-term data-modeling flexibility for the speed of shipping a working real-time app in a weekend.',
+      },
+      {
+        title: 'Zustand with AsyncStorage-backed persistence',
+        body: 'Client state (current patient profile, session, cached care data) is managed with Zustand, using a persistence middleware bound to AsyncStorage so state survives app restarts.',
+        reason: 'Zustand\'s minimal boilerplate let us wire up shared state across screens quickly without the ceremony of Redux, while still getting durable local persistence for free.',
+        tradeoff: 'Less structure than a more opinionated state library, which requires more discipline as the app grows to avoid ad-hoc state shapes.',
+      },
+      {
+        title: 'Gemini 1.5 Flash for AI care insights',
+        body: 'Health logs, medication schedules, and caregiver notes are summarized by Google Gemini 1.5 Flash into natural-language insights surfaced to each stakeholder.',
+        reason: 'Different stakeholders need different views of the same data — a caregiver needs a quick task list, a family member needs a plain-language update, a provider needs a clinical summary. Flash gave us low-latency summarization that fit a live demo.',
+        tradeoff: 'LLM responses can hallucinate, so care-related summaries need careful prompting and framing as assistive, not authoritative, especially under hackathon time pressure to harden that further.',
       },
     ],
     results: [
       'Won 3rd place at the Divergent Hackathon.',
-      'Built a working prototype in under 48 hours.',
-      'Demonstrated AI-synthesized care summaries for multiple stakeholder types.',
+      'Built a working native Expo/Firebase prototype in under 48 hours.',
+      'Demonstrated Gemini-generated care summaries tailored to caregiver, family, and provider stakeholder views.',
     ],
     takeaways: [
       'Hackathon speed requires ruthless prioritization of the demo-able core.',
@@ -263,12 +297,14 @@ export const projects: Project[] = [
     title: 'Wordle Whiz',
     section: 'poc',
     description:
-      'An interactive Wordle-solving tool built in Python that filters words based on clues using input logic and clean UI.',
+      'My first-ever coding project — an interactive Wordle-solving tool built in Python during freshman year (2023-2024) that filters words based on clues using input logic and a clean UI.',
     tags: ['Python', 'Game', 'Algorithms'],
-    github: 'https://github.com/CleeYOpro/wordle-whiz',
-    image: '/projects/wordle-whiz.svg',
+    github: 'https://github.com/CleeYOpro/Freshman-yr-TSHS',
+    live: 'https://cleof.us/wordle',
+    image: '/projects/images/wordlewhiz/image.png',
+    images: ['/projects/images/wordlewhiz/image.png'],
     overview:
-      'A Wordle solver built using CMU CS Academy Python. The tool interactively filters the word list based on green/yellow/grey clues, visually displaying remaining candidates and automatically converging on the solution with entropy-based guess selection.',
+      'A Wordle solver built using CMU CS Academy Python during my freshman year of high school (2023-2024) — the very start of my coding journey. The tool interactively filters the word list based on green/yellow/grey clues, visually displaying remaining candidates and automatically converging on the solution with entropy-based guess selection.',
     results: [
       'Solves Wordle in an average of 3.4 guesses.',
       'Built an interactive visual interface with color-coded feedback.',
