@@ -29,7 +29,7 @@ export const projects: Project[] = [
     tags: ['React Native', 'Expo', 'TypeScript', 'SQLite', 'PostgreSQL', 'Drizzle ORM', 'Offline-First'],
     github: 'https://github.com/CleeYOpro/rolecaller-app',
     live: 'https://rolecaller.vercel.app/',
-    image: '/projects/rolecaller.svg',
+    image: '/projects/images/rolecaller/rolecallermain.png',
     images: [
       '/projects/images/rolecaller/rolecallermain.png',
       '/projects/images/rolecaller/phone.png',
@@ -135,7 +135,7 @@ export const projects: Project[] = [
       src: '/projects/images/seattle-earthquake-gis/geospatial-technology-2025-portfolio.pdf',
       title: 'Geospatial Technology 2025 Portfolio',
     },
-    image: '/projects/gis.svg',
+    image: '/projects/images/seattle-earthquake-gis/cover.png',
     images: [
       '/projects/images/seattle-earthquake-gis/wtsa-state-1st-place.png',
       '/projects/images/seattle-earthquake-gis/analysis-mmi-aftershocks.png',

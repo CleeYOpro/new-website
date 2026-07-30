@@ -2006,18 +2006,20 @@ kbd[data-key='space'] { width: 225px; }
 .project-toc-inner {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
   gap: 2px;
-  padding: 10px;
+  width: 36px;
+  padding: 10px 8px;
   border-radius: 14px;
   background: transparent;
   border: 1px solid transparent;
-  transition: background 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
+  overflow: hidden;
+  transition: width 220ms ease, padding 220ms ease, background 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
 }
 
 .project-toc:hover .project-toc-inner {
-  align-items: stretch;
-  min-width: 230px;
+  width: max-content;
+  max-width: min(420px, calc(100vw - 48px));
+  padding: 10px;
   background: rgba(17, 17, 17, 0.92);
   border-color: var(--border);
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
@@ -2027,33 +2029,31 @@ kbd[data-key='space'] { width: 225px; }
 .project-toc-item {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 10px;
   height: 10px;
-  padding: 0 8px;
+  width: 100%;
+  padding: 0 2px;
   border-radius: 7px;
-  position: relative;
   overflow: hidden;
   transition: height 180ms ease, padding 180ms ease, background 150ms ease;
 }
 
 .project-toc:hover .project-toc-item {
+  justify-content: flex-start;
   height: 28px;
-  padding: 0 10px;
-}
-
-.project-toc-item--depth-2 {
-  padding-right: 16px;
+  padding: 0 8px;
 }
 
 .project-toc:hover .project-toc-item--depth-2 {
-  padding-left: 20px;
+  padding-left: 22px;
 }
 
-.project-toc-item:hover {
+.project-toc:hover .project-toc-item:hover {
   background: rgba(255, 255, 255, 0.06);
 }
 
-.project-toc-item--active {
+.project-toc:hover .project-toc-item--active {
   background: rgba(213, 103, 79, 0.12);
 }
 
@@ -2088,6 +2088,8 @@ kbd[data-key='space'] { width: 225px; }
   font-size: 13px;
   color: var(--text-dim);
   white-space: nowrap;
+  width: 0;
+  overflow: hidden;
   opacity: 0;
   transform: translateX(6px);
   transition: opacity 150ms ease, transform 150ms ease, color 150ms ease;
@@ -2099,6 +2101,7 @@ kbd[data-key='space'] { width: 225px; }
 }
 
 .project-toc:hover .project-toc-label {
+  width: auto;
   opacity: 1;
   transform: translateX(0);
 }
