@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import type { PDFDocumentProxy, RenderTask } from 'pdfjs-dist';
+import type { PDFDocumentLoadingTask, PDFDocumentProxy, RenderTask } from 'pdfjs-dist';
 
 function ChevronLeftIcon({ size = 16 }: { size?: number }) {
   return (
@@ -33,6 +33,7 @@ export default function ProjectPdfSlides({ src, title }: { src: string; title: s
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const pdfRef = useRef<PDFDocumentProxy | null>(null);
+  const loadingTaskRef = useRef<PDFDocumentLoadingTask | null>(null);
   const renderTaskRef = useRef<RenderTask | null>(null);
 
   const [numPages, setNumPages] = useState(0);
@@ -47,10 +48,12 @@ export default function ProjectPdfSlides({ src, title }: { src: string; title: s
     (async () => {
       const pdfjsLib = await import('pdfjs-dist');
       pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
+      const loadingTask = pdfjsLib.getDocument({ url: src });
+      loadingTaskRef.current = loadingTask;
       try {
-        const doc = await pdfjsLib.getDocument({ url: src }).promise;
+        const doc = await loadingTask.promise;
         if (cancelled) {
-          doc.destroy();
+          loadingTask.destroy();
           return;
         }
         pdfRef.current = doc;
@@ -64,7 +67,8 @@ export default function ProjectPdfSlides({ src, title }: { src: string; title: s
     return () => {
       cancelled = true;
       renderTaskRef.current?.cancel();
-      pdfRef.current?.destroy();
+      loadingTaskRef.current?.destroy();
+      loadingTaskRef.current = null;
       pdfRef.current = null;
     };
   }, [src]);

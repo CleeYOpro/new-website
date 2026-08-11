@@ -5,6 +5,8 @@ import { projects, getProject } from '@/lib/projects';
 import ProjectToc, { TocHeading } from '@/components/ProjectToc';
 import ProjectGallery from '@/components/ProjectGallery';
 import ProjectPdfSlides from '@/components/ProjectPdfSlides';
+import ProjectBookPdf from '@/components/ProjectBookPdf';
+import ProjectVideoGallery from '@/components/ProjectVideoGallery';
 
 export async function generateStaticParams() {
   return projects.map((p) => ({ slug: p.slug }));
@@ -97,6 +99,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
       headings.push({ id: slugify(d.title), label: d.title, depth: 2 });
     });
   }
+  if (project.videos?.length) headings.push({ id: 'launch-footage', label: 'Launch Footage', depth: 1 });
   if (project.results?.length) headings.push({ id: 'results', label: 'Results', depth: 1 });
   if (project.takeaways?.length) headings.push({ id: 'takeaways', label: 'Takeaways', depth: 1 });
 
@@ -106,12 +109,22 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
 
       <main className="main-content project-detail-page">
         <header className="project-detail-header">
-          <h1 className="project-detail-title">{project.title}</h1>
+          <h1 className="project-detail-title">
+            {project.logo && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={project.logo} alt="" className="project-detail-logo" />
+            )}
+            {project.title}
+          </h1>
           <p className="project-detail-desc">{project.description}</p>
         </header>
 
         {project.pdf && (
           <ProjectPdfSlides src={project.pdf.src} title={project.pdf.title} />
+        )}
+
+        {project.book && (
+          <ProjectBookPdf src={project.book.src} title={project.book.title} />
         )}
 
         <div className="project-detail-meta">
@@ -163,6 +176,12 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
                 Medium
               </a>
             )}
+            {project.competition && (
+              <a href={project.competition.url} target="_blank" rel="noopener noreferrer" className="project-detail-btn">
+                <ExternalLinkIcon size={14} />
+                {project.competition.label}
+              </a>
+            )}
           </div>
         </div>
 
@@ -211,6 +230,13 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
                   <p><strong>Tradeoff:</strong><br />{d.tradeoff}</p>
                 </div>
               ))}
+            </section>
+          )}
+
+          {project.videos && project.videos.length > 0 && (
+            <section id="launch-footage" className="project-section">
+              <h2>Launch Footage</h2>
+              <ProjectVideoGallery videos={project.videos} />
             </section>
           )}
 

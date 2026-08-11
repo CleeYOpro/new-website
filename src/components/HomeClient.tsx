@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { FiArrowUpRight, FiCode } from 'react-icons/fi';
+import { FaMedium } from 'react-icons/fa6';
 import CardSwap from '@/components/CardSwap';
 import { NotificationCard } from '@/components/NotificationCard';
 import { majorProjects } from '@/lib/projects';
@@ -70,15 +71,15 @@ export default function HomeClient({ contributions }: { contributions: GithubCon
         </p>
 
         <div className="hero-actions">
-          <a href="/resume.pdf" className="hero-btn hero-btn--snippets">
+          <a href="https://www.linkedin.com/in/cleofus/" target="_blank" rel="noreferrer" className="hero-btn hero-btn--snippets">
             <FiCode size={13} />
             Resume
             <span className="btn-arrow"><FiArrowUpRight size={11} /></span>
           </a>
 
-          <a href="#projects" className="hero-btn hero-btn--snippets">
-            <FiCode size={13} />
-            Projects
+          <a href="https://medium.com/@cleobala" target="_blank" rel="noreferrer" className="hero-btn hero-btn--snippets">
+            <FaMedium size={13} />
+            Medium
             <span className="btn-arrow"><FiArrowUpRight size={11} /></span>
           </a>
 
