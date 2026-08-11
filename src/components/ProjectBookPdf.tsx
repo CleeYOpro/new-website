@@ -64,7 +64,7 @@ export default function ProjectBookPdf({ src, title }: { src: string; title: str
       try {
         const doc = await pdfjsLib.getDocument({ url: src }).promise;
         if (cancelled) {
-          doc.destroy();
+          doc.loadingTask.destroy();
           return;
         }
         pdfRef.current = doc;
@@ -78,7 +78,7 @@ export default function ProjectBookPdf({ src, title }: { src: string; title: str
     return () => {
       cancelled = true;
       renderTasksRef.current.forEach((t) => t.cancel());
-      pdfRef.current?.destroy();
+      pdfRef.current?.loadingTask.destroy();
       pdfRef.current = null;
     };
   }, [src]);

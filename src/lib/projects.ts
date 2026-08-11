@@ -605,6 +605,58 @@ takeaways: [
       'A single failure point — one oversized chute, one cracked egg — can void an otherwise perfect flight, so payload protection deserves the same rigor as propulsion.',
     ],
   },
+  {
+    slug: 'personal-website-old',
+    title: 'Personal Website (old)',
+    section: 'earlier',
+    description:
+      'A modern React portfolio with a dynamic hero, project highlights, interactive UI, and responsive design — showcasing front-end skills and creative flair. The previous version of cleof.us, since replaced by the site you\'re on now.',
+    tags: ['React', 'Create React App', 'styled-components', 'GSAP', 'Lenis', 'React Router'],
+    github: 'https://github.com/CleeYOpro/potential-parakeet',
+    live: 'https://cleof.us',
+    note:
+      "This was my personal site at cleof.us before the 2026 overhaul — cleof.us now points to the site you're currently on, so the live link above reflects wherever the domain currently resolves rather than this specific version.",
+    image: '/projects/images/personal-website-old/hero.png',
+    images: [
+      '/projects/images/personal-website-old/hero.png',
+      '/projects/images/personal-website-old/settings.png',
+      '/projects/images/personal-website-old/contact.png',
+    ],
+    overview:
+      "Personal Website (old) was the previous version of cleof.us — a single-page React portfolio built with Create React App, styled-components, GSAP, and Lenis. It centered on a custom LED-matrix background (LedGrid) that lit up across the page behind a hero, project highlights, about section, tech stack, and contact form, all wrapped in a branded, animated identity rather than a generic template layout.",
+    problem:
+      "Before this, my projects and background lived scattered across GitHub, resumes, and one-off links — there was no single, memorable place that represented me. A generic portfolio template would have solved the 'have a link to share' problem but not the 'make it feel like mine' one.",
+    decisions: [
+      {
+        title: 'A user-configurable LED grid instead of a static hero background',
+        body: "LedGrid.js rendered a full-page grid of glowing dots, and a SettingsModal let visitors themselves pick the LED color (purple or green) and animation mode — cursor-follow (desktop only), matrix rain, wave, or none — rather than baking in one fixed look.",
+        reason: 'A static gradient or hero image is forgettable. Letting visitors tweak the background turned a decorative element into something people would actually notice and interact with.',
+        tradeoff: 'Hand-rolling multiple animation states and a settings UI took meaningfully longer to build than dropping in a pre-made background library, and the cursor-follow mode only worked on desktop, so mobile visitors always saw a fallback animation.',
+      },
+      {
+        title: 'styled-components, GSAP, and Lenis on top of Create React App',
+        body: "Theming ran through a ThemeContext and styled-components (AppContainer and friends), scroll/entry animation through GSAP, and smooth scrolling across Hero, AboutMe, ProjectGrid, TechStack, and Contact through Lenis.",
+        reason: "CRA doesn't ship any styling or animation opinions out of the box, and this combination got me a highly custom, animated feel without adopting a heavier design-system framework.",
+        tradeoff: "The CRA + styled-components + GSAP bundle is heavier and slower to iterate on than a Next.js/Tailwind stack, which became part of the motivation for the 2026 rebuild.",
+      },
+      {
+        title: 'Shipping a DeprecationModal ahead of the actual rebuild',
+        body: "The old site included its own DeprecationModal component, giving visitors a heads-up that an overhaul was coming rather than letting the site quietly go stale.",
+        reason: "If a redesign is already planned, it's better to say so than to let visitors assume an old-looking site is just unmaintained.",
+        tradeoff: 'A visible "this is getting replaced" notice can undercut confidence in the current version while people wait for the rebuild.',
+      },
+    ],
+    results: [
+      'Served as the live personal portfolio at cleof.us before being replaced by the current Next.js-based site.',
+      'Shipped a fully custom, user-configurable LED-grid background (color + animation mode) instead of a static template hero.',
+      'Built entirely on Create React App with styled-components, GSAP, and Lenis to hand-roll a distinctive, animated brand identity.',
+    ],
+    takeaways: [
+      'A distinctive visual identity can matter more for a personal site than technical sophistication.',
+      'Letting visitors customize a decorative element (LED color/animation) turned a background into something people would consciously engage with.',
+      'Recognizing when a stack has run its course and choosing to rebuild, rather than continually patching it, is itself a good engineering call.',
+    ],
+  },
 ];
 
 export function getProject(slug: string): Project | undefined {
@@ -617,4 +669,4 @@ function orderBySlug(slugs: string[]): Project[] {
 
 export const featuredProjects = orderBySlug(['rolecaller', 'seattle-earthquake-gis', 'cmc-palliative']);
 export const selectedProjects = orderBySlug(['price-it-right', 'port-laken', 'komekare', 'azoto-column']);
-export const earlierProjects = orderBySlug(['tarc-rocket', 'wordle-whiz']);
+export const earlierProjects = orderBySlug(['tarc-rocket', 'personal-website-old', 'wordle-whiz']);

@@ -10,8 +10,10 @@ function ProjectSection({ title, items, from }: { title: string; items: typeof p
       <section className="projects-section">
         <TypeText as="h2" className="projects-section-label" text={title} />
         <div className="projects-rows">
-          {items.map((p) => (
-            <ProjectRow key={p.slug} project={p} />
+          {items.map((p, i) => (
+            <FloatReveal key={p.slug} from="down" delay={i * 90}>
+              <ProjectRow project={p} />
+            </FloatReveal>
           ))}
         </div>
       </section>

@@ -11,9 +11,9 @@ import { featuredProjects, getProject } from '@/lib/projects';
 import type { GithubContributions } from '@/lib/github';
 
 const blogs = [
-  { title: "Caching Isn't Hard. Knowing When to Invalidate Is.", date: '2026-07-05', description: "Learned the hard way that Redis isn't the hard part—cache invalidation is. Lessons from building a real-world backend.", href: '#' },
-  { title: 'Building a Multi-Layer Content Moderation Pipeline for an Anonymous Platform', date: '2026-06-15', description: 'Building a multi-layer moderation pipeline for an anonymous platform using rules, ML models, caching, and enforcement workflows.', href: '#' },
-  { title: 'Designing Real-Time Text Moderation Without Freezing the Browser', date: '2026-05-20', description: 'How I built real-time text moderation for an anonymous platform without freezing the browser or trusting the client.', href: '#' },
+  { title: "Caching Isn't Hard. Knowing When to Invalidate Is.", date: '2026-07-05', description: "Learned the hard way that Redis isn't the hard part—cache invalidation is. Lessons from building a real-world backend." },
+  { title: 'Building a Multi-Layer Content Moderation Pipeline for an Anonymous Platform', date: '2026-06-15', description: 'Building a multi-layer moderation pipeline for an anonymous platform using rules, ML models, caching, and enforcement workflows.' },
+  { title: 'Designing Real-Time Text Moderation Without Freezing the Browser', date: '2026-05-20', description: 'How I built real-time text moderation for an anonymous platform without freezing the browser or trusting the client.' },
 ];
 
 const GRID_LEVELS = ['var(--grid-0)', 'var(--grid-1)', 'var(--grid-2)', 'var(--grid-3)', 'var(--grid-4)'];
@@ -65,7 +65,8 @@ export default function HomeClient({ contributions }: { contributions: GithubCon
             as="p"
             className="hero-bio"
             delay={750}
-            text="Hey, I'm Cleo — a high school senior and computer science student building software that solves real-world problems across education, healthcare, and geospatial technology."
+            text=" Hi! I’m Cleo. I build software, maps, and tools for problems that matter.
+I’ve worked on everything from offline education tools in rural India to satellite imagery for disaster response. I’m interested in the messy space between a problem and something people can actually use."
           />
 
           <TypeText
@@ -102,19 +103,21 @@ export default function HomeClient({ contributions }: { contributions: GithubCon
         <section className="section">
           <TypeText as="h2" className="section-title" text="Projects" />
           <div className="project-grid">
-            {homeProjects.map((p) => (
-              <a key={p.slug} href={`/projects/${p.slug}`} className="project-card">
-                <div className="project-img">
-                  <Image src={p.image} alt={p.title} width={300} height={180} className="proj-image" />
-                </div>
-                <div className="project-body">
-                  <h3 className="project-title">
-                    {p.title}
-                    <span className="link-arrow"><FiArrowUpRight size={12} /></span>
-                  </h3>
-                  <p className="project-desc">{p.description}</p>
-                </div>
-              </a>
+            {homeProjects.map((p, i) => (
+              <FloatReveal key={p.slug} from="down" delay={i * 90}>
+                <a href={`/projects/${p.slug}`} className="project-card">
+                  <div className="project-img">
+                    <Image src={p.image} alt={p.title} width={300} height={180} className="proj-image" />
+                  </div>
+                  <div className="project-body">
+                    <h3 className="project-title">
+                      {p.title}
+                      <span className="link-arrow"><FiArrowUpRight size={12} /></span>
+                    </h3>
+                    <p className="project-desc">{p.description}</p>
+                  </div>
+                </a>
+              </FloatReveal>
             ))}
           </div>
           <p className="section-more">
@@ -127,22 +130,24 @@ export default function HomeClient({ contributions }: { contributions: GithubCon
       <FloatReveal from="right">
         <section className="section">
           <TypeText as="h2" className="section-title" text="Blogs" />
-          <div className="blog-list">
-            {blogs.map((b) => (
-              <div key={b.title} className="blog-item">
-                <div className="blog-main">
-                  <a href={b.href} className="blog-title">
-                    {b.title}
-                    <span className="link-arrow"><FiArrowUpRight size={12} /></span>
-                  </a>
-                  <p className="blog-desc">{b.description}</p>
+          <div className="blog-blocked-wrap">
+            <div className="blog-list blog-blocked-content" aria-hidden="true">
+              {blogs.map((b) => (
+                <div key={b.title} className="blog-item">
+                  <div className="blog-main">
+                    <span className="blog-title">{b.title}</span>
+                    <p className="blog-desc">{b.description}</p>
+                  </div>
+                  <span className="blog-date">{b.date}</span>
                 </div>
-                <span className="blog-date">{b.date}</span>
-              </div>
-            ))}
+              ))}
+            </div>
+            <div className="blog-blocked-overlay">
+              <span className="blog-blocked-badge">Blog coming soon</span>
+            </div>
           </div>
           <p className="section-more">
-            You can read more articles <a href="#" className="accent-link">here</a>.
+            Articles are still being written — check back soon.
           </p>
         </section>
       </FloatReveal>

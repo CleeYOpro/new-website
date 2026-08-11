@@ -601,6 +601,39 @@ body::after {
   margin-top: 3px;
 }
 
+/* ── Blogs — blocked off until real posts exist ── */
+.blog-blocked-wrap {
+  position: relative;
+}
+
+.blog-blocked-content {
+  filter: blur(4px);
+  opacity: 0.45;
+  pointer-events: none;
+  user-select: none;
+}
+
+.blog-blocked-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.blog-blocked-badge {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 8px 18px;
+  white-space: nowrap;
+}
+
 /* ── GitHub Grid ── */
 .github-grid-wrap { width: 100%; }
 
@@ -998,6 +1031,25 @@ kbd[data-key='space'] { width: 225px; }
 
 .ai-hero {
   margin-bottom: 24px;
+}
+
+.ai-dev-notice {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-muted);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+}
+
+.ai-dev-notice svg {
+  flex-shrink: 0;
+  color: var(--accent);
 }
 
 .ai-chat-window {

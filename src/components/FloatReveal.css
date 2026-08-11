@@ -1,9 +1,13 @@
 .float-reveal {
+  /* prevents this wrapper from inflating to a nested image's intrinsic
+     size when it's a CSS grid/flex item (e.g. project card grids) */
+  min-width: 0;
+  min-height: 0;
   opacity: 0;
   transform: var(--float-from, translateY(30px));
   transition:
-    opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity 1.5s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .float-reveal.is-in-view {

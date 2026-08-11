@@ -313,16 +313,16 @@ function EducationItem({ edu }: { edu: typeof education[number] }) {
 const MOMENTS_IMG = '/projects/images/moments';
 
 const photos = [
-  { image: `${MOMENTS_IMG}/onstage.png`, text: 'On stage at TSA Nationals' },
-  { image: `${MOMENTS_IMG}/tsanats.png`, text: 'TSA Nationals with the team' },
-  { image: `${MOMENTS_IMG}/rolecaller_on_theground.png`, text: 'Field-testing RoleCaller in rural India' },
-  { image: `${MOMENTS_IMG}/divergent.png`, text: 'Late-night build session' },
-  { image: `${MOMENTS_IMG}/docusigntower.png`, text: 'Walking through downtown Seattle' },
-  { image: `${MOMENTS_IMG}/harvard.png`, text: 'Exploring a building at Harvard' },
-  { image: `${MOMENTS_IMG}/indiatlas.png`, text: 'Tracing a route through India' },
-  { image: `${MOMENTS_IMG}/taj.png`, text: 'The Taj Mahal, Agra' },
-  { image: `${MOMENTS_IMG}/siberia.png`, text: 'Snow day' },
-  { image: `${MOMENTS_IMG}/techboothchurch.png`, text: 'Running sound and lights at church' },
+  { image: `${MOMENTS_IMG}/onstage.png`, text: 'somehow ended up on that stage' },
+  { image: `${MOMENTS_IMG}/tsanats.png`, text: 'feelin natty' },
+  { image: `${MOMENTS_IMG}/rolecaller_on_theground.png`, text: 'finally seeing rolecaller out in the real world' },
+  { image: `${MOMENTS_IMG}/divergent.png`, text: 'late night debugging' },
+  { image: `${MOMENTS_IMG}/docusigntower.png`, text: 'just exploring downtown Seattle' },
+  { image: `${MOMENTS_IMG}/harvard.png`, text: 'ended up at Harvard' },
+  { image: `${MOMENTS_IMG}/indiatlas.png`, text: 'atlases are cool' },
+  { image: `${MOMENTS_IMG}/taj.png`, text: 'Taj Mahal was surreal' },
+  { image: `${MOMENTS_IMG}/siberia.png`, text: 'ironic cause the iceman was a nice man' },
+  { image: `${MOMENTS_IMG}/techboothchurch.png`, text: 'running tech at church' },
 ];
 
 export default function AboutPage() {
@@ -375,8 +375,10 @@ export default function AboutPage() {
           <section className="section">
             <TypeText as="h2" className="section-title" text="Experience" />
             <div className="exp-list">
-              {experience.map((exp) => (
-                <ExperienceItem key={exp.company} exp={exp} />
+              {experience.map((exp, i) => (
+                <FloatReveal key={exp.company} from="down" delay={i * 90}>
+                  <ExperienceItem exp={exp} />
+                </FloatReveal>
               ))}
             </div>
           </section>
@@ -387,8 +389,10 @@ export default function AboutPage() {
           <section className="section">
             <TypeText as="h2" className="section-title" text="Education" />
             <div className="exp-list">
-              {education.map((edu) => (
-                <EducationItem key={edu.institution} edu={edu} />
+              {education.map((edu, i) => (
+                <FloatReveal key={edu.institution} from="down" delay={i * 90}>
+                  <EducationItem edu={edu} />
+                </FloatReveal>
               ))}
             </div>
           </section>
