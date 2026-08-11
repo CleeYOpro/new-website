@@ -6,7 +6,10 @@ import ProjectToc, { TocHeading } from '@/components/ProjectToc';
 import ProjectGallery from '@/components/ProjectGallery';
 import ProjectPdfSlides from '@/components/ProjectPdfSlides';
 import ProjectBookPdf from '@/components/ProjectBookPdf';
+import ProjectTrifold from '@/components/ProjectTrifold';
 import ProjectVideoGallery from '@/components/ProjectVideoGallery';
+import { FloatReveal } from '@/components/FloatReveal';
+import { TypeText } from '@/components/TypeText';
 
 export async function generateStaticParams() {
   return projects.map((p) => ({ slug: p.slug }));
@@ -63,6 +66,17 @@ function MediumIcon({ size = 14 }: { size?: number }) {
   );
 }
 
+function DocIcon({ size = 14 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z" />
+      <polyline points="14 2 14 8 20 8" />
+      <line x1="8" y1="13" x2="16" y2="13" />
+      <line x1="8" y1="17" x2="16" y2="17" />
+    </svg>
+  );
+}
+
 function MoveLeftIcon({ size = 16 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -108,163 +122,206 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
       <ProjectToc headings={headings} />
 
       <main className="main-content project-detail-page">
-        <header className="project-detail-header">
-          <h1 className="project-detail-title">
-            {project.logo && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={project.logo} alt="" className="project-detail-logo" />
-            )}
-            {project.title}
-          </h1>
-          <p className="project-detail-desc">{project.description}</p>
-        </header>
+        <FloatReveal from="up">
+          <header className="project-detail-header">
+            <h1 className="project-detail-title">
+              {project.logo && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={project.logo} alt="" className="project-detail-logo" />
+              )}
+              <TypeText as="span" text={project.title} />
+            </h1>
+            <TypeText as="p" className="project-detail-desc" delay={250} text={project.description} />
+          </header>
+        </FloatReveal>
 
         {project.pdf && (
-          <ProjectPdfSlides src={project.pdf.src} title={project.pdf.title} />
+          <FloatReveal from="left">
+            <ProjectPdfSlides src={project.pdf.src} title={project.pdf.title} />
+          </FloatReveal>
         )}
 
         {project.book && (
-          <ProjectBookPdf src={project.book.src} title={project.book.title} />
+          <FloatReveal from="right">
+            <ProjectBookPdf src={project.book.src} title={project.book.title} />
+          </FloatReveal>
         )}
 
-        <div className="project-detail-meta">
-          <div className="project-detail-badges">
-            {project.tags.map((tag) => (
-              <span key={tag} className="project-detail-badge">{tag}</span>
-            ))}
-          </div>
+        {project.trifold && (
+          <FloatReveal from="left">
+            <ProjectTrifold
+              left={project.trifold.left}
+              middle={project.trifold.middle}
+              right={project.trifold.right}
+              title={project.trifold.title}
+            />
+          </FloatReveal>
+        )}
 
-          {project.youtube && (
-            <div className="project-detail-video">
-              <iframe
-                src={`https://www.youtube.com/embed/${project.youtube}`}
-                title={`${project.title} demo video`}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
+        <FloatReveal from="right">
+          <div className="project-detail-meta">
+            <div className="project-detail-badges">
+              {project.tags.map((tag) => (
+                <span key={tag} className="project-detail-badge">{tag}</span>
+              ))}
             </div>
-          )}
 
-          <div className="project-detail-actions">
-            {project.live && project.live !== '#' && (
-              <a href={project.live} target="_blank" rel="noopener noreferrer" className="project-detail-btn project-detail-btn--primary">
-                <ExternalLinkIcon size={14} />
-                See it Live
-              </a>
+            {project.youtube && (
+              <div className="project-detail-video">
+                <iframe
+                  src={`https://www.youtube.com/embed/${project.youtube}`}
+                  title={`${project.title} demo video`}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              </div>
             )}
-            {project.github && (
-              <a href={project.github} target="_blank" rel="noopener noreferrer" className="project-detail-btn">
-                <GithubIcon size={14} />
-                GitHub
-              </a>
-            )}
-            {project.githubSecondary && (
-              <a href={project.githubSecondary.url} target="_blank" rel="noopener noreferrer" className="project-detail-btn">
-                <GithubIcon size={14} />
-                {project.githubSecondary.label}
-              </a>
-            )}
-            {project.figma && (
-              <a href={project.figma} target="_blank" rel="noopener noreferrer" className="project-detail-btn">
-                <FigmaIcon size={14} />
-                Figma
-              </a>
-            )}
-            {project.medium && (
-              <a href={project.medium} target="_blank" rel="noopener noreferrer" className="project-detail-btn">
-                <MediumIcon size={14} />
-                Medium
-              </a>
-            )}
-            {project.competition && (
-              <a href={project.competition.url} target="_blank" rel="noopener noreferrer" className="project-detail-btn">
-                <ExternalLinkIcon size={14} />
-                {project.competition.label}
-              </a>
-            )}
+
+            <div className="project-detail-actions">
+              {project.live && project.live !== '#' && (
+                <a href={project.live} target="_blank" rel="noopener noreferrer" className="project-detail-btn project-detail-btn--primary">
+                  <ExternalLinkIcon size={14} />
+                  See it Live
+                </a>
+              )}
+              {project.github && (
+                <a href={project.github} target="_blank" rel="noopener noreferrer" className="project-detail-btn">
+                  <GithubIcon size={14} />
+                  GitHub
+                </a>
+              )}
+              {project.githubSecondary && (
+                <a href={project.githubSecondary.url} target="_blank" rel="noopener noreferrer" className="project-detail-btn">
+                  <GithubIcon size={14} />
+                  {project.githubSecondary.label}
+                </a>
+              )}
+              {project.figma && (
+                <a href={project.figma} target="_blank" rel="noopener noreferrer" className="project-detail-btn">
+                  <FigmaIcon size={14} />
+                  Figma
+                </a>
+              )}
+              {project.medium && (
+                <a href={project.medium} target="_blank" rel="noopener noreferrer" className="project-detail-btn">
+                  <MediumIcon size={14} />
+                  Medium
+                </a>
+              )}
+              {project.competition && (
+                <a href={project.competition.url} target="_blank" rel="noopener noreferrer" className="project-detail-btn">
+                  <ExternalLinkIcon size={14} />
+                  {project.competition.label}
+                </a>
+              )}
+              {project.doc && (
+                <a href={project.doc.url} target="_blank" rel="noopener noreferrer" className="project-detail-btn">
+                  <DocIcon size={14} />
+                  {project.doc.label}
+                </a>
+              )}
+            </div>
           </div>
-        </div>
+        </FloatReveal>
 
         {project.images && project.images.length > 0 && (
-          <ProjectGallery images={project.images} title={project.title} />
+          <FloatReveal from="left">
+            <ProjectGallery images={project.images} title={project.title} />
+          </FloatReveal>
         )}
 
         <article className="project-prose">
-          <section id="overview" className="project-section">
-            <h2>Overview</h2>
-            {toParagraphs(project.overview).map((p, i) => (
-              <p key={i}>{p}</p>
-            ))}
-          </section>
-
-          {project.problem && (
-            <section id="problem" className="project-section">
-              <h2>Problem</h2>
-              {toParagraphs(project.problem).map((p, i) => (
+          <FloatReveal from="left">
+            <section id="overview" className="project-section">
+              <TypeText as="h2" text="Overview" />
+              {toParagraphs(project.overview).map((p, i) => (
                 <p key={i}>{p}</p>
               ))}
             </section>
+          </FloatReveal>
+
+          {project.problem && (
+            <FloatReveal from="right">
+              <section id="problem" className="project-section">
+                <TypeText as="h2" text="Problem" />
+                {toParagraphs(project.problem).map((p, i) => (
+                  <p key={i}>{p}</p>
+                ))}
+              </section>
+            </FloatReveal>
           )}
 
           {project.constraints && project.constraints.length > 0 && (
-            <section id="constraints" className="project-section">
-              <h2>Constraints</h2>
-              <ul>
-                {project.constraints.map((c, i) => (
-                  <li key={i} dangerouslySetInnerHTML={{ __html: renderInlineMarkup(c) }} />
-                ))}
-              </ul>
-            </section>
+            <FloatReveal from="left">
+              <section id="constraints" className="project-section">
+                <TypeText as="h2" text="Constraints" />
+                <ul>
+                  {project.constraints.map((c, i) => (
+                    <li key={i} dangerouslySetInnerHTML={{ __html: renderInlineMarkup(c) }} />
+                  ))}
+                </ul>
+              </section>
+            </FloatReveal>
           )}
 
           {project.decisions && project.decisions.length > 0 && (
-            <section id="key-engineering-decisions" className="project-section">
-              <h2>Key Engineering Decisions</h2>
-              {project.decisions.map((d) => (
-                <div key={d.title} className="project-decision">
-                  <h3 id={slugify(d.title)}>{d.title}</h3>
-                  {toParagraphs(d.body).map((p, i) => (
-                    <p key={i}>{p}</p>
-                  ))}
-                  <p><strong>Reason:</strong><br />{d.reason}</p>
-                  <p><strong>Tradeoff:</strong><br />{d.tradeoff}</p>
-                </div>
-              ))}
-            </section>
+            <FloatReveal from="right">
+              <section id="key-engineering-decisions" className="project-section">
+                <TypeText as="h2" text="Key Engineering Decisions" />
+                {project.decisions.map((d) => (
+                  <div key={d.title} className="project-decision">
+                    <h3 id={slugify(d.title)}>{d.title}</h3>
+                    {toParagraphs(d.body).map((p, i) => (
+                      <p key={i}>{p}</p>
+                    ))}
+                    <p><strong>Reason:</strong><br />{d.reason}</p>
+                    <p><strong>Tradeoff:</strong><br />{d.tradeoff}</p>
+                  </div>
+                ))}
+              </section>
+            </FloatReveal>
           )}
 
           {project.videos && project.videos.length > 0 && (
-            <section id="launch-footage" className="project-section">
-              <h2>Launch Footage</h2>
-              <ProjectVideoGallery videos={project.videos} />
-            </section>
+            <FloatReveal from="left">
+              <section id="launch-footage" className="project-section">
+                <TypeText as="h2" text="Launch Footage" />
+                <ProjectVideoGallery videos={project.videos} />
+              </section>
+            </FloatReveal>
           )}
 
           {project.results && project.results.length > 0 && (
-            <section id="results" className="project-section">
-              <h2>Results</h2>
-              <ul>
-                {project.results.map((r, i) => (
-                  <li key={i}>{r}</li>
-                ))}
-              </ul>
-            </section>
+            <FloatReveal from="right">
+              <section id="results" className="project-section">
+                <TypeText as="h2" text="Results" />
+                <ul>
+                  {project.results.map((r, i) => (
+                    <li key={i}>{r}</li>
+                  ))}
+                </ul>
+              </section>
+            </FloatReveal>
           )}
 
           {project.takeaways && project.takeaways.length > 0 && (
-            <section id="takeaways" className="project-section">
-              <h2>Takeaways</h2>
-              <ul>
-                {project.takeaways.map((t, i) => (
-                  <li key={i}>{t}</li>
-                ))}
-              </ul>
-            </section>
+            <FloatReveal from="left">
+              <section id="takeaways" className="project-section">
+                <TypeText as="h2" text="Takeaways" />
+                <ul>
+                  {project.takeaways.map((t, i) => (
+                    <li key={i}>{t}</li>
+                  ))}
+                </ul>
+              </section>
+            </FloatReveal>
           )}
         </article>
 
         {project.note && (
-          <div className="project-detail-note" dangerouslySetInnerHTML={{ __html: renderInlineMarkup(project.note) }} />
+          <FloatReveal from="up">
+            <div className="project-detail-note" dangerouslySetInnerHTML={{ __html: renderInlineMarkup(project.note) }} />
+          </FloatReveal>
         )}
 
         <footer className="project-detail-footer">

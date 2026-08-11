@@ -2,7 +2,7 @@ export type Project = {
   slug: string;
   title: string;
   description: string;
-  section: 'major' | 'other' | 'poc';
+  section: 'featured' | 'selected' | 'earlier';
   tags: string[];
   github?: string;
   githubSecondary?: { label: string; url: string };
@@ -10,6 +10,7 @@ export type Project = {
   figma?: string;
   medium?: string;
   competition?: { label: string; url: string };
+  doc?: { label: string; url: string };
   note?: string;
   label?: string;
   logo?: string;
@@ -17,6 +18,7 @@ export type Project = {
   videos?: { id: string; vertical?: boolean; title: string }[];
   pdf?: { src: string; title: string };
   book?: { src: string; title: string };
+  trifold?: { left: string; middle: string; right: string; title: string };
   image: string;
   images?: string[];
   overview: string;
@@ -31,7 +33,7 @@ export const projects: Project[] = [
   {
     slug: 'rolecaller',
     title: 'rolecaller',
-    section: 'major',
+    section: 'featured',
     description:
       'An offline-first attendance and data platform built for teachers in Malto tribal community schools in Jharkhand, India — making student attendance visible where paper records and unreliable connectivity fail.',
     tags: ['React Native', 'Expo', 'TypeScript', 'SQLite', 'PostgreSQL', 'Drizzle ORM', 'Offline-First'],
@@ -96,7 +98,7 @@ export const projects: Project[] = [
   {
     slug: 'cmc-palliative',
     title: 'CMC Palliative Care',
-    section: 'major',
+    section: 'featured',
     description:
       "Designed and developed a new website for the Department of Palliative Medicine at one of Asia's leading hospitals. This development build is 100% my own work — the finalized version is now live on CMC Vellore's official website.",
     tags: ['HTML5', 'CSS3', 'JavaScript', 'Accessibility', 'Healthcare'],
@@ -143,7 +145,7 @@ export const projects: Project[] = [
   {
     slug: 'seattle-earthquake-gis',
     title: 'Fault Lines & Front Lines',
-    section: 'major',
+    section: 'featured',
     description:
       "A TSA Geospatial Technology portfolio mapping King County's seismic risk — fault lines, liquefaction zones, unreinforced masonry buildings, and emergency infrastructure — to predict earthquake impact and guide disaster planning for Seattle. 1st Place at the WTSA State Conference; competed at TSA Nationals in Nashville.",
     tags: ['Python', 'GIS', 'ArcGIS', 'Spatial Analysis', 'Disaster Response'],
@@ -205,11 +207,11 @@ export const projects: Project[] = [
   {
     slug: 'komekare',
     title: 'KomeKare',
-    section: 'major',
+    section: 'selected',
     description:
       'AI-powered platform that helps caregivers, families, and healthcare providers stay connected. 3rd place at the Divergent Hackathon.',
     tags: ['Expo', 'React Native', 'Firebase', 'Zustand', 'Gemini 1.5 Flash', 'NativeWind'],
-    github: 'https://github.com/CleeYOpro/viceversa',
+    github: 'https://github.com/CleeYOpro/.                                                                                                                                                                                                                                          viceversa',
     githubSecondary: {
       label: 'Provider Repo',
       url: 'https://github.com/nikhilvincentv/care-sync-provider-viceversa',
@@ -255,77 +257,165 @@ export const projects: Project[] = [
       'Coordination problems are often better solved by better information flow than new features.',
     ],
   },
-  {
-    slug: 'port-laken',
-    title: 'Port Laken',
-    section: 'major',
-    description:
-      "An AI-powered civic portal for Port Laken, a fictional city (inspired by Port Angeles, WA) built to demonstrate what a modern local-government website could look like — resource directory, alerts, maps, and a Gemini-powered assistant on top of Next.js and Firebase. Placed 8th at WTSA 2026.",
-    tags: ['Next.js', 'React', 'Firebase', 'Gemini AI', 'Leaflet', 'Framer Motion', 'Civic Tech'],
-    github: 'https://github.com/CleeYOpro/portLakenWeb',
-    live: 'https://tsa-plkn123.vercel.app/',
-    label: '8th Place — WTSA 2026',
-    image: '/projects/images/portlaken/hero.png',
-    images: [
-      '/projects/images/portlaken/hero.png',
-      '/projects/images/portlaken/about.png',
-      '/projects/images/portlaken/resource-directory.png',
-      '/projects/images/portlaken/resource-detail.png',
-      '/projects/images/portlaken/footer-signin.png',
-    ],
-    overview:
-      "Port Laken is an AI-powered civic portal for a fictional city inspired by Port Angeles, WA, built strictly for educational and demonstration purposes. It's a deep dive into what a modern municipal website could be if it borrowed high-end web development practices — App Router SSR, real-time backends, and LLM-assisted search — instead of the static, form-heavy templates most city sites still ship. The app is highly modular: Next.js App Router handles rendering and navigation, Firebase covers auth and data, and Google's Gemini API powers a context-bound assistant that helps residents find civic resources without hallucinating answers.",
-    problem:
-      "Most city government websites bury the information residents actually need — where to find food assistance, healthcare, emergency services — behind dense PDFs and disconnected department pages, with no way to just ask a question and get a grounded answer. Port Laken was built to show that a civic portal can be both visually excellent and genuinely useful: a resource directory that aggregates and lets the community contribute to, an AI assistant that answers only from real local data, and alert/transit tooling residents would actually use.",
-    constraints: [
-      'The AI assistant must never hallucinate civic information — a wrong answer about emergency resources is worse than no answer.',
-      'Community-submitted resources need a moderation gate so the directory can\'t be spammed or polluted with unapproved listings.',
-      'Maps rely on Leaflet, which depends on `window` and cannot run during Next.js server rendering.',
-      'Protected flows (submitting a resource, managing alerts) must return users to where they left off after sign-in, not just dump them on a generic dashboard.',
-    ],
-    decisions: [
-      {
-        title: 'RAG-style prompt grounding without a vector database',
-        body: 'A local buildAiContext function assembles the AI\'s entire knowledge on the fly: the user\'s query, a hand-written PAGE_CONTEXTS map summarizing every page in the app, and the JSON of whatever civic resources are currently filtered. The Gemini 2.5 Flash prompt is instructed to answer using only that bundled JSON, and to return a structured object (text, pageContextKey, address) instead of free-form prose.',
-        reason: 'The resource dataset is small enough that a full vector database and embedding pipeline would be overkill — dumping the relevant JSON directly into the prompt gets the same grounding guarantee with far less infrastructure.',
-        tradeoff: 'This approach doesn\'t scale to a large resource catalog the way real retrieval would, and every query re-sends the full filtered dataset rather than just the top-k relevant matches.',
-      },
-      {
-        title: 'Dual-source resource directory: hardcoded seed data plus Firestore submissions',
-        body: 'The Resource Directory merges a hardcoded RESOURCES array with live community submissions pulled from Firestore, filtered to approvalStatus == "approved". New submissions default to "pending" and stay invisible until an administrator flips that flag.',
-        reason: 'Launching with zero listings would make the directory useless on day one, but letting the community contribute is the actual long-term value — seeding it while gating public submissions behind moderation gets both.',
-        tradeoff: 'Two data sources means every read path (and the AI context builder) has to merge and dedupe them consistently instead of querying one collection.',
-      },
-      {
-        title: 'Dynamically imported, SSR-disabled Leaflet maps',
-        body: 'Maps & Transport uses react-leaflet with ssr: false in its dynamic import, so Leaflet only ever initializes client-side.',
-        reason: 'Leaflet reads `window` at import time, which crashes during Next.js server rendering — disabling SSR for just that component keeps the rest of the app server-rendered.',
-        tradeoff: 'The map component pays a client-side loading gap since it can no longer be part of the server-rendered HTML.',
-      },
-      {
-        title: 'callbackUrl-based auth redirects',
-        body: 'Protected actions (submitting a resource, managing alerts) redirect to /sign-in with a callbackUrl query param, so Firebase Auth sends the user back to the exact page they were trying to reach.',
-        reason: 'Forcing a resident who just wanted to submit a food pantry listing through a generic post-login landing page adds friction that a government site can\'t afford if it wants real community participation.',
-        tradeoff: 'Every protected route needs to consistently construct and read that redirect param, which is easy to miss when adding new protected flows.',
-      },
-    ],
-    results: [
-      'Placed 8th at the WTSA 2026 state conference.',
-      'Built a working Gemini-grounded AI assistant that answers only from local page context and live resource data, with structured (not free-form) output.',
-      'Shipped a full civic-portal feature set — resource directory with moderation, alerts with Resend email dispatch, Leaflet transit maps, and callback-aware authentication.',
-      'Designed as an open-source design-philosophy reference, with the goal of showing it to nearby city governments (Snoqualmie, Carnation, Sammamish, Kirkland) as a model for modernizing their own municipal sites.',
-    ],
-    takeaways: [
-      'Grounding an LLM against a small, well-organized local dataset can beat a full RAG pipeline — the constraint is prompt discipline, not infrastructure.',
-      'A moderation gate (pending vs. approved) is what makes community-submitted content safe to combine with curated seed data.',
-      'Framing a project as fictional/educational (Port Laken vs. a real city) freed up ambitious design and feature choices that would be harder to greenlight on a real municipal contract.',
-      'A polished demo is a means, not the end goal — the real test is whether an actual city government would want to adopt the approach.',
-    ],
+{
+slug: 'port-laken',
+
+title: 'Port Laken',
+
+section: 'selected',
+
+description:
+"An AI-powered civic portal for Port Laken, a fictional city inspired by Port Angeles, WA. Built to show what a modern city website could actually look like, then open-sourced and shown to city governments around Washington, where the UI and overall design became inspiration for their own sites. Includes a resource directory, alerts, maps, and a Gemini-powered civic assistant. Placed 8th at WTSA 2026.",
+
+tags: ['Next.js', 'React', 'Firebase', 'Gemini AI', 'Leaflet', 'Framer Motion', 'Civic Tech'],
+
+github: 'https://github.com/CleeYOpro/portLakenWeb',
+
+live: 'https://tsa-plkn123.vercel.app/',
+
+label: '8th Place — WTSA 2026',
+
+image: '/projects/images/portlaken/hero.png',
+
+images: [
+'/projects/images/portlaken/hero.png',
+'/projects/images/portlaken/about.png',
+'/projects/images/portlaken/resource-directory.png',
+'/projects/images/portlaken/resource-detail.png',
+'/projects/images/portlaken/footer-signin.png',
+],
+
+overview:
+"Port Laken is an AI-powered civic portal for a fictional city inspired by Port Angeles, WA. I built it because I kept looking at city websites and thinking, bro, why does finding basic local information have to be this hard? So instead of making another basic school project, we built what we thought a city website should actually feel like: clean, fast, searchable, interactive, and actually designed around residents. It uses Next.js App Router, Firebase, Gemini, Leaflet, and a bunch of other modern web tooling. We open-sourced the whole thing and actually showed it to city governments around Washington. The coolest part wasn't the TSA placement. It was seeing municipalities take UI and information-architecture ideas from the project and think about how they could modernize their own sites.",
+
+problem:
+"Most city websites are still built around departments, PDFs, giant navigation menus, and making residents figure out where information lives. That's backwards. If someone needs food assistance, healthcare, an emergency resource, or transportation info, they shouldn't need to understand the city's organizational structure first. Port Laken flips that around. It's built around what residents are actually trying to do. The resource directory puts useful local services in one place, the AI assistant lets people ask questions normally, maps make transportation easier to understand, and alerts surface things residents actually need to know. We also made the project open-source and took it beyond TSA by showing it to city governments around WA. The goal was basically: here's what a city portal could look like if we stopped accepting 2012-era government UX as the default.",
+
+constraints: [
+
+'The AI assistant cannot hallucinate civic information. Being confidently wrong about an emergency resource is way worse than saying "I don’t know."',
+
+'Community-submitted resources need moderation, otherwise the directory becomes a spam box immediately.',
+
+'Leaflet depends on `window`, so it cannot just be imported during Next.js server rendering.',
+
+'Protected actions need to send users back to exactly where they were instead of dumping them on some random dashboard after signing in.',
+
+'The site had to be more than a pretty mockup. It needed enough real functionality that an actual city could look at it and go, "wait, we could actually use some of this."',
+
+],
+
+decisions: [
+
+{
+
+title: 'Built it as something cities could actually steal from',
+
+body: 'We intentionally open-sourced Port Laken and showed it to city governments around Washington instead of letting it die as a TSA submission. The point was to give cities an actual working example they could click through, inspect, and pull ideas from. That included the navigation, resource directory, page layouts, maps, alerts, and general resident-first UI philosophy.',
+
+reason: 'If you want to convince a city that its website could be better, a Figma mockup or a PowerPoint deck only gets you so far. Give them a working website and suddenly the conversation is way more concrete.',
+
+tradeoff: 'Port Laken is obviously not production municipal infrastructure. It is a reference implementation. The point is showing what is possible and giving cities ideas they can actually adapt.',
+
+},
+
+{
+
+title: 'Designed around residents, not city departments',
+
+body: 'Instead of making residents navigate a giant list of departments, Port Laken organizes information around actual problems people have: finding food, healthcare, emergency services, transportation, and other local resources.',
+
+reason: 'Nobody wakes up thinking "I need to access the Department of Human Services." They think "I need help finding food." The website should understand that difference.',
+
+tradeoff: 'This takes more work to organize and categorize than just copying a government org chart into a navbar.',
+
+},
+
+{
+
+title: 'RAG-style prompt grounding without a vector database',
+
+body: 'A local buildAiContext function builds the AI context on every query using the user’s question, a PAGE_CONTEXTS map covering the app, and the JSON for currently relevant civic resources. Gemini 2.5 Flash is told to only answer from that context and returns structured output instead of just dumping free-form text.',
+
+reason: 'The dataset is small. Building a whole vector database and embedding pipeline would’ve been infrastructure for the sake of infrastructure. Just give the model the relevant data.',
+
+tradeoff: 'This obviously doesn’t scale to a massive resource database. Every query can still send a pretty chunky chunk of JSON.',
+
+},
+
+{
+
+title: 'Seed data + moderated community submissions',
+
+body: 'The directory starts with curated RESOURCES data but also supports community submissions through Firestore. Submissions start as pending and only become visible after approval.',
+
+reason: 'A directory with zero resources is useless, but letting literally anyone publish directly is also a terrible idea. Seed it, then let the community expand it safely.',
+
+tradeoff: 'Now there are two sources of truth, so reads and AI context have to merge and dedupe them properly.',
+
+},
+
+{
+
+title: 'Dynamically imported Leaflet maps',
+
+body: 'Maps & Transport uses react-leaflet with SSR disabled so Leaflet only initializes in the browser.',
+
+reason: 'Leaflet wants `window`, Next.js server rendering does not have `window`. Pretty straightforward.',
+
+tradeoff: 'The map has a small client-side loading gap instead of being included in the initial server-rendered HTML.',
+
+},
+
+{
+
+title: 'callbackUrl auth redirects',
+
+body: 'When someone tries to submit a resource or manage alerts without being signed in, they get sent to /sign-in with a callbackUrl. After authenticating, they land right back where they started.',
+
+reason: 'If someone is trying to submit a food pantry listing, making them sign in and then hunt through the dashboard for the page again is just unnecessary friction.',
+
+tradeoff: 'Every new protected flow has to handle the callback correctly or the UX gets annoying fast.',
+
+},
+
+],
+
+results: [
+
+'Placed 8th at the WTSA 2026 state conference.',
+
+'Open-sourced the project and showed it to city governments around Washington, turning a TSA project into an actual civic-tech reference instead of letting it sit in a GitHub repo forever.',
+
+'City governments around WA took UI and information-architecture inspiration from Port Laken while thinking through how to modernize their own municipal websites.',
+
+'Built a working Gemini-powered civic assistant that is grounded in local page context and resource data instead of just letting an LLM freestyle government information.',
+
+'Shipped a full civic portal: moderated resource directory, alerts with Resend email dispatch, interactive Leaflet maps, authentication, and resident-focused navigation.',
+
+'Released the implementation publicly so other developers and municipalities can actually look at the code and ideas instead of taking our word for it.',
+
+],
+
+takeaways: [
+
+'The coolest validation wasn’t getting 8th at TSA. It was showing the thing to actual city governments and having them take UI ideas from it for their own sites.',
+
+'Open-source is way more useful when you build something people can actually take. A city can look at a working portal and say "we should do that" way easier than they can from a 30-slide presentation.',
+
+'For small datasets, you don’t always need some insane RAG architecture. Sometimes just giving the model the right data and aggressively constraining what it can say is enough.',
+
+'Community submissions only work if there is a moderation layer. Pending → approved is boring, but it matters.',
+
+'Making the city fictional gave us room to experiment without pretending we were shipping production government infrastructure. We could go crazy with the UX while still making something real cities could learn from.',
+
+'At the end of the day, I cared less about making a cool TSA website and more about whether someone outside the competition would actually want to use the ideas. That ended up being the most interesting part of Port Laken.',
+],
   },
   {
     slug: 'price-it-right',
     title: 'Price It Right',
-    section: 'other',
+    section: 'selected',
     description:
       'Interactive pricing + demand business simulator — adjust price to see demand, revenue, and profit shift in real time, with market twist events like crashes and new competitors. Now used as official teaching material in Tesla STEM High School\'s Business & Econ class.',
     tags: ['React', 'TypeScript', 'Vite', 'Chart.js', 'Tailwind CSS', 'Economics'],
@@ -365,14 +455,20 @@ export const projects: Project[] = [
   {
     slug: 'azoto-column',
     title: 'Project AzotoColumn',
-    section: 'other',
+    section: 'selected',
     description:
       "A bioretention system that filters nitrogen-heavy farm runoff through layered soil, sand, and gravel, then pumps the cleaned water back for irrigation. Built for TSA's Engineering Design event on the theme \"Managing the Nitrogen Cycle\" — placed 4th at the WTSA State Conference and was presented at TSA Nationals.",
     tags: ['Engineering Design', 'Bioretention', 'Environmental Science', 'Prototyping', 'TSA'],
     label: '4th Place — WTSA State Conference · TSA Nationals',
-    book: {
-      src: '/projects/azoto-column-portfolio.pdf',
-      title: 'Engineering Design Portfolio',
+    doc: {
+      label: 'Documentation Portfolio',
+      url: 'https://lwsd-my.sharepoint.com/:w:/g/personal/1056935_lwsd_org/IQDxKbCiiDtMRKVVkhE5yQH9ATbwCYlwHNrtvLunWkln9gk?e=gA9kw5',
+    },
+    trifold: {
+      left: '/projects/azoto/left.png',
+      middle: '/projects/azoto/middle.png',
+      right: '/projects/azoto/right.png',
+      title: 'Nationals Trifold',
     },
     image: '/projects/images/azoto-column/main.jpg',
     overview:
@@ -420,7 +516,7 @@ export const projects: Project[] = [
   {
     slug: 'wordle-whiz',
     title: 'Wordle Whiz',
-    section: 'poc',
+    section: 'earlier',
     description:
       'My first-ever coding project — an interactive Wordle-solving tool built in Python during freshman year (2023-2024) that filters words based on clues using input logic and a clean UI.',
     tags: ['Python', 'Game', 'Algorithms'],
@@ -442,7 +538,7 @@ export const projects: Project[] = [
   {
     slug: 'tarc-rocket',
     title: 'TARC Rocket',
-    section: 'poc',
+    section: 'earlier',
     description:
       "Designed, simulated, and flew a model rocket carrying a raw-egg payload for the American Rocketry Challenge (TARC) — the world's largest student rocket contest. After a disqualifying first test flight, our redesigned rocket completed all three qualifying launches with an intact egg, landing within feet and seconds of the target window.",
     tags: ['Model Rocketry', 'OpenRocket', 'SolidWorks CAD', 'Recovery Systems', 'Team Engineering', 'TARC'],
@@ -515,6 +611,10 @@ export function getProject(slug: string): Project | undefined {
   return projects.find((p) => p.slug === slug);
 }
 
-export const majorProjects = projects.filter((p) => p.section === 'major');
-export const otherProjects = projects.filter((p) => p.section === 'other');
-export const pocProjects = projects.filter((p) => p.section === 'poc');
+function orderBySlug(slugs: string[]): Project[] {
+  return slugs.map((slug) => getProject(slug)!);
+}
+
+export const featuredProjects = orderBySlug(['rolecaller', 'seattle-earthquake-gis', 'cmc-palliative']);
+export const selectedProjects = orderBySlug(['price-it-right', 'port-laken', 'komekare', 'azoto-column']);
+export const earlierProjects = orderBySlug(['tarc-rocket', 'wordle-whiz']);

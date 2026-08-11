@@ -1977,6 +1977,186 @@ kbd[data-key='space'] { width: 225px; }
   color: var(--accent);
 }
 
+/* ── Trifold image viewer ── */
+.project-trifold {
+  margin-bottom: 24px;
+  outline: none;
+}
+
+.trifold-stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 420px;
+  max-height: 80vh;
+  padding: 40px 20px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: #101012;
+  overflow: hidden;
+  perspective: 2400px;
+  perspective-origin: 50% 42%;
+  touch-action: none;
+  user-select: none;
+  cursor: grab;
+}
+
+.trifold-stage:active {
+  cursor: grabbing;
+}
+
+.trifold-scene {
+  --tf-zoom: 1;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.trifold-scene--animated {
+  transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.trifold-scene--animated .trifold-sheet {
+  transition: height 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.trifold-sheet {
+  position: relative;
+  /* Zoom grows the real layout size (not a CSS transform: scale()) so the
+     browser re-rasterizes the source images at native resolution instead of
+     GPU-upscaling an already-rasterized layer, which is what was causing the
+     blur at higher zoom levels. */
+  height: calc(clamp(300px, 52vh, 520px) * var(--tf-zoom, 1));
+  aspect-ratio: 2543 / 3841;
+  transform-style: preserve-3d;
+}
+
+.trifold-panel {
+  all: unset;
+  display: block;
+  cursor: zoom-in;
+  backface-visibility: hidden;
+}
+
+.trifold-panel:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.trifold-panel--mid {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.55);
+}
+
+.trifold-hinge {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 0;
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.trifold-hinge--left { left: 0; }
+.trifold-hinge--right { right: 0; }
+
+.trifold-panel--left,
+.trifold-panel--right {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: auto;
+}
+
+.trifold-panel--left {
+  right: 0;
+  aspect-ratio: 1260 / 3840;
+  box-shadow: -6px 0 24px rgba(0, 0, 0, 0.5), inset -10px 0 16px -12px rgba(0, 0, 0, 0.6);
+}
+
+.trifold-panel--right {
+  left: 0;
+  aspect-ratio: 1260 / 3840;
+  box-shadow: 6px 0 24px rgba(0, 0, 0, 0.5), inset 10px 0 16px -12px rgba(0, 0, 0, 0.6);
+}
+
+.trifold-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  user-select: none;
+}
+
+.trifold-panel--focused {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.trifold-controls {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  display: flex;
+  gap: 6px;
+  z-index: 2;
+}
+
+.trifold-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: background 150ms, border-color 150ms, opacity 150ms, color 150ms;
+}
+
+.trifold-btn:hover {
+  background: rgba(0, 0, 0, 0.75);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.trifold-btn--active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #0b0b0c;
+}
+
+.trifold-hint {
+  position: absolute;
+  left: 12px;
+  bottom: 10px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.45);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.project-trifold-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+@media (max-width: 640px) {
+  .trifold-hint {
+    display: none;
+  }
+}
+
 .project-detail-video {
   width: 100%;
   aspect-ratio: 16 / 9;

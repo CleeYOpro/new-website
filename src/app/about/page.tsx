@@ -4,6 +4,8 @@ import { MouseEvent, useState } from 'react';
 import { FiChevronDown, FiChevronLeft, FiChevronRight, FiExternalLink, FiGlobe, FiLinkedin } from 'react-icons/fi';
 import CircularGallery from '@/components/CircularGallery';
 import KeyboardDemo from '@/components/KeyboardDemo';
+import { FloatReveal } from '@/components/FloatReveal';
+import { TypeText } from '@/components/TypeText';
 
 type ExpMedia =
   | { type: 'image'; src: string; alt: string }
@@ -308,15 +310,19 @@ function EducationItem({ edu }: { edu: typeof education[number] }) {
   );
 }
 
+const MOMENTS_IMG = '/projects/images/moments';
+
 const photos = [
-  { image: 'https://picsum.photos/seed/dhv1/800/600', text: 'At the office' },
-  { image: 'https://picsum.photos/seed/dhv2/800/600', text: 'Side project mode' },
-  { image: 'https://picsum.photos/seed/dhv3/800/600', text: 'Ahmedabad' },
-  { image: 'https://picsum.photos/seed/dhv4/800/600', text: 'Late nights' },
-  { image: 'https://picsum.photos/seed/dhv5/800/600', text: 'Conference' },
-  { image: 'https://picsum.photos/seed/dhv6/800/600', text: 'Debugging' },
-  { image: 'https://picsum.photos/seed/dhv7/800/600', text: 'Deploy day' },
-  { image: 'https://picsum.photos/seed/dhv8/800/600', text: 'Weekend build' },
+  { image: `${MOMENTS_IMG}/onstage.png`, text: 'On stage at TSA Nationals' },
+  { image: `${MOMENTS_IMG}/tsanats.png`, text: 'TSA Nationals with the team' },
+  { image: `${MOMENTS_IMG}/rolecaller_on_theground.png`, text: 'Field-testing RoleCaller in rural India' },
+  { image: `${MOMENTS_IMG}/divergent.png`, text: 'Late-night build session' },
+  { image: `${MOMENTS_IMG}/docusigntower.png`, text: 'Walking through downtown Seattle' },
+  { image: `${MOMENTS_IMG}/harvard.png`, text: 'Exploring a building at Harvard' },
+  { image: `${MOMENTS_IMG}/indiatlas.png`, text: 'Tracing a route through India' },
+  { image: `${MOMENTS_IMG}/taj.png`, text: 'The Taj Mahal, Agra' },
+  { image: `${MOMENTS_IMG}/siberia.png`, text: 'Snow day' },
+  { image: `${MOMENTS_IMG}/techboothchurch.png`, text: 'Running sound and lights at church' },
 ];
 
 export default function AboutPage() {
@@ -324,78 +330,89 @@ export default function AboutPage() {
     <>
       <main className="main-content">
         {/* Bio */}
-       <section className="about-hero">
-  <h1 className="hero-name">About me</h1>
+        <FloatReveal from="up">
+          <section className="about-hero">
+            <TypeText as="h1" className="hero-name" text="About me" />
 
-  <div className="about-body">
-    <p>
-      I&apos;m Cleo — a high school senior from Seattle building software,
-      exploring maps, and trying to solve problems that actually matter.
-    </p>
+            <div className="about-body">
+              <TypeText
+                as="p"
+                delay={300}
+                text="Hey, I'm Cleo. I'm a high school student, full-stack developer, and builder interested in turning ambitious ideas into things people can actually use."
+              />
 
-    <p>
-      Growing up between India and the United States shaped how I think about
-      technology. I&apos;ve seen how simple tools can make a difference in places
-      where resources, connectivity, and access are limited.
-    </p>
+              <TypeText
+                as="p"
+                delay={700}
+                text="I spend most of my time working across software, GIS, healthcare, and education. I like building practical systems, working with teams, and taking ideas from an early concept to something real."
+              />
 
-    <p>
-      Most of my work sits somewhere between software engineering, healthcare,
-      education, and geospatial technology. I&apos;ve built offline tools for
-      schools, websites for healthcare organizations, and used satellite data
-      to study disasters.
-    </p>
+              <TypeText
+                as="p"
+                delay={1100}
+                text="Right now, I'm exploring full-stack development, remote sensing, computer vision, and AI while balancing Running Start at Bellevue College, leadership, and a growing list of side projects."
+              />
 
-    <p>
-      Currently exploring computer vision, remote sensing, AI, and full-stack
-      development while balancing Running Start at Bellevue College,
-      leadership, and way too many side projects.
-    </p>
-  </div>
-</section>
+              <TypeText
+                as="p"
+                delay={1500}
+                text="I'm curious by default, care a lot about execution, and like building things that have a purpose beyond just being another project."
+              />
+            </div>
+          </section>
+        </FloatReveal>
+
         {/* Tech Stack */}
-        <section className="section">
-          <h2 className="section-title">Tech Stack</h2>
-          <KeyboardDemo />
-        </section>
+        <FloatReveal from="left">
+          <section className="section">
+            <TypeText as="h2" className="section-title" text="Tech Stack" />
+            <KeyboardDemo />
+          </section>
+        </FloatReveal>
 
         {/* Experience */}
-        <section className="section">
-          <h2 className="section-title">Experience</h2>
-          <div className="exp-list">
-            {experience.map((exp) => (
-              <ExperienceItem key={exp.company} exp={exp} />
-            ))}
-          </div>
-        </section>
+        <FloatReveal from="right">
+          <section className="section">
+            <TypeText as="h2" className="section-title" text="Experience" />
+            <div className="exp-list">
+              {experience.map((exp) => (
+                <ExperienceItem key={exp.company} exp={exp} />
+              ))}
+            </div>
+          </section>
+        </FloatReveal>
 
         {/* Education */}
-        <section className="section">
-          <h2 className="section-title">Education</h2>
-          <div className="exp-list">
-            {education.map((edu) => (
-              <EducationItem key={edu.institution} edu={edu} />
-            ))}
-          </div>
-        </section>
+        <FloatReveal from="left">
+          <section className="section">
+            <TypeText as="h2" className="section-title" text="Education" />
+            <div className="exp-list">
+              {education.map((edu) => (
+                <EducationItem key={edu.institution} edu={edu} />
+              ))}
+            </div>
+          </section>
+        </FloatReveal>
 
         {/* Photo Gallery */}
-        <section className="section about-gallery-section">
-          <h2 className="section-title">Moments</h2>
-          <p className="section-more" style={{ marginTop: 0, marginBottom: 16 }}>
-            Drag to explore.
-          </p>
-          <div className="about-gallery-wrap">
-            <CircularGallery
-              items={photos}
-              bend={1}
-              textColor="#d4d4d4"
-              borderRadius={0.05}
-              scrollEase={0.02}
-              scrollSpeed={3}
-            />
-          </div>
-        </section>
+        <FloatReveal from="down">
+          <section className="section about-gallery-section">
+            <TypeText as="h2" className="section-title" text="Moments" />
+            <p className="section-more" style={{ marginTop: 0, marginBottom: 16 }}>
+              Drag to explore.
+            </p>
+            <div className="about-gallery-wrap">
+              <CircularGallery
+                items={photos}
+                bend={1}
+                textColor="#d4d4d4"
+                borderRadius={0.05}
+                scrollEase={0.02}
+                scrollSpeed={3}
+              />
+            </div>
+          </section>
+        </FloatReveal>
       </main>
     </>
   );
