@@ -521,7 +521,7 @@ takeaways: [
       'My first-ever coding project — an interactive Wordle-solving tool built in Python during freshman year (2023-2024) that filters words based on clues using input logic and a clean UI.',
     tags: ['Python', 'Game', 'Algorithms'],
     github: 'https://github.com/CleeYOpro/Freshman-yr-TSHS',
-    live: 'https://cleof.us/wordle',
+    live: '/wordle.html',
     image: '/projects/images/wordlewhiz/image.png',
     images: ['/projects/images/wordlewhiz/image.png'],
     overview:
