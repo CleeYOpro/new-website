@@ -6,7 +6,7 @@ import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
   title: "Cleo Balaranjith's Website",
-  description: 'Portfolio of Cleo Balaranjith, a high school junior building practical projects and messing around with tech.',
+  description: 'Portfolio of Cleo Balaranjith, a high school senior building practical projects and messing around with tech.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
