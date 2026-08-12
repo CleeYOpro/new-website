@@ -613,7 +613,7 @@ takeaways: [
       'A modern React portfolio with a dynamic hero, project highlights, interactive UI, and responsive design — showcasing front-end skills and creative flair. The previous version of cleof.us, since replaced by the site you\'re on now.',
     tags: ['React', 'Create React App', 'styled-components', 'GSAP', 'Lenis', 'React Router'],
     github: 'https://github.com/CleeYOpro/potential-parakeet',
-    live: 'https://cleof.us',
+    live: 'https://old.cleof.us/',
     note:
       "This was my personal site at cleof.us before the 2026 overhaul — cleof.us now points to the site you're currently on, so the live link above reflects wherever the domain currently resolves rather than this specific version.",
     image: '/projects/images/personal-website-old/hero.png',
