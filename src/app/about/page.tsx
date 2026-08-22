@@ -2,7 +2,7 @@
 
 import { MouseEvent, useState } from 'react';
 import { FiChevronDown, FiChevronLeft, FiChevronRight, FiExternalLink, FiGlobe, FiLinkedin } from 'react-icons/fi';
-import CircularGallery from '@/components/CircularGallery';
+import MorphSlider from '@/components/MorphSlider';
 import KeyboardDemo from '@/components/KeyboardDemo';
 import { FloatReveal } from '@/components/FloatReveal';
 import { TypeText } from '@/components/TypeText';
@@ -33,6 +33,21 @@ const experience = [
       { type: 'image', src: `${EXP_IMG}/bwsi3.png`, alt: 'MIT BWSI remote sensing analysis' },
       { type: 'image', src: `${EXP_IMG}/bwsi4.png`, alt: 'MIT BWSI presentation' },
     ] as ExpMedia[],
+  },
+  {
+    company: 'TRAE',
+    location: 'Remote',
+    role: 'AI Beta Testing Intern',
+    period: 'Mar 2025 - Jun 2025',
+    bullets: [
+      <>Selected as a <strong>paid beta tester for TRAE's AI coding agent</strong>, working directly with unreleased models and features before public rollout.</>,
+      <>Stress-tested agent behavior, prompts, and tool-use workflows across edge cases to surface failures before release.</>,
+      <>Delivered structured bug reports and UX feedback that shaped prompt design and agent reliability improvements, contributing to <strong>feedback loops between testers and the model team</strong>.</>,
+    ],
+    tags: ['AI Testing', 'Prompt Engineering', 'Agent Evaluation', 'QA'],
+    website: 'https://www.trae.ai/',
+    linkedin: null,
+    media: [] as ExpMedia[],
   },
   {
     company: 'Rove Miles (Y Combinator W24)',
@@ -313,16 +328,16 @@ function EducationItem({ edu }: { edu: typeof education[number] }) {
 const MOMENTS_IMG = '/projects/images/moments';
 
 const photos = [
-  { image: `${MOMENTS_IMG}/onstage.png`, text: 'somehow ended up on that stage' },
-  { image: `${MOMENTS_IMG}/tsanats.png`, text: 'feelin natty' },
-  { image: `${MOMENTS_IMG}/rolecaller_on_theground.png`, text: 'finally seeing rolecaller out in the real world' },
-  { image: `${MOMENTS_IMG}/divergent.png`, text: 'late night debugging' },
-  { image: `${MOMENTS_IMG}/docusigntower.png`, text: 'just exploring downtown Seattle' },
-  { image: `${MOMENTS_IMG}/harvard.png`, text: 'ended up at Harvard' },
-  { image: `${MOMENTS_IMG}/indiatlas.png`, text: 'atlases are cool' },
-  { image: `${MOMENTS_IMG}/taj.png`, text: 'Taj Mahal was surreal' },
-  { image: `${MOMENTS_IMG}/siberia.png`, text: 'ironic cause the iceman was a nice man' },
-  { image: `${MOMENTS_IMG}/techboothchurch.png`, text: 'running tech at church' },
+  { image: `${MOMENTS_IMG}/onstage.png`, caption: 'somehow ended up on that stage' },
+  { image: `${MOMENTS_IMG}/tsanats.png`, caption: 'feelin natty' },
+  { image: `${MOMENTS_IMG}/rolecaller_on_theground.png`, caption: 'finally seeing rolecaller out in the real world' },
+  { image: `${MOMENTS_IMG}/divergent.png`, caption: 'late night debugging' },
+  { image: `${MOMENTS_IMG}/docusigntower.png`, caption: 'just exploring downtown Seattle' },
+  { image: `${MOMENTS_IMG}/harvard.png`, caption: 'ended up at Harvard' },
+  { image: `${MOMENTS_IMG}/indiatlas.png`, caption: 'atlases are cool' },
+  { image: `${MOMENTS_IMG}/taj.png`, caption: 'Taj Mahal was surreal' },
+  { image: `${MOMENTS_IMG}/siberia.png`, caption: 'ironic cause the iceman was a nice man' },
+  { image: `${MOMENTS_IMG}/techboothchurch.png`, caption: 'running tech at church' },
 ];
 
 export default function AboutPage() {
@@ -403,16 +418,17 @@ export default function AboutPage() {
           <section className="section about-gallery-section">
             <TypeText as="h2" className="section-title" text="Moments" />
             <p className="section-more" style={{ marginTop: 0, marginBottom: 16 }}>
-              Drag to explore.
+              Drag or use the arrows to explore.
             </p>
             <div className="about-gallery-wrap">
-              <CircularGallery
+              <MorphSlider
                 items={photos}
-                bend={1}
-                textColor="#d4d4d4"
-                borderRadius={0.05}
-                scrollEase={0.02}
-                scrollSpeed={3}
+                transition="melt"
+                intensity={0.55}
+                aberration={0.35}
+                drift={0.4}
+                autoplay
+                radius={16}
               />
             </div>
           </section>
