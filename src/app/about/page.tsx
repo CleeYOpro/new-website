@@ -16,6 +16,7 @@ const EXP_IMG = '/projects/images/experience';
 const experience = [
   {
     company: 'MIT Beaver Works Summer Institute',
+    logo: '/beaverworks.png',
     location: 'Remote',
     role: 'Remote Sensing for Disaster Response',
     period: 'Jul 2026 - Present',
@@ -36,6 +37,7 @@ const experience = [
   },
   {
     company: 'TRAE',
+    logo: '/trae.png',
     location: 'Remote',
     role: 'AI Beta Testing Intern',
     period: 'Mar 2025 - Jun 2025',
@@ -51,6 +53,7 @@ const experience = [
   },
   {
     company: 'Rove Miles (Y Combinator W24)',
+    logo: '/rove.png',
     location: 'Remote',
     role: 'Back-End Development Intern',
     period: 'Oct 2024 - Dec 2024',
@@ -69,6 +72,7 @@ const experience = [
   },
   {
     company: 'Seattle Sports & Regenerative Medicine',
+    logo: '/seattleregen.png',
     location: 'Seattle, WA',
     role: 'Business Strategy Analyst',
     period: 'Oct 2024',
@@ -84,6 +88,7 @@ const experience = [
   },
   {
     company: 'University of Michigan',
+    logo: '/umich.png',
     location: 'Ann Arbor, MI',
     role: 'Joy of Coding Summer Program',
     period: 'Jun 2024 - Aug 2024',
@@ -102,6 +107,7 @@ const experience = [
   },
   {
     company: 'American Rocketry Challenge',
+    logo: '/rocketry.png',
     location: 'United States',
     role: 'Rocket Engineer',
     period: 'Sep 2023 - Mar 2025',
@@ -121,6 +127,7 @@ const experience = [
   },
   {
     company: 'Christian Medical College Vellore',
+    logo: '/cmc.png',
     location: 'Vellore, Tamil Nadu, India',
     role: 'Operations Observer',
     period: 'Aug 2023',
@@ -143,6 +150,7 @@ const experience = [
 const education = [
   {
     institution: 'Bellevue College',
+    logo: '/bc.png',
     location: 'Bellevue, WA',
     degree: 'Running Start',
     period: 'Sep 2025 - Jun 2027',
@@ -156,6 +164,7 @@ const education = [
   },
   {
     institution: 'Eastlake High School',
+    logo: '/ehs.png',
     location: 'Sammamish, WA',
     degree: 'High School Diploma',
     period: 'Sep 2025 - Jun 2027',
@@ -229,6 +238,10 @@ function ExperienceItem({ exp }: { exp: typeof experience[number] }) {
   return (
     <div className={`exp-item${open ? ' exp-item--open' : ''}`}>
       <div className="exp-header" onClick={() => hasDetails && setOpen(!open)} style={{ cursor: hasDetails ? 'pointer' : 'default' }}>
+        {exp.logo && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={exp.logo} alt="" className="exp-logo" />
+        )}
         <div className="exp-header-main">
           <span className="exp-company-row">
             <span className="exp-company">{exp.company}</span>
@@ -288,8 +301,14 @@ function EducationItem({ edu }: { edu: typeof education[number] }) {
   return (
     <div className={`exp-item${open ? ' exp-item--open' : ''}`}>
       <div className="exp-header" onClick={() => hasDetails && setOpen(!open)} style={{ cursor: hasDetails ? 'pointer' : 'default' }}>
+        {edu.logo && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={edu.logo} alt="" className="exp-logo" />
+        )}
         <div className="exp-header-main">
-          <span className="exp-company">{edu.institution}</span>
+          <span className="exp-company-row">
+            <span className="exp-company">{edu.institution}</span>
+          </span>
           <span className="exp-role-inline">{edu.degree}</span>
         </div>
         <div className="exp-header-right">
@@ -328,16 +347,17 @@ function EducationItem({ edu }: { edu: typeof education[number] }) {
 const MOMENTS_IMG = '/projects/images/moments';
 
 const photos = [
-  { image: `${MOMENTS_IMG}/onstage.png`, caption: 'somehow ended up on that stage' },
-  { image: `${MOMENTS_IMG}/tsanats.png`, caption: 'feelin natty' },
+  { image: `${MOMENTS_IMG}/onstage.png`, caption: 'stage fright' },
+  { image: `${MOMENTS_IMG}/tsanats.png`, caption: 'how we won nationals?' },
   { image: `${MOMENTS_IMG}/rolecaller_on_theground.png`, caption: 'finally seeing rolecaller out in the real world' },
-  { image: `${MOMENTS_IMG}/divergent.png`, caption: 'late night debugging' },
-  { image: `${MOMENTS_IMG}/docusigntower.png`, caption: 'just exploring downtown Seattle' },
-  { image: `${MOMENTS_IMG}/harvard.png`, caption: 'ended up at Harvard' },
-  { image: `${MOMENTS_IMG}/indiatlas.png`, caption: 'atlases are cool' },
-  { image: `${MOMENTS_IMG}/taj.png`, caption: 'Taj Mahal was surreal' },
-  { image: `${MOMENTS_IMG}/siberia.png`, caption: 'ironic cause the iceman was a nice man' },
+  { image: `${MOMENTS_IMG}/harvard.png`, caption: 'Harvard library' },
+  { image: `${MOMENTS_IMG}/indiatlas.png`, caption: 'atlases' },
+  { image: `${MOMENTS_IMG}/taj.png`, caption: 'Taj Mahal' },
+  { image: `${MOMENTS_IMG}/divergent.png`, caption: 'another hackathon' },
+  { image: `${MOMENTS_IMG}/docusigntower.png`, caption: 'downtown Seattle' },
+  { image: `${MOMENTS_IMG}/siberia.png`, caption: 'iceman' },
   { image: `${MOMENTS_IMG}/techboothchurch.png`, caption: 'running tech at church' },
+  { image: `${MOMENTS_IMG}/sequence.png`, caption: 'lets gamble on this game instead' },
 ];
 
 export default function AboutPage() {
@@ -418,7 +438,7 @@ export default function AboutPage() {
           <section className="section about-gallery-section">
             <TypeText as="h2" className="section-title" text="Moments" />
             <p className="section-more" style={{ marginTop: 0, marginBottom: 16 }}>
-              Drag or use the arrows to explore.
+              these r just some random pics
             </p>
             <div className="about-gallery-wrap">
               <MorphSlider

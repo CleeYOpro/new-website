@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import ClickParticles from '@/components/ClickParticles';
+import SiteBackground from '@/components/SiteBackground';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
@@ -20,6 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <noscript>You need to enable JavaScript to run this app.</noscript>
+        <SiteBackground />
         <ClickParticles particleColors={["#D5674F", "#e8896e", "#c04535"]} particleCount={10} velocityMax={2} />
         <div className="site-wrap">
           <Navbar />

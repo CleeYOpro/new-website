@@ -33,6 +33,7 @@ export const projects: Project[] = [
   {
     slug: 'rolecaller',
     title: 'rolecaller',
+    logo: '/r.rolecaller.png',
     section: 'featured',
     description:
       'An offline-first attendance and data platform built for teachers in Malto tribal community schools in Jharkhand, India — making student attendance visible where paper records and unreliable connectivity fail.',
@@ -661,6 +662,20 @@ takeaways: [
 
 export function getProject(slug: string): Project | undefined {
   return projects.find((p) => p.slug === slug);
+}
+
+export function getAward(project: Project): { place: string; logo: string } | null {
+  if (!project.label) return null;
+  const match = project.label.match(/^([\dA-Za-z]+\s+Place)\s*—\s*(.+)$/i);
+  let place = project.label;
+  if (match) {
+    const [, placeOnly, rest] = match;
+    const lastSegment = rest.includes('·') ? rest.split('·').pop()!.trim() : rest.trim();
+    place = `${placeOnly} · ${lastSegment}`;
+  }
+  if (project.label.includes('TSA')) return { place, logo: '/tsa.png' };
+  if (project.label.includes('Divergent')) return { place, logo: '/divergent.png' };
+  return null;
 }
 
 function orderBySlug(slugs: string[]): Project[] {

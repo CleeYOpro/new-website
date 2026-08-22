@@ -37,8 +37,14 @@
   width: 42px;
   height: 42px;
   border-radius: 10px;
-  object-fit: cover;
   background: linear-gradient(135deg, #007aff, #5856d6);
+}
+
+.notification-icon {
+  object-fit: contain;
+  padding: 4px;
+  box-sizing: border-box;
+  background: #fff;
 }
 
 .notification-badge {

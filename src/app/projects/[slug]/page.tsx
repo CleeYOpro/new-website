@@ -1,7 +1,8 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { projects, getProject } from '@/lib/projects';
+import { projects, getProject, getAward } from '@/lib/projects';
+import TsaBadge from '@/components/TsaBadge';
 import ProjectToc, { TocHeading } from '@/components/ProjectToc';
 import ProjectGallery from '@/components/ProjectGallery';
 import ProjectPdfSlides from '@/components/ProjectPdfSlides';
@@ -100,6 +101,8 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
   const project = getProject(slug);
   if (!project) notFound();
 
+  const award = getAward(project);
+
   const currentIndex = projects.findIndex((p) => p.slug === slug);
   const prevProject = projects[currentIndex - 1];
   const nextProject = projects[currentIndex + 1];
@@ -130,6 +133,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
                 <img src={project.logo} alt="" className="project-detail-logo" />
               )}
               <TypeText as="span" text={project.title} />
+              {award && <TsaBadge place={award.place} logo={award.logo} />}
             </h1>
             <TypeText as="p" className="project-detail-desc" delay={250} text={project.description} />
           </header>

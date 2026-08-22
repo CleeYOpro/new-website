@@ -1,0 +1,24 @@
+.dot-grid {
+  display: block;
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: -1;
+  transition: opacity 1.4s ease;
+}
+
+.dot-grid__wrap {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.dot-grid__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}

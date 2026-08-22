@@ -2,6 +2,8 @@
 
 import Link from 'next/link';
 import type { Project } from '@/lib/projects';
+import { getAward } from '@/lib/projects';
+import TsaBadge from './TsaBadge';
 
 function GithubIcon({ size = 18 }: { size?: number }) {
   return (
@@ -29,12 +31,14 @@ function ArrowUpRightIcon({ size = 18 }: { size?: number }) {
 }
 
 export default function ProjectRow({ project }: { project: Project }) {
+  const award = getAward(project);
   return (
     <div className="project-list-row-wrap">
       <Link href={`/projects/${project.slug}`} className="project-list-row">
         <div className="project-list-main">
           <div className="project-list-title-wrap">
             <h3 className="project-list-title">{project.title}</h3>
+            {award && <TsaBadge place={award.place} logo={award.logo} />}
             {project.label && <span className="project-list-label">{project.label}</span>}
           </div>
           <p className="project-list-desc">{project.description}</p>

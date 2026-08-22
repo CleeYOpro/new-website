@@ -3,8 +3,8 @@
   --surface: #1f1f22;
   --border: rgba(255, 255, 255, 0.07);
   --text: #d4d4d4;
-  --text-muted: #555;
-  --text-dim: #888;
+  --text-muted: #969696;
+  --text-dim: #b8b8b8;
   --accent: #D5674F;
   --accent-soft: rgba(213, 103, 79, 0.15);
   --grid-0: #27272a;
@@ -56,6 +56,23 @@ body::after {
   background: linear-gradient(to top, #18181b 0%, transparent 100%);
   pointer-events: none;
   z-index: 50;
+}
+
+/* Fixed top-of-viewport blur — fizzles out toward the content below */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 160px;
+  background: linear-gradient(to bottom, #18181b 0%, rgba(24, 24, 27, 0.6) 45%, transparent 100%);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 35%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 0%, black 35%, transparent 100%);
+  pointer-events: none;
+  z-index: 90;
 }
 
 /* ── Sticky Nav — blurred bg + bottom dissolve ── */
@@ -293,7 +310,7 @@ body::after {
 
 .exp-company {
   font-family: var(--font-sans);
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
   color: var(--text);
 }
@@ -301,12 +318,12 @@ body::after {
 .exp-item:hover .exp-company { color: var(--accent); }
 
 .exp-role, .exp-role-inline {
-  font-size: 11px;
-  color: var(--text-muted);
+  font-size: 13px;
+  color: var(--text-dim);
 }
 
 .exp-period {
-  font-size: 10px;
+  font-size: 12px;
   color: var(--text-muted);
   white-space: nowrap;
 }
@@ -330,7 +347,7 @@ body::after {
   display: flex;
   flex-direction: column;
   gap: 7px;
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-dim);
   line-height: 1.6;
 }
@@ -345,7 +362,7 @@ body::after {
 }
 
 .exp-tag {
-  font-size: 11px;
+  font-size: 12px;
   padding: 4px 10px;
   border: 1px solid rgba(255,255,255,0.1);
   border-radius: 999px;
@@ -363,6 +380,21 @@ body::after {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+}
+
+.exp-logo {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  border-radius: 5px;
+  flex-shrink: 0;
+  transition: width 220ms ease, height 220ms ease, border-radius 220ms ease;
+}
+
+.exp-item--open .exp-logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
 }
 
 .exp-company-bubble {
@@ -454,7 +486,7 @@ body::after {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-muted);
   transition: color 150ms;
 }
@@ -1850,6 +1882,40 @@ kbd[data-key='space'] { width: 225px; }
 }
 
 .project-list-row:hover .project-list-title { color: #e8896e; }
+
+.tsa-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px 3px 4px;
+  border-radius: 999px;
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+
+.project-detail-title .tsa-badge {
+  margin-left: 12px;
+  font-size: 12px;
+}
+
+.tsa-badge-logo {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.tsa-badge-place {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--accent);
+  white-space: nowrap;
+  letter-spacing: 0.01em;
+}
 
 .project-list-label {
   font-size: 10px;

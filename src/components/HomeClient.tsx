@@ -181,6 +181,7 @@ I’ve worked on everything from offline education tools in rural India to satel
                 time="2026"
                 message="Selected for MIT Beaver Works Summer Institute (~6% acceptance rate)."
                 badge="<6%"
+                icon="/beaverworks.png"
               />
 
               <NotificationCard
@@ -189,6 +190,7 @@ I’ve worked on everything from offline education tools in rural India to satel
                 time="2025-2026"
                 message="2× TSA Nationals | 2nd place in Technology Problem Solving"
                 badge="2x"
+                icon="/tsa.png"
               />
               <NotificationCard
                 appName="CMC Vellore"
@@ -196,6 +198,7 @@ I’ve worked on everything from offline education tools in rural India to satel
                 time="2023-2024"
                 message="Built a multilingual hospital website supporting 3M+ annual visitors."
                 badge="3M+"
+                icon="/cmc.png"
               />
 
               <NotificationCard
@@ -204,6 +207,7 @@ I’ve worked on everything from offline education tools in rural India to satel
                 time="2025"
                 message="Designed rockets reaching 1,057 ft with successful egg payload recovery."
                 badge="1057"
+                icon="/rocketry.png"
               />
 
             </CardSwap>
