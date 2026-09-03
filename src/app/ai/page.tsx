@@ -54,69 +54,79 @@ export default function AiPage() {
 
   return (
     <main className="ai-page">
-      <FloatReveal from="up">
-        <section className="ai-hero">
-          <TypeText as="h1" className="hero-name" text="cleo://ai" />
-          <TypeText as="p" className="hero-sub" delay={300} text="chat with cleo's AI to learn more about him." />
-        </section>
-      </FloatReveal>
+      <div className="ai-building-overlay">
+        <FloatReveal from="up">
+          <FiAlertCircle size={28} />
+          <h2>cleo://ai is being built</h2>
+          <p>check back soon - this page is under construction.</p>
+        </FloatReveal>
+      </div>
 
-      <FloatReveal from="up" delay={100}>
-        <div className="ai-dev-notice">
-          <FiAlertCircle size={14} />
-          <span>This AI isn&apos;t fully functional yet — it&apos;s under development, so responses are limited for now.</span>
-        </div>
-      </FloatReveal>
+      <div className="ai-blurred" aria-hidden="true" inert>
+        <FloatReveal from="up">
+          <section className="ai-hero">
+            <TypeText as="h1" className="hero-name" text="cleo://ai" />
+            <TypeText as="p" className="hero-sub" delay={300} text="chat with cleo's AI to learn more about him." />
+          </section>
+        </FloatReveal>
 
-      <FloatReveal from="down" delay={200}>
-        <div className="ai-chat-window">
-          <div className="ai-messages">
-            {messages.map((m, i) => (
-              <div key={i} className={`ai-msg ai-msg--${m.role}`}>
-                <p>{m.content}</p>
-              </div>
-            ))}
-            {loading && (
-              <div className="ai-msg ai-msg--assistant ai-msg--loading">
-                <span className="ai-dot" /><span className="ai-dot" /><span className="ai-dot" />
-              </div>
-            )}
-            <div ref={bottomRef} />
+        <FloatReveal from="up" delay={100}>
+          <div className="ai-dev-notice">
+            <FiAlertCircle size={14} />
+            <span>This AI isn&apos;t fully functional yet - it&apos;s under development, so responses are limited for now.</span>
           </div>
-        </div>
+        </FloatReveal>
 
-        <div className="ai-suggestions">
-          {SUGGESTIONS.map((s) => (
-            <button key={s} className="ai-chip" onClick={() => send(s)} disabled={loading}>
-              {s}
+        <FloatReveal from="down" delay={200}>
+          <div className="ai-chat-window">
+            <div className="ai-messages">
+              {messages.map((m, i) => (
+                <div key={i} className={`ai-msg ai-msg--${m.role}`}>
+                  <p>{m.content}</p>
+                </div>
+              ))}
+              {loading && (
+                <div className="ai-msg ai-msg--assistant ai-msg--loading">
+                  <span className="ai-dot" /><span className="ai-dot" /><span className="ai-dot" />
+                </div>
+              )}
+              <div ref={bottomRef} />
+            </div>
+          </div>
+
+          <div className="ai-suggestions">
+            {SUGGESTIONS.map((s) => (
+              <button key={s} className="ai-chip" onClick={() => send(s)} disabled={loading}>
+                {s}
+              </button>
+            ))}
+          </div>
+
+          <div className="ai-input-row">
+            <textarea
+              className="ai-input"
+              placeholder="Type a message..."
+              value={input}
+              onChange={e => setInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              rows={1}
+              disabled={loading}
+            />
+            <button
+              className="ai-send"
+              onClick={() => send(input)}
+              disabled={loading || !input.trim()}
+              aria-label="Send"
+            >
+              <FiSend size={15} />
             </button>
-          ))}
-        </div>
+          </div>
 
-        <div className="ai-input-row">
-          <textarea
-            className="ai-input"
-            placeholder="Type a message..."
-            value={input}
-            onChange={e => setInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-            rows={1}
-            disabled={loading}
-          />
-          <button
-            className="ai-send"
-            onClick={() => send(input)}
-            disabled={loading || !input.trim()}
-            aria-label="Send"
-          >
-            <FiSend size={15} />
-          </button>
-        </div>
-
-        <p className="ai-disclaimer">
-          AI can make mistakes. Double-check anything important.
-        </p>
-      </FloatReveal>
+          <p className="ai-disclaimer">
+            AI can make mistakes. Double-check anything important.
+          </p>
+        </FloatReveal>
+      </div>
     </main>
   );
 }
@@ -132,9 +142,9 @@ async function simulateReply(text: string): Promise<string> {
   if (q.includes('project'))
     return "some highlights: RoleCaller (offline-first attendance app for tribal schools in Jharkhand, India), Fault Lines & Front Lines (GIS earthquake risk mapping, 1st in state), Port Laken (AI-powered civic portal shown to city governments around WA), Price It Right (an econ simulator now used as real classroom material), and AzotoColumn (a bioretention system for farm runoff).";
   if (q.includes('contact') || q.includes('reach') || q.includes('email'))
-    return "reach cleo at cbalaranjith@gmail.com — or on instagram @cle0b, github @CleeYOpro, linkedin @cleofus, or medium @cleobala.";
+    return "reach cleo at cbalaranjith@gmail.com - or on instagram @cle0b, github @CleeYOpro, linkedin @cleofus, or medium @cleobala.";
   if (q.includes('experience') || q.includes('work history') || q.includes('internship'))
-    return "he's interned at Rove Miles (YC W24) building a Python autocomplete system for 9,000+ airports, did business strategy work for Seattle Sports & Regenerative Medicine, studied computer vision at the University of Michigan's Joy of Coding program, and observed hospital operations at CMC Vellore — one of Asia's leading hospitals.";
+    return "he's interned at Rove Miles (YC W24) building a Python autocomplete system for 9,000+ airports, did business strategy work for Seattle Sports & Regenerative Medicine, studied computer vision at the University of Michigan's Joy of Coding program, and observed hospital operations at CMC Vellore - one of Asia's leading hospitals.";
   if (q.includes('school') || q.includes('education') || q.includes('college'))
     return "he's doing Running Start at Bellevue College while attending Eastlake High School in Sammamish, WA, and was selected for MIT's Beaver Works Summer Institute (~6% acceptance) for remote sensing for disaster response.";
   if (q.includes('tsa') || q.includes('competition') || q.includes('award') || q.includes('hackathon'))
@@ -142,7 +152,7 @@ async function simulateReply(text: string): Promise<string> {
   if (q.includes('hello') || q.includes('hi') || q.includes('hey'))
     return "hey! ask me about cleo's work, projects, tech stack, or how to get in touch.";
   if (q.includes('location') || q.includes('where'))
-    return "sammamish, wa — pacific time.";
+    return "sammamish, wa - pacific time.";
 
   return "great question. cleo is a high school senior building practical software across education, healthcare, and geospatial technology. for specifics, reach him directly at cbalaranjith@gmail.com.";
 }

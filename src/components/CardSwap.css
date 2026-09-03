@@ -22,14 +22,3 @@
   -webkit-backface-visibility: hidden;
 }
 
-@media (max-width: 768px) {
-  .card-swap-container {
-    transform: translate(-50%, -50%) scale(0.75);
-  }
-}
-
-@media (max-width: 480px) {
-  .card-swap-container {
-    transform: translate(-50%, -50%) scale(0.6);
-  }
-}

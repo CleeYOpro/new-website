@@ -141,7 +141,7 @@ const DotGrid = ({
 
       // one coherent traveling wavefront (like the logo's flowing ridge
       // lines) rather than several independent frequencies fighting each
-      // other — its direction slants slowly so it never feels static
+      // other - its direction slants slowly so it never feels static
       const dirAngle = (Math.PI / 10) * Math.sin(phase * 0.12);
       const dirX = Math.cos(dirAngle);
       const dirY = Math.sin(dirAngle);

@@ -38,8 +38,11 @@ export default function ProjectRow({ project }: { project: Project }) {
         <div className="project-list-main">
           <div className="project-list-title-wrap">
             <h3 className="project-list-title">{project.title}</h3>
-            {award && <TsaBadge place={award.place} logo={award.logo} />}
-            {project.label && <span className="project-list-label">{project.label}</span>}
+            {award ? (
+              <TsaBadge place={award.place} logo={award.logo} />
+            ) : (
+              project.label && <span className="project-list-label">{project.label}</span>
+            )}
           </div>
           <p className="project-list-desc">{project.description}</p>
         </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import type { IconType } from 'react-icons';
 import { TbBrandAdobeIllustrator } from 'react-icons/tb';
 import { FaJava } from "react-icons/fa";
@@ -284,6 +284,29 @@ export default function KeyboardDemo() {
   const [displayKey, setDisplayKey] = useState<string | null>(null);
   const clickTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  const scaleWrapRef = useRef<HTMLDivElement>(null);
+  const keyboardRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(1);
+  const [wrapHeight, setWrapHeight] = useState<number | null>(null);
+
+  useLayoutEffect(() => {
+    function update() {
+      const wrap = scaleWrapRef.current;
+      const kb = keyboardRef.current;
+      if (!wrap || !kb) return;
+      const naturalWidth = kb.offsetWidth;
+      const naturalHeight = kb.offsetHeight;
+      if (!naturalWidth || !naturalHeight) return;
+      const available = wrap.clientWidth;
+      const next = Math.min(1, available / naturalWidth);
+      setScale(next);
+      setWrapHeight(naturalHeight * next);
+    }
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
+
   useEffect(() => {
     const down = (event: KeyboardEvent) => {
       const key = getKeyIdentifier(event);
@@ -335,7 +358,17 @@ export default function KeyboardDemo() {
 
   return (
     <div className="keyboard-demo">
-      <div className="keyboard" aria-label="Interactive keyboard demo">
+      <div
+        className="keyboard-scale-wrap"
+        ref={scaleWrapRef}
+        style={wrapHeight != null ? { height: wrapHeight } : undefined}
+      >
+      <div
+        className="keyboard"
+        ref={keyboardRef}
+        style={{ transform: `scale(${scale})` }}
+        aria-label="Interactive keyboard demo"
+      >
         {keyRows.map((row, rowIndex) => (
           <div className="row" key={`row-${rowIndex}`}>
             {row.map((item) => {
@@ -365,6 +398,7 @@ export default function KeyboardDemo() {
             })}
           </div>
         ))}
+      </div>
       </div>
       <div className="keyboard-info" aria-live="polite">
         {activeTech ? (

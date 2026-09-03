@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import type { CSSProperties } from 'react';
 import { FiArrowUpRight, FiCode } from 'react-icons/fi';
 import { FaMedium } from 'react-icons/fa6';
 import CardSwap from '@/components/CardSwap';
@@ -11,7 +12,7 @@ import { featuredProjects, getProject } from '@/lib/projects';
 import type { GithubContributions } from '@/lib/github';
 
 const blogs = [
-  { title: "Caching Isn't Hard. Knowing When to Invalidate Is.", date: '2026-07-05', description: "Learned the hard way that Redis isn't the hard part—cache invalidation is. Lessons from building a real-world backend." },
+  { title: "Caching Isn't Hard. Knowing When to Invalidate Is.", date: '2026-07-05', description: "Learned the hard way that Redis isn't the hard part - cache invalidation is. Lessons from building a real-world backend." },
   { title: 'Building a Multi-Layer Content Moderation Pipeline for an Anonymous Platform', date: '2026-06-15', description: 'Building a multi-layer moderation pipeline for an anonymous platform using rules, ML models, caching, and enforcement workflows.' },
   { title: 'Designing Real-Time Text Moderation Without Freezing the Browser', date: '2026-05-20', description: 'How I built real-time text moderation for an anonymous platform without freezing the browser or trusting the client.' },
 ];
@@ -26,25 +27,27 @@ function GithubGrid({ weeks, total, monthLabels }: GithubContributions) {
   }
 
   const labelByWeek = new Map(monthLabels.map((m) => [m.index, m.label]));
-  const columns = { gridTemplateColumns: `repeat(${weeks.length}, 1fr)` };
+  const weeksVar = { ['--weeks' as string]: weeks.length } as CSSProperties;
 
   return (
     <div className="github-grid-wrap">
-      <div className="github-months" style={columns}>
-        {weeks.map((_, wi) => (
-          <span key={wi}>{labelByWeek.get(wi) ?? ''}</span>
-        ))}
-      </div>
-      <div className="github-grid" style={columns}>
-        {weeks.map((week, wi) =>
-          week.map((level, di) => (
-            <div
-              key={`${wi}-${di}`}
-              className="github-cell"
-              style={{ background: level === null ? 'transparent' : GRID_LEVELS[level] }}
-            />
-          ))
-        )}
+      <div className="github-scroll" style={weeksVar}>
+        <div className="github-months">
+          {weeks.map((_, wi) => (
+            <span key={wi}>{labelByWeek.get(wi) ?? ''}</span>
+          ))}
+        </div>
+        <div className="github-grid">
+          {weeks.map((week, wi) =>
+            week.map((level, di) => (
+              <div
+                key={`${wi}-${di}`}
+                className="github-cell"
+                style={{ background: level === null ? 'transparent' : GRID_LEVELS[level] }}
+              />
+            ))
+          )}
+        </div>
       </div>
       <p className="github-total">{total.toLocaleString()} contributions in the last year</p>
     </div>
@@ -77,7 +80,7 @@ I’ve worked on everything from offline education tools in rural India to satel
           />
 
           <div className="hero-actions">
-            <a href="https://www.linkedin.com/in/cleofus/" target="_blank" rel="noreferrer" className="hero-btn hero-btn--snippets">
+            <a href="/about#experience" className="hero-btn hero-btn--snippets">
               <FiCode size={13} />
               Resume
               <span className="btn-arrow"><FiArrowUpRight size={11} /></span>
@@ -147,12 +150,12 @@ I’ve worked on everything from offline education tools in rural India to satel
             </div>
           </div>
           <p className="section-more">
-            Articles are still being written — check back soon.
+            Articles are still being written - check back soon.
           </p>
         </section>
       </FloatReveal>
 
-      {/* By The Numbers — notification carousel floats in, no typing */}
+      {/* By The Numbers - notification carousel floats in, no typing */}
       <FloatReveal from="up">
         <section className="section">
           <h2 className="section-title">By the numbers</h2>

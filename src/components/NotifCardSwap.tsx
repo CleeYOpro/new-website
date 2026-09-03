@@ -40,7 +40,7 @@ export default function NotifCardSwap({ items, delay = 2400 }: Props) {
   useEffect(() => {
     function run() {
       timer.current = setTimeout(() => {
-        // 1. exit — top card flies up
+        // 1. exit - top card flies up
         setPhase('exit');
 
         setTimeout(() => {

@@ -407,7 +407,7 @@ export default function AboutPage() {
 
         {/* Experience */}
         <FloatReveal from="right">
-          <section className="section">
+          <section className="section" id="experience">
             <TypeText as="h2" className="section-title" text="Experience" />
             <div className="exp-list">
               {experience.map((exp, i) => (

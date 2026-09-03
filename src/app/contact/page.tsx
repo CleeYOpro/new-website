@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { FiSend } from 'react-icons/fi';
 import { FaEnvelope, FaGraduationCap, FaInstagram, FaGithub, FaLinkedin, FaDiscord } from 'react-icons/fa6';
 import { FloatReveal } from '@/components/FloatReveal';
@@ -19,7 +20,10 @@ const socialRows = [
   { label: 'Discord', value: 'View my Discord profile', href: 'https://discord.com/users/1287117811482628286', icon: FaDiscord },
 ];
 
+const WEB3FORMS_ACCESS_KEY = '5d9a3aae-90d1-4673-a651-4d22ad577977';
+
 export default function ContactPage() {
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
@@ -46,12 +50,28 @@ export default function ContactPage() {
 
     setStatus('sending');
     try {
-      await new Promise((r) => setTimeout(r, 1000)); // replace with real send
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_ACCESS_KEY,
+          subject: `New message from ${name || email}`,
+          from_name: name || 'Website contact form',
+          name,
+          email,
+          phone,
+          message,
+        }),
+      });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.message || 'Submission failed');
+
       setStatus('sent');
       setEmail('');
       setName('');
       setPhone('');
       setMessage('');
+      router.push('/contact/thank-you');
     } catch {
       setStatus('error');
     }
