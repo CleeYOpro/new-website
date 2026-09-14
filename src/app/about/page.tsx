@@ -40,7 +40,7 @@ company: 'BLACKBOX AI',
 logo: '/trae.png',
 location: 'Remote',
 role: 'AI Agent Beta Testing Intern',
-period: '2025',
+period: 'Jan 2026 - Mar 2026',
 bullets: [
 <>Beta tested <strong>BLACKBOX AI's autonomous coding agents</strong> across CLI and repository-level development workflows.</>,
 <>Stress-tested multi-agent execution, debugging, refactoring, and tool use across real codebases.</>,
