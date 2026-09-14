@@ -19,7 +19,7 @@ const experience = [
     logo: '/beaverworks.png',
     location: 'Remote',
     role: 'Remote Sensing for Disaster Response',
-    period: 'Jul 2026 - Present',
+    period: 'Mar 2026 - Aug 2026',
     bullets: [
       <>Selected for <strong>MIT BWSI Remote Sensing for Disaster Response</strong>, a selective program focused on satellite imagery, GIS, SAR analysis, and disaster response.</>,
       <>Built hands-on projects using <strong>Google Earth Engine, Sentinel-1 SAR data, and remote sensing workflows</strong> to analyze environmental disasters.</>,
