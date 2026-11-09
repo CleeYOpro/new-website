@@ -339,11 +339,12 @@ const photos = [
   { image: `${MOMENTS_IMG}/harvard.png`, caption: 'Harvard library' },
   { image: `${MOMENTS_IMG}/indiatlas.png`, caption: 'atlases' },
   { image: `${MOMENTS_IMG}/taj.png`, caption: 'Taj Mahal' },
-  { image: `${MOMENTS_IMG}/divergent.png`, caption: 'another hackathon' },
+  { image: `${MOMENTS_IMG}/geoengineering`, caption: 'onsite with GeoEngineers Inc for APES final project' },
   { image: `${MOMENTS_IMG}/docusigntower.png`, caption: 'downtown Seattle' },
-  { image: `${MOMENTS_IMG}/siberia.png`, caption: 'iceman' },
+  { image: `${MOMENTS_IMG}/siberia.png`, caption: 'mt. baker' },
   { image: `${MOMENTS_IMG}/techboothchurch.png`, caption: 'running tech at church' },
   { image: `${MOMENTS_IMG}/sequence.png`, caption: 'lets gamble on this game instead' },
+  { image: `${MOMENTS_IMG}/kingcountygis.png`, caption: 'Esri GIS Summit 2025' },
 ];
 
 export default function AboutPage() {
@@ -371,14 +372,9 @@ export default function AboutPage() {
               <TypeText
                 as="p"
                 delay={1100}
-                text="Right now I'm digging into full-stack development, remote sensing, computer vision, and AI, while also doing Running Start at Bellevue College, leadership stuff, and a list of side projects that only ever gets longer."
+                text="Right now, I'm spending most of my time on full-stack development, remote sensing, computer vision, and AI. Outside of that, I'm taking college classes at Bellevue College, working on Rolecaller, and getting more involved in the geospatial community."
               />
 
-              <TypeText
-                as="p"
-                delay={1500}
-                text="I'm curious by default, I care a lot about execution, and I'd rather build something with an actual purpose than just another project."
-              />
             </div>
           </section>
         </FloatReveal>

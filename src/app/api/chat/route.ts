@@ -17,6 +17,17 @@ const BIO = `
 - Awards: 1st in Geospatial Technology at WTSA State, 4th in Engineering Design, 2x TSA nationals, 2nd nationally in Technology Problem Solving, 3rd at the Divergent Hackathon, 8th at WTSA 2026.
 - Stack: React, Next.js, TypeScript, Python, Firebase, Supabase, Vercel, ArcGIS, Google Earth Engine. VS Code and GitHub daily.
 - Available to hire and open to interesting opportunities.
+- Hobbies and life outside of work:
+  - Working out, lifting, and boxing.
+  - Hiking, national parks, road trips, and getting outdoors (e.g. Redwood National Park, Mount Baker).
+  - Rocketry: designing, building, and launching model rockets.
+  - Photography: places he visits, landscapes, and random moments.
+  - Geography and maps: into atlases, Google Earth, and exploring places since he was young.
+  - Writing and storytelling: Medium articles, recounting experiences, and podcast storytelling.
+  - Building random things, like a backyard chicken coop, home automation, and hardware projects.
+  - Faith and church: Bible study, Awana, youth group, and volunteering are meaningful parts of his life.
+  - Travel and exploring cultures, especially around India and the US, visiting historical places and learning about different communities.
+  - Hanging out with friends, having conversations, and enjoying his senior year.
 - Contact: cbalaranjith@gmail.com, instagram @cle0b, github @CleeYOpro, linkedin @cleofus, medium @cleobala.
 `.trim();
 
