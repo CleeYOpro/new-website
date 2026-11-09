@@ -332,20 +332,28 @@ function EducationItem({ edu }: { edu: typeof education[number] }) {
 
 const MOMENTS_IMG = '/projects/images/moments';
 
+
 const photos = [
-  { image: `${MOMENTS_IMG}/onstage.png`, caption: 'stage fright' },
-  { image: `${MOMENTS_IMG}/tsanats.png`, caption: 'how we won nationals?' },
-  { image: `${MOMENTS_IMG}/rolecaller_on_theground.png`, caption: 'finally seeing rolecaller out in the real world' },
-  { image: `${MOMENTS_IMG}/harvard.png`, caption: 'Harvard library' },
-  { image: `${MOMENTS_IMG}/indiatlas.png`, caption: 'atlases' },
-  { image: `${MOMENTS_IMG}/taj.png`, caption: 'Taj Mahal' },
-  { image: `${MOMENTS_IMG}/geoengineering`, caption: 'onsite with GeoEngineers Inc for APES final project' },
-  { image: `${MOMENTS_IMG}/docusigntower.png`, caption: 'downtown Seattle' },
-  { image: `${MOMENTS_IMG}/siberia.png`, caption: 'mt. baker' },
-  { image: `${MOMENTS_IMG}/techboothchurch.png`, caption: 'running tech at church' },
-  { image: `${MOMENTS_IMG}/sequence.png`, caption: 'lets gamble on this game instead' },
-  { image: `${MOMENTS_IMG}/kingcountygis.png`, caption: 'Esri GIS Summit 2025' },
+  { image: `${MOMENTS_IMG}/geoengineering.png`, caption: 'a day in the field with GeoEngineers Inc.' },
+  { image: `${MOMENTS_IMG}/10 pm in NY.jpeg`, caption: '10 PM in New York' },
+  { image: `${MOMENTS_IMG}/indiatlas.png`, caption: 'where the obsession with maps started' },
+  { image: `${MOMENTS_IMG}/rolecaller_on_theground.png`, caption: 'RoleCaller, finally out in the field' },
+  { image: `${MOMENTS_IMG}/geoguessr.png`, caption: 'I swear I was 1.3k ELO in \'23' },
+  { image: `${MOMENTS_IMG}/Kali Linux.jpeg`, caption: 'messing around with Kali Linux' },
+  { image: `${MOMENTS_IMG}/taj.png`, caption: 'an afternoon at the Taj Mahal' },
+  { image: `${MOMENTS_IMG}/onstage.png`, caption: 'stagefright' },
+  { image: `${MOMENTS_IMG}/docusigntower.png`, caption: 'Third Avenue Interlude' },
+  { image: `${MOMENTS_IMG}/kingcountygis.png`, caption: 'King County GIS at the Esri Summit' },
+  { image: `${MOMENTS_IMG}/tsanats.png`, caption: 'TSA Nationals, working with whatever they gave us' },
+  { image: `${MOMENTS_IMG}/divergent.png`, caption: 'late nights at Divergent Hackathon' },
+  { image: `${MOMENTS_IMG}/download.jpeg`, caption: 'getting an ECG model running on an ESP32' },
+  { image: `${MOMENTS_IMG}/harvard.png`, caption: 'somewhere inside Harvard' },
+  { image: `${MOMENTS_IMG}/techboothchurch.png`, caption: 'Sunday mornings behind the soundboard' },
+  { image: `${MOMENTS_IMG}/PXL_20260619_010845610.MP.jpg`, caption: 'one of my backyard chickens' },
+  { image: `${MOMENTS_IMG}/sequence.png`, caption: 'another very competitive game of Sequence' },
+  { image: `${MOMENTS_IMG}/siberia.png`, caption: 'somewhere on Mt. Baker' },
 ];
+
 
 export default function AboutPage() {
   return (

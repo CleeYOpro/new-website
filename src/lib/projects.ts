@@ -210,7 +210,7 @@ export const projects: Project[] = [
     description:
       'A caregiving coordination app that puts caregivers, family, and healthcare providers on one shared patient profile, with Gemini summarizing the care data for each of them. 3rd place at the Divergent Hackathon.',
     tags: ['Expo', 'React Native', 'Firebase', 'Zustand', 'Gemini 1.5 Flash', 'NativeWind'],
-    github: 'https://github.com/CleeYOpro/.                                                                                                                                                                                                                                          viceversa',
+    github: 'https://github.com/CleeYOpro/viceversa',
     githubSecondary: {
       label: 'Provider Repo',
       url: 'https://github.com/nikhilvincentv/care-sync-provider-viceversa',
