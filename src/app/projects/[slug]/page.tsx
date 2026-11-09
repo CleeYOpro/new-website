@@ -1,7 +1,8 @@
+import type { ComponentType } from 'react';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { projects, getProject, getAward } from '@/lib/projects';
+import { projects, getProject, getAward, type Project } from '@/lib/projects';
 import TsaBadge from '@/components/TsaBadge';
 import ProjectToc, { TocHeading } from '@/components/ProjectToc';
 import ProjectGallery from '@/components/ProjectGallery';
@@ -11,6 +12,13 @@ import ProjectTrifold from '@/components/ProjectTrifold';
 import ProjectVideoGallery from '@/components/ProjectVideoGallery';
 import { FloatReveal } from '@/components/FloatReveal';
 import { TypeText } from '@/components/TypeText';
+import HurricaneClaude, { hurricaneClaudeHeadings } from '@/components/projects/HurricaneClaude';
+
+// Projects with a hand-built body (inline figures, tables) in place of the
+// generic case-study sections. Header, links, and footer nav stay shared.
+const customBodies: Record<string, { Body: ComponentType; headings: TocHeading[] }> = {
+  'hurricane-claude': { Body: HurricaneClaude, headings: hurricaneClaudeHeadings },
+};
 
 export async function generateStaticParams() {
   return projects.map((p) => ({ slug: p.slug }));
@@ -107,18 +115,8 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
   const prevProject = projects[currentIndex - 1];
   const nextProject = projects[currentIndex + 1];
 
-  const headings: TocHeading[] = [{ id: 'overview', label: 'Overview', depth: 1 }];
-  if (project.problem) headings.push({ id: 'problem', label: 'Problem', depth: 1 });
-  if (project.constraints?.length) headings.push({ id: 'constraints', label: 'Constraints', depth: 1 });
-  if (project.decisions?.length) {
-    headings.push({ id: 'key-engineering-decisions', label: 'Key Engineering Decisions', depth: 1 });
-    project.decisions.forEach((d) => {
-      headings.push({ id: slugify(d.title), label: d.title, depth: 2 });
-    });
-  }
-  if (project.videos?.length) headings.push({ id: 'launch-footage', label: 'Launch Footage', depth: 1 });
-  if (project.results?.length) headings.push({ id: 'results', label: 'Results', depth: 1 });
-  if (project.takeaways?.length) headings.push({ id: 'takeaways', label: 'Takeaways', depth: 1 });
+  const custom = customBodies[project.slug];
+  const headings = custom?.headings ?? buildHeadings(project);
 
   return (
     <div className="project-detail-wrap">
@@ -228,99 +226,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
           </div>
         </FloatReveal>
 
-        {project.images && project.images.length > 0 && (
-          <FloatReveal from="left">
-            <ProjectGallery images={project.images} title={project.title} />
-          </FloatReveal>
-        )}
-
-        <article className="project-prose">
-          <FloatReveal from="left">
-            <section id="overview" className="project-section">
-              <TypeText as="h2" text="Overview" />
-              {toParagraphs(project.overview).map((p, i) => (
-                <p key={i}>{p}</p>
-              ))}
-            </section>
-          </FloatReveal>
-
-          {project.problem && (
-            <FloatReveal from="right">
-              <section id="problem" className="project-section">
-                <TypeText as="h2" text="Problem" />
-                {toParagraphs(project.problem).map((p, i) => (
-                  <p key={i}>{p}</p>
-                ))}
-              </section>
-            </FloatReveal>
-          )}
-
-          {project.constraints && project.constraints.length > 0 && (
-            <FloatReveal from="left">
-              <section id="constraints" className="project-section">
-                <TypeText as="h2" text="Constraints" />
-                <ul>
-                  {project.constraints.map((c, i) => (
-                    <li key={i} dangerouslySetInnerHTML={{ __html: renderInlineMarkup(c) }} />
-                  ))}
-                </ul>
-              </section>
-            </FloatReveal>
-          )}
-
-          {project.decisions && project.decisions.length > 0 && (
-            <FloatReveal from="right">
-              <section id="key-engineering-decisions" className="project-section">
-                <TypeText as="h2" text="Key Engineering Decisions" />
-                {project.decisions.map((d) => (
-                  <div key={d.title} className="project-decision">
-                    <h3 id={slugify(d.title)}>{d.title}</h3>
-                    {toParagraphs(d.body).map((p, i) => (
-                      <p key={i}>{p}</p>
-                    ))}
-                    <p><strong>Reason:</strong><br />{d.reason}</p>
-                    <p><strong>Tradeoff:</strong><br />{d.tradeoff}</p>
-                  </div>
-                ))}
-              </section>
-            </FloatReveal>
-          )}
-
-          {project.videos && project.videos.length > 0 && (
-            <FloatReveal from="left">
-              <section id="launch-footage" className="project-section">
-                <TypeText as="h2" text="Launch Footage" />
-                <ProjectVideoGallery videos={project.videos} />
-              </section>
-            </FloatReveal>
-          )}
-
-          {project.results && project.results.length > 0 && (
-            <FloatReveal from="right">
-              <section id="results" className="project-section">
-                <TypeText as="h2" text="Results" />
-                <ul>
-                  {project.results.map((r, i) => (
-                    <li key={i}>{r}</li>
-                  ))}
-                </ul>
-              </section>
-            </FloatReveal>
-          )}
-
-          {project.takeaways && project.takeaways.length > 0 && (
-            <FloatReveal from="left">
-              <section id="takeaways" className="project-section">
-                <TypeText as="h2" text="Takeaways" />
-                <ul>
-                  {project.takeaways.map((t, i) => (
-                    <li key={i}>{t}</li>
-                  ))}
-                </ul>
-              </section>
-            </FloatReveal>
-          )}
-        </article>
+        {custom ? <custom.Body /> : <CaseStudyBody project={project} />}
 
         {project.note && (
           <FloatReveal from="up">
@@ -357,6 +263,122 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
         </footer>
       </main>
     </div>
+  );
+}
+
+function buildHeadings(project: Project): TocHeading[] {
+  const headings: TocHeading[] = [{ id: 'overview', label: 'Overview', depth: 1 }];
+  if (project.problem) headings.push({ id: 'problem', label: 'Problem', depth: 1 });
+  if (project.constraints?.length) headings.push({ id: 'constraints', label: 'Constraints', depth: 1 });
+  if (project.decisions?.length) {
+    headings.push({ id: 'key-engineering-decisions', label: 'Key Engineering Decisions', depth: 1 });
+    project.decisions.forEach((d) => {
+      headings.push({ id: slugify(d.title), label: d.title, depth: 2 });
+    });
+  }
+  if (project.videos?.length) headings.push({ id: 'launch-footage', label: 'Launch Footage', depth: 1 });
+  if (project.results?.length) headings.push({ id: 'results', label: 'Results', depth: 1 });
+  if (project.takeaways?.length) headings.push({ id: 'takeaways', label: 'Takeaways', depth: 1 });
+  return headings;
+}
+
+function CaseStudyBody({ project }: { project: Project }) {
+  return (
+    <>
+      {project.images && project.images.length > 0 && (
+        <FloatReveal from="left">
+          <ProjectGallery images={project.images} title={project.title} />
+        </FloatReveal>
+      )}
+
+      <article className="project-prose">
+        <FloatReveal from="left">
+          <section id="overview" className="project-section">
+            <TypeText as="h2" text="Overview" />
+            {toParagraphs(project.overview).map((p, i) => (
+              <p key={i}>{p}</p>
+            ))}
+          </section>
+        </FloatReveal>
+
+        {project.problem && (
+          <FloatReveal from="right">
+            <section id="problem" className="project-section">
+              <TypeText as="h2" text="Problem" />
+              {toParagraphs(project.problem).map((p, i) => (
+                <p key={i}>{p}</p>
+              ))}
+            </section>
+          </FloatReveal>
+        )}
+
+        {project.constraints && project.constraints.length > 0 && (
+          <FloatReveal from="left">
+            <section id="constraints" className="project-section">
+              <TypeText as="h2" text="Constraints" />
+              <ul>
+                {project.constraints.map((c, i) => (
+                  <li key={i} dangerouslySetInnerHTML={{ __html: renderInlineMarkup(c) }} />
+                ))}
+              </ul>
+            </section>
+          </FloatReveal>
+        )}
+
+        {project.decisions && project.decisions.length > 0 && (
+          <FloatReveal from="right">
+            <section id="key-engineering-decisions" className="project-section">
+              <TypeText as="h2" text="Key Engineering Decisions" />
+              {project.decisions.map((d) => (
+                <div key={d.title} className="project-decision">
+                  <h3 id={slugify(d.title)}>{d.title}</h3>
+                  {toParagraphs(d.body).map((p, i) => (
+                    <p key={i}>{p}</p>
+                  ))}
+                  <p><strong>Reason:</strong><br />{d.reason}</p>
+                  <p><strong>Tradeoff:</strong><br />{d.tradeoff}</p>
+                </div>
+              ))}
+            </section>
+          </FloatReveal>
+        )}
+
+        {project.videos && project.videos.length > 0 && (
+          <FloatReveal from="left">
+            <section id="launch-footage" className="project-section">
+              <TypeText as="h2" text="Launch Footage" />
+              <ProjectVideoGallery videos={project.videos} />
+            </section>
+          </FloatReveal>
+        )}
+
+        {project.results && project.results.length > 0 && (
+          <FloatReveal from="right">
+            <section id="results" className="project-section">
+              <TypeText as="h2" text="Results" />
+              <ul>
+                {project.results.map((r, i) => (
+                  <li key={i}>{r}</li>
+                ))}
+              </ul>
+            </section>
+          </FloatReveal>
+        )}
+
+        {project.takeaways && project.takeaways.length > 0 && (
+          <FloatReveal from="left">
+            <section id="takeaways" className="project-section">
+              <TypeText as="h2" text="Takeaways" />
+              <ul>
+                {project.takeaways.map((t, i) => (
+                  <li key={i}>{t}</li>
+                ))}
+              </ul>
+            </section>
+          </FloatReveal>
+        )}
+      </article>
+    </>
   );
 }
 

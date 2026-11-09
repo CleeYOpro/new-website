@@ -204,6 +204,28 @@ export const projects: Project[] = [
     ],
   },
   {
+    // Page body is hand-built in src/components/projects/HurricaneClaude.tsx.
+    slug: 'hurricane-claude',
+    title: 'Hurricane Claude',
+    logo: '/beaverworks.png',
+    section: 'featured',
+    description:
+      'Flood-risk maps for Hurricane Claude, a simulated New England hurricane at MIT Beaver Works Summer Institute. I turned ensemble forecasts, storm-surge estimates, elevation data, and social vulnerability into maps a response team could act on.',
+    tags: ['Python', 'GeoPandas', 'Shapely', 'DEM Analysis', 'Folium', 'CDC SVI', 'SAR', 'Remote Sensing'],
+    medium: 'https://medium.com/tierra-insights/zoom-out-from-google-maps-to-remote-sensing-at-mit-bwsi-8da153228e6e',
+    doc: { label: 'Slides', url: '/projects/images/hurricane-claude/hurricane-claude-slides.pdf' },
+    label: 'MIT BWSI 2026',
+    image: '/projects/images/hurricane-claude/flood-day-3.jpg',
+    overview:
+      "For the final project of MIT Beaver Works Summer Institute's Remote Sensing for Disaster Response course (July–August 2026), the class ran Hurricane Claude, a fictional hurricane-response simulation across New England, split into planning, logistics, operations, and public information teams. I was on Planning, responsible for flood mapping: averaging 20 ensemble forecast tracks into a central path, building 6 m / 4 m / 3 m storm-surge distance bands with Shapely and GeoPandas, applying a 30 m digital elevation model to separate surge exposure from actual flooding, and overlaying the CDC Social Vulnerability Index.\n\nI also supported the Operations team with imagery analysis (team work on ResNet damage classification, U-Net segmentation, and Grad-CAM on RescueNet and xView2) and with tracking a ship through 83 SAR radar scenes.",
+    results: [
+      'Day 4 analysis separated 4,390 km² of surge exposure from 370 km² of modeled flooding (8%) in the displayed study area; Day 3 was 5,845 km² exposed and 629 km² flooded (11%).',
+      'Flood risk concentrated in low-lying parts of the Boston Harbor area: East Boston, Chelsea, Quincy, and the Charles and Mystic river basins.',
+      'Chelsea and East Boston repeatedly stood out where coastal exposure overlapped high social vulnerability.',
+      'These are student-team simulation estimates, not a real forecast or evacuation order.',
+    ],
+  },
+  {
     slug: 'komekare',
     title: 'KomeKare',
     section: 'selected',
@@ -601,6 +623,6 @@ function orderBySlug(slugs: string[]): Project[] {
   return slugs.map((slug) => getProject(slug)!);
 }
 
-export const featuredProjects = orderBySlug(['rolecaller', 'seattle-earthquake-gis', 'cmc-palliative']);
+export const featuredProjects = orderBySlug(['rolecaller', 'seattle-earthquake-gis', 'cmc-palliative', 'hurricane-claude']);
 export const selectedProjects = orderBySlug(['price-it-right', 'port-laken', 'komekare', 'azoto-column']);
 export const earlierProjects = orderBySlug(['tarc-rocket', 'personal-website-old', 'wordle-whiz']);

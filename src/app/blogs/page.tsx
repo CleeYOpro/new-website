@@ -6,16 +6,16 @@ import { FloatReveal } from '@/components/FloatReveal';
 import { TypeText } from '@/components/TypeText';
 
 export const metadata: Metadata = {
-  title: 'Writing | Cleo Balaranjith',
+  title: 'Articles | Cleo Balaranjith',
   description: 'Articles by Cleo Balaranjith, originally published on Medium.',
 };
 
-export default function WritingPage() {
+export default function BlogsPage() {
   return (
     <main className="main-content writing-list-page">
       <FloatReveal from="up">
         <section className="projects-hero">
-          <TypeText as="h1" className="hero-name" text="Writing" />
+          <TypeText as="h1" className="hero-name" text="Articles" />
           <p className="writing-intro">
             Stories and write-ups, originally published on{' '}
             <a href="https://medium.com/@cleobala" target="_blank" rel="noopener noreferrer">Medium</a>.
@@ -26,7 +26,7 @@ export default function WritingPage() {
       <div className="projects-rows">
         {articles.map((a, i) => (
           <FloatReveal key={a.slug} from="down" delay={i * 90}>
-            <Link href={`/writing/${a.slug}`} className="writing-row">
+            <Link href={`/blogs/${a.slug}`} className="writing-row">
               <div className="writing-row-main">
                 <h2 className="project-list-title">{a.title}</h2>
                 <p className="project-list-desc">{a.excerpt}</p>

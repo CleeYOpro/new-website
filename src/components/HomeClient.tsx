@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import type { CSSProperties } from 'react';
 import { FiArrowUpRight, FiCode } from 'react-icons/fi';
 import { FaMedium } from 'react-icons/fa6';
@@ -8,18 +9,14 @@ import CardSwap from '@/components/CardSwap';
 import { NotificationCard } from '@/components/NotificationCard';
 import { FloatReveal } from '@/components/FloatReveal';
 import { TypeText } from '@/components/TypeText';
-import { featuredProjects, getProject } from '@/lib/projects';
+import { featuredProjects } from '@/lib/projects';
 import type { GithubContributions } from '@/lib/github';
 
-const blogs = [
-  { title: "Caching Isn't Hard. Knowing When to Invalidate Is.", date: '2026-07-05', description: "Learned the hard way, while building a real backend, that Redis is the easy part and knowing when to invalidate the cache is the actual problem." },
-  { title: 'Building a Multi-Layer Content Moderation Pipeline for an Anonymous Platform', date: '2026-06-15', description: 'How the pipeline stacks rules, ML models, caching, and enforcement to moderate a platform where nobody has a name attached.' },
-  { title: 'Designing Real-Time Text Moderation Without Freezing the Browser', date: '2026-05-20', description: 'How I built real-time text moderation for an anonymous platform without freezing the browser or trusting the client.' },
-];
+export type HomeBlog = { slug: string; title: string; excerpt: string; date: string };
 
 const GRID_LEVELS = ['var(--grid-0)', 'var(--grid-1)', 'var(--grid-2)', 'var(--grid-3)', 'var(--grid-4)'];
 
-const homeProjects = [...featuredProjects, getProject('port-laken')!];
+const homeProjects = featuredProjects;
 
 function GithubGrid({ weeks, total, monthLabels }: GithubContributions) {
   if (weeks.length === 0) {
@@ -54,7 +51,7 @@ function GithubGrid({ weeks, total, monthLabels }: GithubContributions) {
   );
 }
 
-export default function HomeClient({ contributions }: { contributions: GithubContributions }) {
+export default function HomeClient({ contributions, blogs }: { contributions: GithubContributions; blogs: HomeBlog[] }) {
   return (
     <main className="main-content">
       {/* Hero */}
@@ -131,25 +128,23 @@ export default function HomeClient({ contributions }: { contributions: GithubCon
       {/* Blogs */}
       <FloatReveal from="right">
         <section className="section">
-          <TypeText as="h2" className="section-title" text="Blogs" />
-          <div className="blog-blocked-wrap">
-            <div className="blog-list blog-blocked-content" aria-hidden="true">
-              {blogs.map((b) => (
-                <div key={b.title} className="blog-item">
-                  <div className="blog-main">
-                    <span className="blog-title">{b.title}</span>
-                    <p className="blog-desc">{b.description}</p>
-                  </div>
-                  <span className="blog-date">{b.date}</span>
+          <TypeText as="h2" className="section-title" text="🫵 Read This" />
+          <div className="blog-list">
+            {blogs.map((b) => (
+              <Link key={b.slug} href={`/blogs/${b.slug}`} className="blog-item">
+                <div className="blog-main">
+                  <span className="blog-title">
+                    {b.title}
+                    <span className="link-arrow"><FiArrowUpRight size={12} /></span>
+                  </span>
+                  <p className="blog-desc">{b.excerpt}</p>
                 </div>
-              ))}
-            </div>
-            <div className="blog-blocked-overlay">
-              <span className="blog-blocked-badge">Blog coming soon</span>
-            </div>
+                <span className="blog-date">{b.date}</span>
+              </Link>
+            ))}
           </div>
           <p className="section-more">
-            I&apos;m still writing these. Check back soon.
+            Want to read more? <Link href="/blogs" className="accent-link">See all blogs.</Link>
           </p>
         </section>
       </FloatReveal>

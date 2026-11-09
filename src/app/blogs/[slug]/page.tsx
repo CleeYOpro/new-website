@@ -111,7 +111,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
         <footer className="project-detail-footer">
           <div className="project-detail-nav">
             {newer ? (
-              <Link href={`/writing/${newer.slug}`} className="project-detail-nav-card project-detail-nav-card--prev">
+              <Link href={`/blogs/${newer.slug}`} className="project-detail-nav-card project-detail-nav-card--prev">
                 <span className="project-detail-nav-label">
                   <MoveLeftIcon size={16} /> Newer
                 </span>
@@ -121,7 +121,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
               <span />
             )}
             {older ? (
-              <Link href={`/writing/${older.slug}`} className="project-detail-nav-card project-detail-nav-card--next">
+              <Link href={`/blogs/${older.slug}`} className="project-detail-nav-card project-detail-nav-card--next">
                 <span className="project-detail-nav-label">
                   Older <MoveRightIcon size={16} />
                 </span>
@@ -132,7 +132,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
             )}
           </div>
           <div className="project-detail-all">
-            <Link href="/writing">See all Writing</Link>
+            <Link href="/blogs">See all Blogs</Link>
           </div>
         </footer>
       </main>
