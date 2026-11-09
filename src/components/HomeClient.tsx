@@ -10,6 +10,7 @@ import { NotificationCard } from '@/components/NotificationCard';
 import { FloatReveal } from '@/components/FloatReveal';
 import { TypeText } from '@/components/TypeText';
 import { featuredProjects } from '@/lib/projects';
+import { heroBio, heroTagline, homeNumbers } from '@/lib/home';
 import type { GithubContributions } from '@/lib/github';
 
 export type HomeBlog = { slug: string; title: string; excerpt: string; date: string };
@@ -59,21 +60,11 @@ export default function HomeClient({ contributions, blogs }: { contributions: Gi
         <section className="hero">
           <TypeText as="h1" className="hero-name" text="Cleo Balaranjith" />
 
-          <TypeText as="p" className="hero-sub" text="student • builder • problem solver" delay={350} />
+          <TypeText as="p" className="hero-sub" text={heroTagline} delay={350} />
 
-          <TypeText
-            as="p"
-            className="hero-bio"
-            delay={750}
-            text="Hi! I'm Cleo. I build software, maps, and tools for real problems, anywhere from offline attendance apps for schools in rural India to satellite imagery for disaster response."
-          />
-
-          <TypeText
-            as="p"
-            className="hero-bio"
-            delay={1250}
-            text="The part I like most is the messy stretch between having a problem and having something people can actually use, which is also where most of the work ends up being."
-          />
+          {heroBio.map((text, i) => (
+            <TypeText key={i} as="p" className="hero-bio" delay={750 + i * 500} text={text} />
+          ))}
 
           <div className="hero-actions">
             <a href="/about#experience" className="hero-btn hero-btn--snippets">
@@ -164,49 +155,9 @@ export default function HomeClient({ contributions, blogs }: { contributions: Gi
               height="auto"
               skewAmount={0}
             >
-              <NotificationCard
-                appName="rolecaller"
-                title="The Malto People"
-                time="2025-2026"
-                message="2,500+ students supported through offline-first attendance software."
-                badge="2500+"
-              />
-
-              <NotificationCard
-                appName="MIT BWSI"
-                title="Remote Sensing"
-                time="2026"
-                message="Selected for MIT Beaver Works Summer Institute (~6% acceptance rate)."
-                badge="<6%"
-                icon="/beaverworks.png"
-              />
-
-              <NotificationCard
-                appName="Technology Student Association"
-                title="🥈"
-                time="2025-2026"
-                message="2× TSA Nationals | 2nd place in Technology Problem Solving"
-                badge="2x"
-                icon="/tsa.png"
-              />
-              <NotificationCard
-                appName="CMC Vellore"
-                title="Healthcare Web"
-                time="2023-2024"
-                message="Built a multilingual hospital website supporting 3M+ annual visitors."
-                badge="3M+"
-                icon="/cmc.png"
-              />
-
-              <NotificationCard
-                appName="The American Rocketry Challenge"
-                title="🚀"
-                time="2025"
-                message="Designed rockets reaching 1,057 ft with successful egg payload recovery."
-                badge="1057"
-                icon="/rocketry.png"
-              />
-
+              {homeNumbers.map((n) => (
+                <NotificationCard key={n.appName} {...n} />
+              ))}
             </CardSwap>
           </div>
         </section>

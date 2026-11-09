@@ -3,22 +3,24 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { FiSend } from 'react-icons/fi';
+import type { IconType } from 'react-icons';
 import { FaEnvelope, FaGraduationCap, FaInstagram, FaGithub, FaLinkedin, FaDiscord } from 'react-icons/fa6';
 import { FloatReveal } from '@/components/FloatReveal';
 import { TypeText } from '@/components/TypeText';
+import { contactEmails, socialLinks } from '@/lib/contact';
 
-const infoRows = [
-  { label: 'E-mail', value: 'cbalaranjith@gmail.com', href: 'mailto:cbalaranjith@gmail.com', icon: FaEnvelope },
-  { label: 'School E-mail', value: '1056935@lwsd.org', href: 'mailto:1056935@lwsd.org', icon: FaGraduationCap },
-  { label: 'Collegiate E-mail', value: 'cleofus.balaranjith@bellevuecollege.edu', href: 'mailto:cleofus.balaranjith@bellevuecollege.edu', icon: FaGraduationCap },
-];
+const icons: Record<string, IconType> = {
+  'E-mail': FaEnvelope,
+  'School E-mail': FaGraduationCap,
+  'Collegiate E-mail': FaGraduationCap,
+  Instagram: FaInstagram,
+  GitHub: FaGithub,
+  LinkedIn: FaLinkedin,
+  Discord: FaDiscord,
+};
 
-const socialRows = [
-  { label: 'Instagram', value: 'cleobalaranjith', href: 'https://www.instagram.com/cleobalaranjith/', icon: FaInstagram },
-  { label: 'GitHub', value: 'CleeYOpro', href: 'https://github.com/CleeYOpro', icon: FaGithub },
-  { label: 'LinkedIn', value: 'cleofus', href: 'https://www.linkedin.com/in/cleofus/', icon: FaLinkedin },
-  { label: 'Discord', value: 'View my Discord profile', href: 'https://discord.com/users/1287117811482628286', icon: FaDiscord },
-];
+const infoRows = contactEmails.map((row) => ({ ...row, icon: icons[row.label] ?? FaEnvelope }));
+const socialRows = socialLinks.map((row) => ({ ...row, icon: icons[row.label] ?? FaEnvelope }));
 
 const WEB3FORMS_ACCESS_KEY = '5d9a3aae-90d1-4673-a651-4d22ad577977';
 

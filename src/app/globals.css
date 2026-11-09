@@ -1530,6 +1530,8 @@ kbd[data-key='space'] { width: 225px; }
   padding: 10px 14px;
   font-size: 13px;
   line-height: 1.6;
+  /* Keep the paragraph breaks in longer AI replies. */
+  white-space: pre-wrap;
 }
 
 .ai-msg--assistant {

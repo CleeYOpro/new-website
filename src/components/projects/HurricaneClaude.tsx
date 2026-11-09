@@ -4,6 +4,7 @@ import ProjectPdfSlides from '@/components/ProjectPdfSlides';
 import { FloatReveal } from '@/components/FloatReveal';
 import { TypeText } from '@/components/TypeText';
 
+// This page's text is mirrored in src/lib/ai-context.ts for the site AI; update both.
 const root = '/projects/images/hurricane-claude';
 
 export const hurricaneClaudeHeadings: TocHeading[] = [

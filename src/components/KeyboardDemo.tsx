@@ -55,115 +55,57 @@ import { BiLogoFirebase } from "react-icons/bi";
 import { VscMcp } from "react-icons/vsc";
 
 import { VscAzure } from "react-icons/vsc";
-interface TechItem {
-  name: string;
-  desc: string;
-  icon: IconType;
-}
+import { techStack } from '@/lib/tech-stack';
 
-const techStack: Record<string, TechItem> = {
-  a: { name: 'Arduino', desc: 'Open-source electronics platform for building embedded systems, sensors, and hardware prototypes', icon: SiArduino },
-  b: { name: 'Bash', desc: 'Command-line shell used for automation, scripting, and managing development environments', icon: SiGnubash },
-  c: { name: 'C', desc: 'Low-level programming language used for systems programming and embedded development', icon: SiC },
-  d: { name: 'Drizzle', desc: 'Type-safe SQL ORM for building efficient and maintainable database applications', icon: SiDrizzle },
-  e: { name: 'Eclipse', desc: 'Integrated development environment commonly used for Java application development', icon: SiEclipseide },
-  f: { name: 'Figma', desc: 'Collaborative UI/UX design tool for creating interfaces, prototypes, and design systems', icon: SiFigma },
-  g: { name: 'GitHub', desc: 'Web-based platform for version control and collaborative software development', icon: SiGithub },
-  h: { name: 'HTML5', desc: 'Modern markup language for structuring websites and web applications', icon: SiHtml5 },
-  i: { name: 'Adobe Illustrator', desc: 'Vector graphics design software for creating logos, illustrations, and visual assets', icon: TbBrandAdobeIllustrator },
-  j: { name: 'Java', desc: 'Object-oriented programming language used for applications, backend systems, and coursework', icon: FaJava },
-  k: { name: 'Kaggle', desc: 'Data science platform for machine learning competitions, datasets, and experimentation', icon: SiKaggle },
-  l: { name: 'CSS3', desc: 'Styling language used to create responsive layouts, animations, and modern web designs', icon: SiCss },
-  m: { name: 'MongoDB', desc: 'NoSQL database for storing flexible document-based application data', icon: SiMongodb },
-  n: { name: 'Node.js', desc: 'JavaScript runtime for building scalable backend services, APIs, and server applications', icon: SiNodedotjs },
-  o: { name: 'JavaScript', desc: 'Programming language powering interactive web applications and modern frontend development', icon: SiJavascript },
-  p: { name: 'Python', desc: 'Versatile programming language used for automation, data science, AI, and backend development', icon: SiPython },
-  q: { name: 'Tailwind CSS', desc: 'Utility-first CSS framework for rapidly building responsive and customizable interfaces', icon: SiTailwindcss },
-  r: { name: 'React', desc: 'Frontend library for building reusable components and interactive user interfaces', icon: FaReact },
-  s: { name: 'Supabase', desc: 'Open-source backend platform providing databases, authentication, storage, and APIs', icon: SiSupabase },
-  t: { name: 'TypeScript', desc: 'Strongly typed JavaScript language for building safer and more maintainable applications', icon: SiTypescript },
-  u: { name: 'shadcn/ui', desc: 'Reusable React component library for creating accessible and customizable interfaces', icon: SiShadcnui },
-  v: { name: 'Vercel', desc: 'Cloud platform for deploying, hosting, and scaling modern web applications', icon: SiVercel },
-  w: { name: 'Prisma', desc: 'Type-safe ORM for interacting with databases and managing application data models', icon: SiPrisma },
-  x: { name: 'Expo', desc: 'React Native development platform for building and deploying cross-platform mobile apps', icon: SiExpo },
-  y: { name: 'Yarn', desc: 'Package manager for installing dependencies and managing JavaScript projects', icon: SiYarn },
-  z: { name: 'Flask', desc: 'Lightweight Python web framework for building APIs and backend applications', icon: SiFlask },
-
-  0: { name: 'SQLite', desc: 'Lightweight relational database used for local storage and embedded applications', icon: SiSqlite },
-  1: { name: 'NPM', desc: 'JavaScript package manager for managing dependencies and project tooling', icon: SiNpm },
-  2: { name: 'NumPy', desc: 'Python library for numerical computing, arrays, and scientific calculations', icon: SiNumpy },
-  3: { name: 'Pandas', desc: 'Python library for data manipulation, analysis, and working with datasets', icon: SiPandas },
-  4: { name: 'Jupyter', desc: 'Interactive notebook environment for data analysis, visualization, and experimentation', icon: SiJupyter },
-  5: { name: 'Anaconda', desc: 'Python distribution platform for managing environments and data science packages', icon: SiAnaconda },
-  7: { name: 'Visual Studio Code', desc: 'Extensible code editor used for software development, debugging, and project management', icon: VscVscode },
-  8: { name: 'Netlify', desc: 'Cloud platform for deploying frontend websites and managing continuous deployments', icon: SiNetlify },
-  9: { name: 'Cloudflare', desc: 'Web infrastructure platform providing DNS, security, caching, and edge services', icon: SiCloudflare },
-  6: { name: 'Firebase', desc: 'Backend-as-a-Service platform for building mobile and web applications', icon: BiLogoFirebase },
-  '=': { 
-  name: 'Microsoft Azure', 
-  desc: 'Cloud computing platform for deploying applications, managing infrastructure, and building scalable services', 
-  icon: VscAzure 
-},
-'-': { 
-  name: 'Google Earth Engine', 
-  desc: 'Cloud-based geospatial platform for analyzing satellite imagery, remote sensing data, and large-scale environmental datasets',
-  icon: SiGoogleearthengine
-},
-
-'`': { 
-  name: 'ArcGIS', 
-  desc: 'Geographic information system for spatial analysis, mapping, visualization, and managing geospatial data',
-  icon: SiArcgis
-},
-
-',': { 
-  name: 'GeoPandas', 
-  desc: 'Python library for working with geospatial vector data using pandas-based data analysis workflows',
-  icon: SiGeopandas
-},
-
-';': { 
-  name: 'PyTorch', 
-  desc: 'Deep learning framework used for building neural networks, machine learning models, and AI research',
-  icon: SiPytorch
-},
-
-'[': { 
-  name: 'REST APIs', 
-  desc: 'Web architecture for building and connecting applications through HTTP-based data communication',
-  icon: SiPostman
-},
-
-']': { 
-  name: 'Google Gemini API', 
-  desc: 'Generative AI platform for integrating multimodal AI capabilities and intelligent features into applications',
-  icon: SiGooglegemini
-},
-
-'\\': { 
-  name: 'Google Cloud', 
-  desc: 'Cloud computing platform for deploying applications, processing data, and running scalable infrastructure',
-  icon: SiGooglecloud
-},
-
-'\'': { 
-  name: 'Claude Code', 
-  desc: 'AI-powered coding assistant for software development, debugging, and improving developer workflows',
-  icon: SiClaudecode
-},
-
-'.': { 
-  name: 'Next.js', 
-  desc: 'React framework for building full-stack web applications with server rendering and optimized performance',
-  icon: SiNextdotjs
-},
-
-'/': { 
-  name: 'MCP', 
-  desc: 'Model Context Protocol for connecting AI models with external tools, data sources, and applications',
-  icon: VscMcp
-},
-
+// Name and description for each key live in src/lib/tech-stack.ts.
+const techIcons: Record<string, IconType> = {
+  a: SiArduino,
+  b: SiGnubash,
+  c: SiC,
+  d: SiDrizzle,
+  e: SiEclipseide,
+  f: SiFigma,
+  g: SiGithub,
+  h: SiHtml5,
+  i: TbBrandAdobeIllustrator,
+  j: FaJava,
+  k: SiKaggle,
+  l: SiCss,
+  m: SiMongodb,
+  n: SiNodedotjs,
+  o: SiJavascript,
+  p: SiPython,
+  q: SiTailwindcss,
+  r: FaReact,
+  s: SiSupabase,
+  t: SiTypescript,
+  u: SiShadcnui,
+  v: SiVercel,
+  w: SiPrisma,
+  x: SiExpo,
+  y: SiYarn,
+  z: SiFlask,
+  0: SiSqlite,
+  1: SiNpm,
+  2: SiNumpy,
+  3: SiPandas,
+  4: SiJupyter,
+  5: SiAnaconda,
+  6: BiLogoFirebase,
+  7: VscVscode,
+  8: SiNetlify,
+  9: SiCloudflare,
+  '=': VscAzure,
+  '-': SiGoogleearthengine,
+  '`': SiArcgis,
+  ',': SiGeopandas,
+  ';': SiPytorch,
+  '[': SiPostman,
+  ']': SiGooglegemini,
+  '\\': SiGooglecloud,
+  "'": SiClaudecode,
+  '.': SiNextdotjs,
+  '/': VscMcp,
 };
 
 const keyRows = [
@@ -377,7 +319,7 @@ export default function KeyboardDemo() {
               const isPressed = activeKeys.includes(keyName) || (keyId && activeKeys.includes(keyId));
               const tech = techStack[keyName];
               const hasIcon = !!tech;
-              const Icon = tech?.icon;
+              const Icon = techIcons[keyName];
 
               return (
                 <kbd

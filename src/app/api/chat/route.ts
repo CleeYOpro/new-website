@@ -1,64 +1,10 @@
 import { GoogleGenAI } from '@google/genai';
-import { projects } from '@/lib/projects';
+import { SYSTEM_PROMPT } from '@/lib/ai-context';
 
 // Tried in order; falls through when a model is overloaded (503), rate limited (429), or times out.
 const MODELS = ['gemini-3.5-flash-lite', 'gemini-3.5-flash', 'gemini-3.1-flash-lite'];
 const MAX_MESSAGES = 20;
 const MAX_CHARS = 1000;
-
-const BIO = `
-- Cleo Balaranjith: high school senior and computer science student in Sammamish, WA (Pacific time).
-- Running Start at Bellevue College while attending Eastlake High School.
-- Selected for MIT Beaver Works Summer Institute (~6% acceptance), remote sensing for disaster response.
-- Interned at Rove Miles (YC W24), building a Python autocomplete system for 9,000+ airports.
-- Business strategy work for Seattle Sports & Regenerative Medicine.
-- Studied computer vision in the University of Michigan's Joy of Coding program.
-- Observed hospital operations at CMC Vellore, one of Asia's leading hospitals.
-- Awards: 1st in Geospatial Technology at WTSA State, 4th in Engineering Design, 2x TSA nationals, 2nd nationally in Technology Problem Solving, 3rd at the Divergent Hackathon, 8th at WTSA 2026.
-- Stack: React, Next.js, TypeScript, Python, Firebase, Supabase, Vercel, ArcGIS, Google Earth Engine. VS Code and GitHub daily.
-- Available to hire and open to interesting opportunities.
-- Hobbies and life outside of work:
-  - Working out, lifting, and boxing.
-  - Hiking, national parks, road trips, and getting outdoors (e.g. Redwood National Park, Mount Baker).
-  - Rocketry: designing, building, and launching model rockets.
-  - Photography: places he visits, landscapes, and random moments.
-  - Geography and maps: into atlases, Google Earth, and exploring places since he was young.
-  - Writing and storytelling: Medium articles, recounting experiences, and podcast storytelling.
-  - Building random things, like a backyard chicken coop, home automation, and hardware projects.
-  - Faith and church: Bible study, Awana, youth group, and volunteering are meaningful parts of his life.
-  - Travel and exploring cultures, especially around India and the US, visiting historical places and learning about different communities.
-  - Hanging out with friends, having conversations, and enjoying his senior year.
-- Contact: cbalaranjith@gmail.com, instagram @cle0b, github @CleeYOpro, linkedin @cleofus, medium @cleobala.
-`.trim();
-
-const PROJECTS = projects
-  .map((p) =>
-    [
-      `## ${p.title} (/projects/${p.slug})`,
-      p.description,
-      `Tags: ${p.tags.join(', ')}`,
-      p.github && `GitHub: ${p.github}`,
-      p.live && `Live: ${p.live}`,
-      p.competition && `Competition: ${p.competition.label}`,
-      p.overview,
-      p.results?.length && `Results:\n${p.results.map((r) => `- ${r}`).join('\n')}`,
-    ]
-      .filter(Boolean)
-      .join('\n'),
-  )
-  .join('\n\n');
-
-const SYSTEM_PROMPT = `You are cleo's AI, the assistant on Cleo Balaranjith's personal website. Answer visitors' questions about Cleo's work, projects, skills, and how to reach him.
-
-Style: casual, friendly, lowercase, concise (usually 1-4 sentences). Refer to Cleo in the third person (he/him). Plain text only, no markdown.
-
-Only use the facts below. If something isn't covered, say you don't know and suggest emailing cbalaranjith@gmail.com. Never make up details. Politely decline requests unrelated to Cleo.
-
-# About Cleo
-${BIO}
-
-# Projects
-${PROJECTS}`;
 
 type Message = { role: 'user' | 'assistant'; content: string };
 
