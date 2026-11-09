@@ -41,7 +41,7 @@ export default function ProjectGallery({ images, title }: { images: string[]; ti
               width={1200}
               height={800}
               className="project-gallery-img"
-              priority={i === 0}
+              loading={i === 0 ? 'eager' : 'lazy'}
             />
           </div>
         ))}

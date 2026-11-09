@@ -21,9 +21,9 @@ const experience = [
     role: 'Remote Sensing for Disaster Response',
     period: 'Mar 2026 - Aug 2026',
     bullets: [
-      <>Selected for <strong>MIT BWSI Remote Sensing for Disaster Response</strong>, a selective program focused on satellite imagery, GIS, SAR analysis, and disaster response.</>,
-      <>Built hands-on projects using <strong>Google Earth Engine, Sentinel-1 SAR data, and remote sensing workflows</strong> to analyze environmental disasters.</>,
-      <>Learned from MIT instructors and geospatial researchers through technical lectures, projects, and presentations.</>,
+      <>Selected for <strong>MIT BWSI Remote Sensing for Disaster Response</strong> (~6% acceptance), a program on satellite imagery, GIS, SAR analysis, and disaster response.</>,
+      <>Built projects with <strong>Google Earth Engine, Sentinel-1 SAR data, and remote sensing workflows</strong> to analyze environmental disasters.</>,
+      <>Lectures, projects, and presentations with MIT instructors and geospatial researchers.</>,
     ],
     tags: ['Remote Sensing', 'GIS', 'Google Earth Engine', 'SAR', 'Satellite Imagery'],
     website: 'https://bwsi.mit.edu/',
@@ -35,22 +35,7 @@ const experience = [
       { type: 'image', src: `${EXP_IMG}/bwsi4.png`, alt: 'MIT BWSI presentation' },
     ] as ExpMedia[],
   },
-{
-company: 'Traycer AI',
-logo: '/trae.png',
-location: 'Remote',
-role: 'AI Agent Beta Testing Intern',
-period: 'Jan 2026 - Mar 2026',
-bullets: [
-<>Beta tested <strong>Traycer's coding agent orchestration</strong> across CLI and repository-level development workflows.</>,
-<>Stress-tested multi-agent execution, debugging, refactoring, and tool use across real codebases.</>,
-<>Evaluated <strong>Nemotron inference</strong> for coding tasks, focusing on speed, reliability, and agent performance.</>,
-],
-tags: ['Coding Agents', 'Agent Evaluation', 'Nemotron', 'QA'],
-website: 'https://www.traycer.ai/',
-linkedin: null,
-media: [] as ExpMedia[],
-},
+
 
   {
     company: 'Rove Miles (Y Combinator W24)',
@@ -374,25 +359,25 @@ export default function AboutPage() {
               <TypeText
                 as="p"
                 delay={300}
-                text="Hey, I'm Cleo. I'm a high school student, full-stack developer, and builder interested in turning ambitious ideas into things people can actually use."
+                text="Hey, I'm Cleo. I'm a high school student and a full-stack developer, and the thing I care about most with anything I build is whether people can actually use it."
               />
 
               <TypeText
                 as="p"
                 delay={700}
-                text="I spend most of my time working across software, GIS, healthcare, and education. I like building practical systems, working with teams, and taking ideas from an early concept to something real."
+                text="Most of what I've worked on sits somewhere between software, GIS, healthcare, and education: an offline attendance app for tribal schools in Jharkhand, earthquake risk maps for Seattle, a website for a palliative care department in Vellore. I like taking an idea from a rough concept all the way to something real, usually with a team."
               />
 
               <TypeText
                 as="p"
                 delay={1100}
-                text="Right now, I'm exploring full-stack development, remote sensing, computer vision, and AI while balancing Running Start at Bellevue College, leadership, and a growing list of side projects."
+                text="Right now I'm digging into full-stack development, remote sensing, computer vision, and AI, while also doing Running Start at Bellevue College, leadership stuff, and a list of side projects that only ever gets longer."
               />
 
               <TypeText
                 as="p"
                 delay={1500}
-                text="I'm curious by default, care a lot about execution, and like building things that have a purpose beyond just being another project."
+                text="I'm curious by default, I care a lot about execution, and I'd rather build something with an actual purpose than just another project."
               />
             </div>
           </section>

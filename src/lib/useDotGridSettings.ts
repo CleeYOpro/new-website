@@ -30,16 +30,16 @@ export function useDotGridSettings() {
   }, []);
 
   const update = (next: Partial<DotGridSettings>) => {
-    setSettings((s) => {
-      const merged = { ...s, ...next };
-      try {
-        window.localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
-      } catch {
-        // ignore write failures (e.g. private browsing)
-      }
-      window.dispatchEvent(new Event(EVENT_KEY));
-      return merged;
-    });
+    // Side effects stay out of the setState updater: React may run updaters
+    // during render, and the event would set state in other components then.
+    const merged = { ...readSettings(), ...next };
+    try {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+    } catch {
+      // ignore write failures (e.g. private browsing)
+    }
+    setSettings(merged);
+    window.dispatchEvent(new Event(EVENT_KEY));
   };
 
   return { settings, update };

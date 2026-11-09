@@ -89,7 +89,7 @@ export default function ContactPage() {
               className="hero-bio"
               style={{ fontSize: '15px', color: 'var(--text-dim)', margin: 0 }}
               delay={300}
-              text="Get in touch with me. I will get back to you as soon as possible."
+              text="Use the form or any of the links below, and I'll get back to you as soon as I can."
             />
           </section>
         </FloatReveal>

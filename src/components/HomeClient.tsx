@@ -12,8 +12,8 @@ import { featuredProjects, getProject } from '@/lib/projects';
 import type { GithubContributions } from '@/lib/github';
 
 const blogs = [
-  { title: "Caching Isn't Hard. Knowing When to Invalidate Is.", date: '2026-07-05', description: "Learned the hard way that Redis isn't the hard part - cache invalidation is. Lessons from building a real-world backend." },
-  { title: 'Building a Multi-Layer Content Moderation Pipeline for an Anonymous Platform', date: '2026-06-15', description: 'Building a multi-layer moderation pipeline for an anonymous platform using rules, ML models, caching, and enforcement workflows.' },
+  { title: "Caching Isn't Hard. Knowing When to Invalidate Is.", date: '2026-07-05', description: "Learned the hard way, while building a real backend, that Redis is the easy part and knowing when to invalidate the cache is the actual problem." },
+  { title: 'Building a Multi-Layer Content Moderation Pipeline for an Anonymous Platform', date: '2026-06-15', description: 'How the pipeline stacks rules, ML models, caching, and enforcement to moderate a platform where nobody has a name attached.' },
   { title: 'Designing Real-Time Text Moderation Without Freezing the Browser', date: '2026-05-20', description: 'How I built real-time text moderation for an anonymous platform without freezing the browser or trusting the client.' },
 ];
 
@@ -68,15 +68,14 @@ export default function HomeClient({ contributions }: { contributions: GithubCon
             as="p"
             className="hero-bio"
             delay={750}
-            text=" Hi! I’m Cleo. I build software, maps, and tools for problems that matter.
-I’ve worked on everything from offline education tools in rural India to satellite imagery for disaster response. I’m interested in the messy space between a problem and something people can actually use."
+            text="Hi! I'm Cleo. I build software, maps, and tools for real problems, anywhere from offline attendance apps for schools in rural India to satellite imagery for disaster response."
           />
 
           <TypeText
             as="p"
             className="hero-bio"
             delay={1250}
-            text="From offline tools for schools in rural India to satellite imagery projects for disaster response, I like turning messy problems into things people can actually use."
+            text="The part I like most is the messy stretch between having a problem and having something people can actually use, which is also where most of the work ends up being."
           />
 
           <div className="hero-actions">
@@ -110,7 +109,7 @@ I’ve worked on everything from offline education tools in rural India to satel
               <FloatReveal key={p.slug} from="down" delay={i * 90}>
                 <a href={`/projects/${p.slug}`} className="project-card">
                   <div className="project-img">
-                    <Image src={p.image} alt={p.title} width={300} height={180} className="proj-image" />
+                    <Image src={p.image} alt={p.title} width={300} height={180} className="proj-image" loading={i < 3 ? 'eager' : 'lazy'} />
                   </div>
                   <div className="project-body">
                     <h3 className="project-title">
@@ -150,7 +149,7 @@ I’ve worked on everything from offline education tools in rural India to satel
             </div>
           </div>
           <p className="section-more">
-            Articles are still being written - check back soon.
+            I&apos;m still writing these. Check back soon.
           </p>
         </section>
       </FloatReveal>

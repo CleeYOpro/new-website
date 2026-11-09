@@ -15,7 +15,7 @@ export default function ThankYouPage() {
             className="hero-bio"
             style={{ fontSize: '15px', color: 'var(--text-dim)', margin: 0 }}
             delay={300}
-            text="Thanks for reaching out - I'll get back to you as soon as possible."
+            text="Thanks for reaching out. I'll get back to you as soon as I can."
           />
 
           <div className="hero-actions" style={{ marginTop: '28px' }}>
