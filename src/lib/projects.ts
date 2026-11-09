@@ -7,6 +7,7 @@ export type Project = {
   github?: string;
   githubSecondary?: { label: string; url: string };
   live?: string;
+  website?: { label: string; url: string };
   figma?: string;
   medium?: string;
   competition?: { label: string; url: string };
@@ -101,13 +102,12 @@ export const projects: Project[] = [
     title: 'CMC Palliative Care',
     section: 'featured',
     description:
-      "A new website for the Department of Palliative Medicine at CMC Vellore, one of Asia's leading hospitals. This development build is 100% my own work, and the finalized version is now live on CMC Vellore's official website.",
+      "The official website for the Department of Palliative Medicine at CMC Vellore, one of Asia's leading hospitals. It's live at cmcpalliative.org and handles all of the department's web traffic.",
     tags: ['HTML5', 'CSS3', 'JavaScript', 'Accessibility', 'Healthcare'],
     github: 'https://github.com/CleeYOpro/CMC-project',
-    live: 'https://palliativecmc.vercel.app/',
+    live: 'https://cmcpalliative.org/',
+    website: { label: 'CMC Vellore', url: 'https://www.cmch-vellore.edu/departments/' },
     figma: 'https://www.figma.com/design/sEMG9yQQuUYJWT31b7lcaS/The-WEBSITE?t=7mCi8uphmP4S75vO-1',
-    note:
-      "The live demo above is my development build, and every page, section, and line of code in it is 100% my own work. The finalized version has since been integrated into CMC Vellore's official hospital website, live at [cmch-vellore.edu/departments](https://www.cmch-vellore.edu/departments/).",
     image: '/projects/images/cmc/mainpage.png',
     images: [
       '/projects/images/cmc/mainpage.png',
@@ -134,7 +134,7 @@ export const projects: Project[] = [
     ],
     results: [
       'Built a fully responsive, accessible website for the department.',
-      "The finalized version is live on CMC Vellore's official website, for a hospital that sees 3M+ patients a year.",
+      "The site is live at cmcpalliative.org as the department's own website, serving a hospital that sees 3M+ patients a year.",
     ],
     takeaways: [
       "Most people opening this site are dealing with someone they love being seriously ill, so finding out how to reach the team quickly matters way more than anything looking impressive.",

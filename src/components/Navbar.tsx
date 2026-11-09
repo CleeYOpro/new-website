@@ -6,6 +6,8 @@ import { useEffect, useRef, useState } from 'react';
 import { FaInstagram, FaGithub, FaLinkedin, FaEnvelope } from 'react-icons/fa6';
 import { FiSettings } from 'react-icons/fi';
 import { useDotGridSettings } from '@/lib/useDotGridSettings';
+import { useAccent } from '@/lib/useAccent';
+import { ACCENTS } from '@/lib/accents';
 
 const navLinks = [
   { href: '/', label: 'home' },
@@ -18,6 +20,8 @@ const navLinks = [
 export default function Navbar() {
   const pathname = usePathname();
   const { settings, update } = useDotGridSettings();
+  const { accent, setAccent } = useAccent();
+  const accentLabel = ACCENTS.find((a) => a.id === accent)?.label;
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -68,7 +72,7 @@ export default function Navbar() {
           <button
             type="button"
             className="nav-icon-link nav-settings__trigger"
-            aria-label="Background settings"
+            aria-label="Site settings"
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
           >
@@ -77,7 +81,27 @@ export default function Navbar() {
 
           {open && (
             <div className="nav-settings__panel" role="menu">
-              <p className="nav-settings__title">Background</p>
+              <p className="nav-settings__title">
+                Color <span className="nav-settings__title-value">{accentLabel}</span>
+              </p>
+
+              <div className="nav-settings__swatches" role="radiogroup" aria-label="Accent color">
+                {ACCENTS.map((a) => (
+                  <button
+                    key={a.id}
+                    type="button"
+                    role="radio"
+                    aria-checked={accent === a.id}
+                    aria-label={a.label}
+                    title={a.label}
+                    className={`nav-settings__swatch nav-settings__swatch--${a.id}${accent === a.id ? ' nav-settings__swatch--on' : ''}`}
+                    style={{ '--swatch': a.hex } as React.CSSProperties}
+                    onClick={() => setAccent(a.id)}
+                  />
+                ))}
+              </div>
+
+              <p className="nav-settings__title nav-settings__title--section">Background</p>
 
               <label className="nav-settings__row">
                 <span>Animate grid</span>

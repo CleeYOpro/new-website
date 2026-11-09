@@ -334,7 +334,7 @@ const MOMENTS_IMG = '/projects/images/moments';
 
 
 const photos: Moment[] = [
-  { image: `${MOMENTS_IMG}/geoengineering.png`, title: 'Out in the Field', description: 'GeoEngineers Inc. · APES final project' },
+  { image: `${MOMENTS_IMG}/geoengineering.png`, title: 'Out in the Field', description: 'GeoEngineers Inc. · Snoqualamie restoration final project' },
   { image: `${MOMENTS_IMG}/10 pm in NY.jpeg`, title: '10 PM in New York', description: 'New York City, NY' },
   { image: `${MOMENTS_IMG}/indiatlas.png`, title: 'Before Google Earth', description: 'Where the obsession with maps started' },
   { image: `${MOMENTS_IMG}/rolecaller_on_theground.png`, title: 'RoleCaller: On the Ground', description: 'Field deployment · Jharkhand, India' },

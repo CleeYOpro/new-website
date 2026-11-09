@@ -186,6 +186,12 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
                   See it Live
                 </a>
               )}
+              {project.website && (
+                <a href={project.website.url} target="_blank" rel="noopener noreferrer" className="project-detail-btn">
+                  <ExternalLinkIcon size={14} />
+                  {project.website.label}
+                </a>
+              )}
               {project.github && (
                 <a href={project.github} target="_blank" rel="noopener noreferrer" className="project-detail-btn">
                   <GithubIcon size={14} />

@@ -120,6 +120,7 @@ const ClickParticles = ({
             height: `${p.size}px`,
             borderRadius: '50%',
             backgroundColor: p.color,
+            boxShadow: 'var(--particle-glow, none)',
             transform: `translate(${p.x}px, ${p.y}px)`,
             opacity: p.opacity,
           }}

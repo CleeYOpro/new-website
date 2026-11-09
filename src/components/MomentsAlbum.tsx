@@ -25,11 +25,13 @@ export default function MomentsAlbum({ moments, albumTitle = 'the archives, vol.
     const list = listRef.current;
     const row = list?.children[active] as HTMLElement | undefined;
     if (!list || !row) return;
-    const pad = 8;
+    // Extra room at the bottom clears the list's fade-out mask.
+    const padTop = 8;
+    const padBottom = 36;
     let top: number | null = null;
-    if (row.offsetTop - pad < list.scrollTop) top = row.offsetTop - pad;
-    else if (row.offsetTop + row.offsetHeight + pad > list.scrollTop + list.clientHeight) {
-      top = row.offsetTop + row.offsetHeight + pad - list.clientHeight;
+    if (row.offsetTop - padTop < list.scrollTop) top = row.offsetTop - padTop;
+    else if (row.offsetTop + row.offsetHeight + padBottom > list.scrollTop + list.clientHeight) {
+      top = row.offsetTop + row.offsetHeight + padBottom - list.clientHeight;
     }
     if (top !== null) list.scrollTo({ top, behavior: reducedMotion ? 'auto' : 'smooth' });
   }, [active, reducedMotion]);

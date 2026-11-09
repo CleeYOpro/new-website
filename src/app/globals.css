@@ -5,8 +5,22 @@
   --text: #d4d4d4;
   --text-muted: #969696;
   --text-dim: #b8b8b8;
+  /* accent - switchable from the navbar settings menu (see "Accent themes") */
   --accent: #D5674F;
-  --accent-soft: rgba(213, 103, 79, 0.15);
+  --accent-rgb: 213, 103, 79;
+  --accent-hover: #c05440;
+  --accent-light: #e8896e;
+  --accent-deep: #c04535;
+  --on-accent: #fff;
+  --accent-soft: rgba(var(--accent-rgb), 0.15);
+  /* "shine" - off for the default orange, turned on by the other themes */
+  --accent-glow: none;
+  --accent-glow-box: none;
+  --accent-glow-filter: none;
+  --particle-glow: none;
+  /* errors keep their red-orange no matter which accent is picked */
+  --danger: #D5674F;
+  --danger-rgb: 213, 103, 79;
   --grid-0: #27272a;
   --grid-1: #5c2318;
   --grid-2: #9e3d2a;
@@ -14,6 +28,77 @@
   --grid-4: #f2967f;
   --font-sans: "Google Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-serif: "Instrument Serif", Georgia, serif;
+}
+
+/* ── Accent themes ── */
+:root[data-accent="white"] {
+  --accent: #f4f4f5;
+  --accent-rgb: 244, 244, 245;
+  --accent-hover: #d4d4d8;
+  --accent-light: #ffffff;
+  --accent-deep: #a1a1aa;
+  --on-accent: #18181b;
+  --accent-glow: 0 0 10px rgba(255, 255, 255, 0.35), 0 0 22px rgba(255, 255, 255, 0.12);
+  --accent-glow-box: 0 0 16px rgba(255, 255, 255, 0.28);
+  --accent-glow-filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.55));
+  --particle-glow: 0 0 4px rgba(255, 255, 255, 0.9);
+  --grid-1: #3a3a40;
+  --grid-2: #6b6b73;
+  --grid-3: #b4b4bb;
+  --grid-4: #f4f4f5;
+}
+
+:root[data-accent="blue"] {
+  --accent: #4da8ff;
+  --accent-rgb: 77, 168, 255;
+  --accent-hover: #2f8ee8;
+  --accent-light: #8cc8ff;
+  --accent-deep: #1f6fd1;
+  --on-accent: #04111f;
+  --accent-glow: 0 0 10px rgba(77, 168, 255, 0.55), 0 0 24px rgba(77, 168, 255, 0.22);
+  --accent-glow-box: 0 0 16px rgba(77, 168, 255, 0.45);
+  --accent-glow-filter: drop-shadow(0 0 5px rgba(77, 168, 255, 0.75));
+  --particle-glow: 0 0 5px rgba(77, 168, 255, 0.95);
+  --grid-1: #0f2c4d;
+  --grid-2: #1b5a99;
+  --grid-3: #4da8ff;
+  --grid-4: #a8d6ff;
+}
+
+:root[data-accent="green"] {
+  --accent: #00ff41;
+  --accent-rgb: 0, 255, 65;
+  --accent-hover: #00cc34;
+  --accent-light: #7dff9e;
+  --accent-deep: #008f11;
+  --on-accent: #00140a;
+  --accent-glow: 0 0 6px rgba(0, 255, 65, 0.65), 0 0 20px rgba(0, 255, 65, 0.3);
+  --accent-glow-box: 0 0 18px rgba(0, 255, 65, 0.5);
+  --accent-glow-filter: drop-shadow(0 0 5px rgba(0, 255, 65, 0.85));
+  --particle-glow: 0 0 5px rgba(0, 255, 65, 1);
+  --grid-1: #003b0f;
+  --grid-2: #008f11;
+  --grid-3: #00cc34;
+  --grid-4: #00ff41;
+}
+
+:root[data-accent="gold"] {
+  --accent: #f0c14b;
+  --accent-rgb: 240, 193, 75;
+  --accent-hover: #d9a933;
+  --accent-light: #ffe08a;
+  --accent-deep: #b8860b;
+  --on-accent: #1f1600;
+  --accent-glow: 0 0 10px rgba(240, 193, 75, 0.5), 0 0 24px rgba(240, 193, 75, 0.2);
+  --accent-glow-box: 0 0 18px rgba(240, 193, 75, 0.45);
+  --accent-glow-filter: drop-shadow(0 0 5px rgba(240, 193, 75, 0.8));
+  --particle-glow: 0 0 5px rgba(255, 224, 138, 1);
+  /* metallic sweep used by headings and filled buttons */
+  --gold-sheen: linear-gradient(90deg, #b8860b 0%, #f0c14b 18%, #fff4cc 28%, #f0c14b 38%, #c9962c 62%, #f0c14b 82%, #b8860b 100%);
+  --grid-1: #3d2f0a;
+  --grid-2: #7a5c12;
+  --grid-3: #c9962c;
+  --grid-4: #f0c14b;
 }
 
 *, *::before, *::after {
@@ -181,12 +266,65 @@ body::before {
 }
 
 .nav-settings__title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: var(--text-muted);
   margin-bottom: 8px;
 }
+
+.nav-settings__title--section {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.nav-settings__title-value {
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--accent);
+  text-shadow: var(--accent-glow);
+}
+
+.nav-settings__swatches {
+  display: flex;
+  justify-content: space-between;
+  padding: 2px 2px 4px;
+}
+
+.nav-settings__swatch {
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--swatch);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  cursor: pointer;
+  transition: transform 150ms ease, outline-color 150ms ease;
+}
+
+/* the non-default swatches preview their glow */
+.nav-settings__swatch--white,
+.nav-settings__swatch--blue,
+.nav-settings__swatch--green,
+.nav-settings__swatch--gold {
+  box-shadow: 0 0 9px color-mix(in srgb, var(--swatch) 55%, transparent);
+}
+
+.nav-settings__swatch--gold {
+  background: linear-gradient(135deg, #a8780a 0%, #f0c14b 35%, #fff4cc 50%, #f0c14b 65%, #a8780a 100%);
+}
+
+.nav-settings__swatch:hover { transform: scale(1.12); }
+.nav-settings__swatch:focus-visible { outline-color: var(--text-muted); }
+.nav-settings__swatch--on,
+.nav-settings__swatch--on:focus-visible { outline-color: var(--swatch); }
 
 .nav-settings__row {
   display: flex;
@@ -310,7 +448,7 @@ body::before {
 /* Resume - filled pill */
 .hero-btn--filled {
   background: var(--accent);
-  color: #fff;
+  color: var(--on-accent);
   padding: 6px 14px;
   border-radius: 5px;
   font-weight: 500;
@@ -318,8 +456,8 @@ body::before {
 }
 
 .hero-btn--filled:hover {
-  background: #c05440;
-  color: #fff;
+  background: var(--accent-hover);
+  color: var(--on-accent);
   transform: scale(1.04);
 }
 
@@ -804,9 +942,9 @@ body::before {
   align-items: center;
   gap: 8px;
   padding: 8px 14px;
-  border: 1px solid rgba(213, 103, 79, 0.3);
+  border: 1px solid rgba(var(--accent-rgb), 0.3);
   border-radius: 999px;
-  background: rgba(213, 103, 79, 0.08);
+  background: rgba(var(--accent-rgb), 0.08);
   margin-bottom: 40px;
   color: var(--text-muted);
   font-size: 12px;
@@ -1188,7 +1326,7 @@ kbd[data-key='space'] { width: 225px; }
   border: 1px solid var(--border);
   border-radius: 18px;
   background:
-    radial-gradient(120% 60% at 0% 0%, rgba(213, 103, 79, 0.09), transparent 65%),
+    radial-gradient(120% 60% at 0% 0%, rgba(var(--accent-rgb), 0.09), transparent 65%),
     linear-gradient(180deg, #141416, #0f0f11);
 }
 
@@ -1299,8 +1437,7 @@ kbd[data-key='space'] { width: 225px; }
   min-width: 0;
 }
 
-.moments-title,
-.moments-desc {
+.moments-title {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -1404,7 +1541,7 @@ kbd[data-key='space'] { width: 225px; }
 
 .ai-msg--user {
   background: var(--accent-soft);
-  border: 1px solid rgba(213, 103, 79, 0.25);
+  border: 1px solid rgba(var(--accent-rgb), 0.25);
   color: var(--text);
   align-self: flex-end;
   border-bottom-right-radius: 3px;
@@ -1513,13 +1650,13 @@ kbd[data-key='space'] { width: 225px; }
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
+  color: var(--on-accent);
   flex-shrink: 0;
   transition: background 150ms;
 }
 
 .ai-send:hover:not(:disabled) {
-  background: #c05440;
+  background: var(--accent-hover);
 }
 
 .ai-send:disabled {
@@ -1650,7 +1787,7 @@ kbd[data-key='space'] { width: 225px; }
 
 .project-action-btn:hover {
   color: var(--accent);
-  border-color: rgba(213, 103, 79, 0.4);
+  border-color: rgba(var(--accent-rgb), 0.4);
 }
 
 /* ── Education note ── */
@@ -1710,7 +1847,7 @@ kbd[data-key='space'] { width: 225px; }
 }
 
 .contact-input--error {
-  border-color: rgba(213, 103, 79, 0.5);
+  border-color: rgba(var(--danger-rgb), 0.5);
 }
 
 .contact-textarea {
@@ -1724,7 +1861,7 @@ kbd[data-key='space'] { width: 225px; }
 
 .contact-error {
   font-size: 11px;
-  color: var(--accent);
+  color: var(--danger);
 }
 
 .contact-submit {
@@ -1733,7 +1870,7 @@ kbd[data-key='space'] { width: 225px; }
   background: var(--accent);
   border: none;
   border-radius: 5px;
-  color: #fff;
+  color: var(--on-accent);
   font-family: var(--font-sans);
   font-size: 13px;
   font-weight: 500;
@@ -1742,7 +1879,7 @@ kbd[data-key='space'] { width: 225px; }
 }
 
 .contact-submit:hover:not(:disabled) {
-  background: #c05440;
+  background: var(--accent-hover);
 }
 
 .contact-submit:disabled {
@@ -1756,7 +1893,7 @@ kbd[data-key='space'] { width: 225px; }
 }
 
 .contact-status--ok { color: #6fcf97; }
-.contact-status--err { color: var(--accent); }
+.contact-status--err { color: var(--danger); }
 
 .contact-table {
   width: 100%;
@@ -2035,7 +2172,7 @@ kbd[data-key='space'] { width: 225px; }
   border-color: var(--text-dim);
 }
 .contact-input-new.error {
-  border-color: rgba(213, 103, 79, 0.5);
+  border-color: rgba(var(--danger-rgb), 0.5);
 }
 
 /* ── Screen-reader only helper ── */
@@ -2112,7 +2249,7 @@ kbd[data-key='space'] { width: 225px; }
   transition: color 150ms;
 }
 
-.project-list-row:hover .project-list-title { color: #e8896e; }
+.project-list-row:hover .project-list-title { color: var(--accent-light); }
 
 .tsa-badge {
   display: inline-flex;
@@ -2724,12 +2861,12 @@ kbd[data-key='space'] { width: 225px; }
 .project-detail-btn--primary {
   background: var(--accent);
   border-color: var(--accent);
-  color: #fff;
+  color: var(--on-accent);
 }
 
 .project-detail-btn--primary:hover {
-  background: #c05440;
-  border-color: #c05440;
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
 }
 
 /* ── Project image gallery ── */
@@ -2962,7 +3099,7 @@ kbd[data-key='space'] { width: 225px; }
 
 .project-figure-zoom:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px rgba(213, 103, 79, 0.6);
+  box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.6);
 }
 
 .project-figure-img {
@@ -3241,7 +3378,7 @@ kbd[data-key='space'] { width: 225px; }
 }
 
 .project-toc:hover .project-toc-item--active {
-  background: rgba(213, 103, 79, 0.12);
+  background: rgba(var(--accent-rgb), 0.12);
 }
 
 .project-toc-bar {
@@ -3295,7 +3432,7 @@ kbd[data-key='space'] { width: 225px; }
 
 .project-toc-item:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px rgba(213, 103, 79, 0.6);
+  box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.6);
 }
 
 @media (min-width: 1100px) {
@@ -3336,7 +3473,7 @@ kbd[data-key='space'] { width: 225px; }
 
 .writing-row:hover { transform: translateX(3px); }
 
-.writing-row:hover .project-list-title { color: #e8896e; }
+.writing-row:hover .project-list-title { color: var(--accent-light); }
 
 .writing-row-main {
   flex: 1;
@@ -3420,7 +3557,7 @@ kbd[data-key='space'] { width: 225px; }
 .medium-prose a {
   color: var(--accent);
   text-decoration: underline;
-  text-decoration-color: rgba(213, 103, 79, 0.4);
+  text-decoration-color: rgba(var(--accent-rgb), 0.4);
   text-underline-offset: 3px;
   transition: text-decoration-color 150ms;
 }
@@ -3539,4 +3676,109 @@ kbd[data-key='space'] { width: 225px; }
 @media (max-width: 480px) {
   .writing-row-cover { width: 72px; }
   .medium-prose blockquote { font-size: 19px; }
+}
+
+/* ── Accent shine ──
+   The glow tokens are `none` for the default orange, so none of this shows
+   until another accent is picked in the navbar settings menu. Kept at the end
+   of the file so it wins ties with the hover rules above. */
+
+/* accent-colored text */
+.hero-name,
+.project-detail-title,
+.nav-item--active,
+.accent-link,
+.resume-link,
+.hero-btn--snippets:hover,
+.number-value,
+.project-list-title,
+.project-detail-nav-name,
+.contact-info-label,
+.tsa-badge-place,
+.moments-track.is-active .moments-title,
+.moments-track.is-active .moments-num,
+.exp-item:hover .exp-company,
+.topic-item:hover .topic-title,
+.blog-item:hover .blog-title,
+.site-footer-cta:hover,
+.contact-social-row:hover .contact-social-value,
+.writing-meta-link:hover,
+.project-action-btn:hover,
+.medium-prose a {
+  text-shadow: var(--accent-glow);
+}
+
+/* accent-colored icons (SVG ignores text-shadow) */
+.nav-icon-link:hover svg,
+.link-arrow,
+.btn-arrow,
+.contact-social-icon,
+.project-list-action:hover,
+.exp-company-bubble:hover {
+  filter: var(--accent-glow-filter);
+}
+
+/* accent-filled controls */
+.hero-btn--filled,
+.ai-send:not(:disabled),
+.contact-submit:not(:disabled),
+.project-detail-btn--primary,
+.trifold-btn--active,
+.nav-settings__switch--on,
+.tsa-badge {
+  box-shadow: var(--accent-glow-box);
+}
+
+/* tiny accent marks get a tighter glow */
+.exp-carousel-dot--active,
+.project-toc-item--active .project-toc-bar {
+  box-shadow: var(--particle-glow);
+}
+
+:root[data-accent="white"] .nav-settings__switch--on .nav-settings__knob {
+  background: var(--on-accent);
+}
+
+/* gold: big headings and filled buttons get a moving metallic sweep */
+:root[data-accent="gold"] :is(.hero-name, .project-detail-title) .type-text-visible {
+  background-image: var(--gold-sheen);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: none;
+  filter: drop-shadow(0 0 10px rgba(240, 193, 75, 0.35));
+  animation: gold-sheen 6s linear infinite;
+}
+
+:root[data-accent="gold"] :is(
+  .hero-btn--filled,
+  .ai-send,
+  .contact-submit,
+  .project-detail-btn--primary,
+  .trifold-btn--active,
+  .nav-settings__switch--on
+) {
+  background-image: var(--gold-sheen);
+  background-size: 200% 100%;
+  animation: gold-sheen 4s linear infinite;
+}
+
+@keyframes gold-sheen {
+  from { background-position: 200% 0; }
+  to { background-position: 0% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root[data-accent="gold"] :is(.hero-name, .project-detail-title) .type-text-visible,
+  :root[data-accent="gold"] :is(
+    .hero-btn--filled,
+    .ai-send,
+    .contact-submit,
+    .project-detail-btn--primary,
+    .trifold-btn--active,
+    .nav-settings__switch--on
+  ) {
+    animation: none;
+  }
 }

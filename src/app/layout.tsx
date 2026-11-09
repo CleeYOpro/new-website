@@ -4,6 +4,7 @@ import ClickParticles from '@/components/ClickParticles';
 import SiteBackground from '@/components/SiteBackground';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import { DEFAULT_ACCENT, accentInitScript } from '@/lib/accents';
 
 export const metadata: Metadata = {
   title: "Cleo Balaranjith's Website",
@@ -12,8 +13,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    // suppressHydrationWarning: the inline script may swap data-accent before React hydrates
+    <html lang="en" data-accent={DEFAULT_ACCENT} suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: accentInitScript }} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         {/* eslint-disable-next-line @next/next/no-page-custom-font */}
@@ -22,7 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <noscript>You need to enable JavaScript to run this app.</noscript>
         <SiteBackground />
-        <ClickParticles particleColors={["#D5674F", "#e8896e", "#c04535"]} particleCount={10} velocityMax={2} />
+        <ClickParticles particleColors={["var(--accent)", "var(--accent-light)", "var(--accent-deep)"]} particleCount={10} velocityMax={2} />
         <div className="site-wrap">
           <Navbar />
           {children}
