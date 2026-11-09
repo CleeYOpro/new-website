@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState, useCallback, CSSProperties, HTMLAttributes } from 'react';
+import { useEffect, useImperativeHandle, useRef, useState, useCallback, CSSProperties, HTMLAttributes, Ref } from 'react';
 import { Renderer, Triangle, Program, Mesh, Texture } from 'ogl';
 import { gsap } from 'gsap';
 
@@ -8,6 +8,7 @@ import './MorphSlider.css';
 
 export type MorphSliderItem = { image: string; caption?: string };
 export type MorphSliderTransition = 'melt' | 'ripple' | 'shear' | 'swirl';
+export type MorphSliderHandle = { goTo: (index: number) => void };
 
 const TRANSITIONS: Record<MorphSliderTransition, number> = { melt: 0, ripple: 1, shear: 2, swirl: 3 };
 
@@ -241,6 +242,7 @@ class MorphEngine {
   dragging: boolean;
   dragDir: number;
   shownIndex: number;
+  queued: number | null = null;
   tween: gsap.core.Tween | null;
 
   renderer: Renderer;
@@ -393,8 +395,7 @@ class MorphEngine {
     return ((i % n) + n) % n;
   }
 
-  prepareNext(dir: number) {
-    const target = this.wrap(this.current + dir);
+  prepareNext(dir: number, target = this.wrap(this.current + dir)) {
     this.program.uniforms.tCurrent.value = this.textures[this.current];
     this.program.uniforms.uCurrentSize.value = this.sizes[this.current];
     this.program.uniforms.tNext.value = this.textures[target];
@@ -410,8 +411,24 @@ class MorphEngine {
       const raw = this.current + dir;
       if (raw < 0 || raw > this.items.length - 1) return;
     }
+    this.transitionTo(this.wrap(this.current + dir), dir);
+  }
+
+  // Jump straight to any slide with the same transition. Requests made mid-transition
+  // are queued and run once the current one commits.
+  jumpTo(target: number) {
+    if (target === this.current && !this.animating) return;
+    if (this.animating || this.dragging) {
+      this.queued = target;
+      return;
+    }
+    this.transitionTo(target, target > this.current ? 1 : -1);
+  }
+
+  transitionTo(target: number, dir: number) {
+    const opts = this.getOptions();
     this.syncOptions();
-    const target = this.prepareNext(dir);
+    this.prepareNext(dir, target);
     this.animating = true;
     this.announce(target);
     const duration = this.reducedMotion ? Math.min(opts.duration, 0.4) : opts.duration;
@@ -441,6 +458,14 @@ class MorphEngine {
     this.animating = false;
     this.tween = null;
     this.announce(target);
+    this.flushQueue();
+  }
+
+  flushQueue() {
+    if (this.queued === null) return;
+    const queued = this.queued;
+    this.queued = null;
+    if (queued !== this.current) this.jumpTo(queued);
   }
 
   next() {
@@ -508,6 +533,7 @@ class MorphEngine {
         onComplete: () => {
           this.animating = false;
           this.tween = null;
+          this.flushQueue();
         }
       });
     }
@@ -552,6 +578,11 @@ export type MorphSliderProps = {
   showControls?: boolean;
   showIndicators?: boolean;
   className?: string;
+  /** Pauses autoplay, e.g. while the user is browsing an external slide list. */
+  paused?: boolean;
+  /** Fires when a transition starts towards a new slide (autoplay, drag, controls, or goTo). */
+  onIndexChange?: (index: number) => void;
+  ref?: Ref<MorphSliderHandle>;
 } & Omit<HTMLAttributes<HTMLDivElement>, 'style'>;
 
 export default function MorphSlider({
@@ -573,6 +604,9 @@ export default function MorphSlider({
   showControls = true,
   showIndicators = true,
   className = '',
+  paused = false,
+  onIndexChange,
+  ref,
   ...props
 }: MorphSliderProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -618,11 +652,17 @@ export default function MorphSlider({
   const handleNext = useCallback(() => engineRef.current?.next(), []);
   const handlePrev = useCallback(() => engineRef.current?.prev(), []);
 
+  useImperativeHandle(ref, () => ({ goTo: (i: number) => engineRef.current?.jumpTo(i) }), []);
+
   useEffect(() => {
-    if (!autoplay || hovering) return undefined;
+    onIndexChange?.(index);
+  }, [index, onIndexChange]);
+
+  useEffect(() => {
+    if (!autoplay || hovering || paused) return undefined;
     const id = setTimeout(() => engineRef.current?.next(), Math.max(autoplayDelay, 1) * 1000);
     return () => clearTimeout(id);
-  }, [autoplay, autoplayDelay, hovering, index]);
+  }, [autoplay, autoplayDelay, hovering, paused, index]);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -764,9 +804,7 @@ export default function MorphSlider({
               aria-label={`Go to slide ${i + 1}`}
               className={`morph-slider-dot ${i === index ? 'is-active' : ''}`}
               onClick={() => {
-                const engine = engineRef.current;
-                if (!engine || i === index) return;
-                engine.goTo(i > index ? 1 : -1);
+                if (i !== index) engineRef.current?.jumpTo(i);
               }}
             />
           ))}

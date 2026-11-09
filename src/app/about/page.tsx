@@ -2,7 +2,7 @@
 
 import { MouseEvent, useState } from 'react';
 import { FiChevronDown, FiChevronLeft, FiChevronRight, FiExternalLink, FiGlobe, FiLinkedin } from 'react-icons/fi';
-import MorphSlider from '@/components/MorphSlider';
+import MomentsAlbum, { Moment } from '@/components/MomentsAlbum';
 import KeyboardDemo from '@/components/KeyboardDemo';
 import { FloatReveal } from '@/components/FloatReveal';
 import { TypeText } from '@/components/TypeText';
@@ -333,25 +333,25 @@ function EducationItem({ edu }: { edu: typeof education[number] }) {
 const MOMENTS_IMG = '/projects/images/moments';
 
 
-const photos = [
-  { image: `${MOMENTS_IMG}/geoengineering.png`, caption: 'a day in the field with GeoEngineers Inc.' },
-  { image: `${MOMENTS_IMG}/10 pm in NY.jpeg`, caption: '10 PM in New York' },
-  { image: `${MOMENTS_IMG}/indiatlas.png`, caption: 'where the obsession with maps started' },
-  { image: `${MOMENTS_IMG}/rolecaller_on_theground.png`, caption: 'RoleCaller, finally out in the field' },
-  { image: `${MOMENTS_IMG}/geoguessr.png`, caption: 'I swear I was 1.3k ELO in \'23' },
-  { image: `${MOMENTS_IMG}/Kali Linux.jpeg`, caption: 'messing around with Kali Linux' },
-  { image: `${MOMENTS_IMG}/taj.png`, caption: 'an afternoon at the Taj Mahal' },
-  { image: `${MOMENTS_IMG}/onstage.png`, caption: 'stagefright' },
-  { image: `${MOMENTS_IMG}/docusigntower.png`, caption: 'Third Avenue Interlude' },
-  { image: `${MOMENTS_IMG}/kingcountygis.png`, caption: 'King County GIS at the Esri Summit' },
-  { image: `${MOMENTS_IMG}/tsanats.png`, caption: 'TSA Nationals, working with whatever they gave us' },
-  { image: `${MOMENTS_IMG}/divergent.png`, caption: 'late nights at Divergent Hackathon' },
-  { image: `${MOMENTS_IMG}/download.jpeg`, caption: 'getting an ECG model running on an ESP32' },
-  { image: `${MOMENTS_IMG}/harvard.png`, caption: 'somewhere inside Harvard' },
-  { image: `${MOMENTS_IMG}/techboothchurch.png`, caption: 'Sunday mornings behind the soundboard' },
-  { image: `${MOMENTS_IMG}/PXL_20260619_010845610.MP.jpg`, caption: 'one of my backyard chickens' },
-  { image: `${MOMENTS_IMG}/sequence.png`, caption: 'another very competitive game of Sequence' },
-  { image: `${MOMENTS_IMG}/siberia.png`, caption: 'somewhere on Mt. Baker' },
+const photos: Moment[] = [
+  { image: `${MOMENTS_IMG}/geoengineering.png`, title: 'Out in the Field', description: 'GeoEngineers Inc. · APES final project' },
+  { image: `${MOMENTS_IMG}/10 pm in NY.jpeg`, title: '10 PM in New York', description: 'New York City, NY' },
+  { image: `${MOMENTS_IMG}/indiatlas.png`, title: 'Before Google Earth', description: 'Where the obsession with maps started' },
+  { image: `${MOMENTS_IMG}/rolecaller_on_theground.png`, title: 'RoleCaller: On the Ground', description: 'Field deployment · Jharkhand, India' },
+  { image: `${MOMENTS_IMG}/geoguessr.png`, title: "1.3K ELO in '23", description: 'GeoGuessr · allegedly my prime' },
+  { image: `${MOMENTS_IMG}/Kali Linux.jpeg`, title: 'Kali After Hours', description: 'Messing around with Kali Linux' },
+  { image: `${MOMENTS_IMG}/taj.png`, title: 'Postcards from Agra', description: 'Taj Mahal · Agra, India' },
+  { image: `${MOMENTS_IMG}/onstage.png`, title: 'Stage Fright', description: 'Washington TSA · somewhere on stage' },
+  { image: `${MOMENTS_IMG}/docusigntower.png`, title: 'Third Avenue Interlude', description: 'Downtown Seattle, WA' },
+  { image: `${MOMENTS_IMG}/kingcountygis.png`, title: 'The GIS People', description: 'King County GIS · Esri Summit 2025' },
+  { image: `${MOMENTS_IMG}/tsanats.png`, title: 'Wax Paper at Nationals', description: 'TSA Nationals · Technology Problem Solving' },
+  { image: `${MOMENTS_IMG}/divergent.png`, title: 'One More Commit', description: 'Divergent Hackathon · KomeKare' },
+  { image: `${MOMENTS_IMG}/download.jpeg`, title: 'Heartbeat on a Breadboard', description: 'Running an ECG model on an ESP32' },
+  { image: `${MOMENTS_IMG}/harvard.png`, title: 'Cambridge Interlude', description: 'Harvard University · Cambridge, MA' },
+  { image: `${MOMENTS_IMG}/techboothchurch.png`, title: 'Sunday Soundcheck', description: 'Running tech at church' },
+  { image: `${MOMENTS_IMG}/PXL_20260619_010845610.MP.jpg`, title: 'The Backyard Residents', description: 'One of my backyard chickens' },
+  { image: `${MOMENTS_IMG}/sequence.png`, title: 'No Friendly Games', description: 'Sequence · game night' },
+  { image: `${MOMENTS_IMG}/siberia.png`, title: 'Powder Day', description: 'Skiing at Mt. Baker, Washington' },
 ];
 
 
@@ -430,17 +430,7 @@ export default function AboutPage() {
             <p className="section-more" style={{ marginTop: 0, marginBottom: 16 }}>
               these r just some random pics
             </p>
-            <div className="about-gallery-wrap">
-              <MorphSlider
-                items={photos}
-                transition="melt"
-                intensity={0.55}
-                aberration={0.35}
-                drift={0.4}
-                autoplay
-                radius={16}
-              />
-            </div>
+            <MomentsAlbum moments={photos} />
           </section>
         </FloatReveal>
       </main>
